@@ -9,7 +9,7 @@ import com.parkmawani.starbucksproject.entity.MemberEntity;
 
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, Long>{
-    List<MemberEntity> findByMiId(String miId);
-    Long countByMiId(String miId);
+    // List<MemberEntity> findByMiId(String miId);
+    // Long countByMiId(String miId);
     
 }
