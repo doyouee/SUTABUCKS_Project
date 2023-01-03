@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "")
+@Table(name = "event_image")
 public class EventEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ev_seq")    private Long evSeq;
