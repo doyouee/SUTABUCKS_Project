@@ -1,5 +1,7 @@
 package com.parkmawani.starbucksproject.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@DynamicInsert
+@Builder
 @Table(name = "store_announcement")
 public class AnnouncementEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

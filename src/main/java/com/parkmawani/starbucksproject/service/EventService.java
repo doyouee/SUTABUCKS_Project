@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,6 +14,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.parkmawani.starbucksproject.entity.EventDetailEntity;
+import com.parkmawani.starbucksproject.entity.EventEntity;
 import com.parkmawani.starbucksproject.repository.EventDetailRepository;
 import com.parkmawani.starbucksproject.repository.EventRepository;
 import com.parkmawani.starbucksproject.repository.MemberRepository;
@@ -27,36 +30,46 @@ public class EventService {
     @Value("${file.image.eventdetail}") String detail_img_path;
 
         public void addEvent(
-            Date evStartDate,
-            Date evEndDate,
-            Date ediStartDate,
-            Date ediEndDate,
+            LocalDate evStartDate,
+            LocalDate evEndDate,
+            LocalDate ediStartDate,
+            LocalDate ediEndDate,
             @Nullable String evContent,
             @Nullable String ediContent,
-            MultipartFile evImgFile,
-            MultipartFile ediImgFile
+            MultipartFile evFile,
+            MultipartFile edFile
         ){
             Calendar c = Calendar.getInstance();
-            String saveeventFileName = "Event"+"_";
-            String iFileName="";
             Path eventFolderLocation = Paths.get(event_img_path);
             Path detailFolderLocation = Paths.get(detail_img_path);
-
-                String eventOriginFileName = evImgFile.getOriginalFilename();
+            
+                String eventOriginFileName = evFile.getOriginalFilename();
                 String[] iFile = eventOriginFileName.split(("\\."));
                 String iExt = iFile[iFile.length-1];
+                String iFileName = "";
                 for(int i=0;i<iFile.length-1;i++){
                     iFileName += iFile[i];
                 }
-                saveeventFileName+=c.getTimeInMillis()+"."+iExt;
-                Path eventTargetFile = eventFolderLocation.resolve(eventOriginFileName);
+                String saveEventFileName = "Event"+"_";
+                saveEventFileName+=c.getTimeInMillis()+"."+iExt;
+                Path eventTargetFile = eventFolderLocation.resolve(evFile.getOriginalFilename());
                 
                 try {
-                    Files.copy(evImgFile.getInputStream(), eventTargetFile, StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(evFile.getInputStream(), eventTargetFile, StandardCopyOption.REPLACE_EXISTING);
                 }   catch(Exception e){e.printStackTrace();}
-            
+                
+                EventEntity event = EventEntity.builder()
+                .evStartDate(evStartDate)
+                .evEndDate(evEndDate)
+                .evContent(evContent)
+                .evUri(iFileName)
+                .evFile(saveEventFileName).build();
 
-                String detailOriginFileName = ediImgFile.getOriginalFilename();
+                // event.setEvSeq(event.getEvSeq());
+                // event.setEvContent(event.getEvContent());
+                event = eventRepo.save(event);
+
+                String detailOriginFileName = edFile.getOriginalFilename();
                 String[] dFile = detailOriginFileName.split("\\.");
                 String dExt = dFile[dFile.length-1];
                 String dFileName = "";
@@ -65,11 +78,19 @@ public class EventService {
                 }
                 String saveDetailFileName = "Detail"+"_";
                 saveDetailFileName+=c.getTimeInMillis()+"."+dExt;
+                Path detailTargetFile = detailFolderLocation.resolve(edFile.getOriginalFilename());
 
-                Path detailTargetFile = detailFolderLocation.resolve(ediImgFile.getOriginalFilename());
                 try {
-                    Files.copy(ediImgFile.getInputStream(), detailTargetFile, StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(edFile.getInputStream(), detailTargetFile, StandardCopyOption.REPLACE_EXISTING);
                 } catch(Exception e){e.printStackTrace();}
+
+                EventDetailEntity detail = EventDetailEntity.builder()
+                .ediStartDate(ediStartDate)
+                .ediEndDate(ediEndDate)
+                .ediContents(ediContent)
+                .ediUri(dFileName)
+                .edFile(saveDetailFileName).build();
+                detail = detailRepo.save(detail);
     }
 }
     

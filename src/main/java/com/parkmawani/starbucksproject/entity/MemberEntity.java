@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,13 +29,13 @@ public class MemberEntity {
     @Column(name = "mi_pwd")                private String miPwd;
     @Column(name = "mi_name")               private String miName;
     @Column(name = "mi_nickname")           private String miNickname;
-    @Column(name = "mi_birth")              private LocalDate miBirth;
+    @Column(name = "mi_birth")              private @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate miBirth;
     @Column(name = "mi_gen") @ColumnDefault("0")
     private Integer miGen;
     @Column(name = "mi_group")              private Integer miGroup;
     @Column(name = "mi_business_num")       private String miBusinessNum;
     @Column(name = "mi_detail_address")     private String miDetailAddress;
-    @Column(name = "mi_last_login")         private LocalDate miLastLogin;
+    @Column(name = "mi_last_login")         private @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate miLastLogin;
     @Column(name = "mi_status") @ColumnDefault("1")
     private Integer miStatus;
     @Column(name = "mi_reg_date") @ColumnDefault("0")

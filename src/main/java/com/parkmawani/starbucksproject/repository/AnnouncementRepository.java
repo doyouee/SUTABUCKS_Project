@@ -7,6 +7,6 @@ import com.parkmawani.starbucksproject.entity.AnnouncementEntity;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<AnnouncementEntity, Long>{
-    
+    // AnnouncementEntity findBysaUri(String uri);
     
 }

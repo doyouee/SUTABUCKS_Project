@@ -8,5 +8,5 @@ import com.parkmawani.starbucksproject.entity.EventDetailEntity;
 @Repository
 public interface EventDetailRepository extends JpaRepository<EventDetailEntity, Long>{
     // EventDetailEntity findByEventDetailUri(String uri);
-    
+    //  EventDetailEntity findByEventDetailUri(String uri);
 }
