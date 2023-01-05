@@ -27,7 +27,8 @@ import org.springframework.core.io.UrlResource;
 public class FileAPIController {
     @Value("${file.image.event}") String event_img_path;
     @Value("${file.image.eventdetail}") String detail_img_path;
-
+    @Value("${file.image.announcement}") String notice_img_path;
+    @Value("${file.image.menuimage}") String menu_img_path;
     @Autowired EventRepository eRepository;
     @Autowired EventDetailRepository dRepository;
 
@@ -41,9 +42,14 @@ public class FileAPIController {
         Path folderLocation = null;
         if (type.equals("event")) {
             folderLocation = Paths.get(event_img_path);
-        } else if (type.equals("eventdetail")) {
+        } else if (type.equals("detail")) {
             folderLocation = Paths.get(detail_img_path);
-        }else {
+        } else if (type.equals("notice")) {
+            folderLocation = Paths.get(notice_img_path);
+        } else if (type.equals("menu")) {
+            folderLocation = Paths.get(menu_img_path);
+        }
+        else {
             map.put("status", false);
             map.put("message", "타입이 올바르지 않습니다. (예시 : menu, store)");
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
