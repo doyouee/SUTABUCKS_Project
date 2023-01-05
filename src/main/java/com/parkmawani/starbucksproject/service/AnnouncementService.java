@@ -4,23 +4,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.parkmawani.starbucksproject.entity.AnnouncementEntity;
-import com.parkmawani.starbucksproject.entity.EventDetailEntity;
-import com.parkmawani.starbucksproject.entity.EventEntity;
 import com.parkmawani.starbucksproject.repository.AnnouncementRepository;
-import com.parkmawani.starbucksproject.repository.EventDetailRepository;
-import com.parkmawani.starbucksproject.repository.EventRepository;
-import com.parkmawani.starbucksproject.repository.MemberRepository;
+
+import io.micrometer.common.lang.Nullable;
 
 @Service
 public class AnnouncementService {
@@ -31,7 +25,7 @@ public class AnnouncementService {
 
         public void addEvent(
             String saTitle,
-            String saContent,
+            @Nullable String saContent,
             MultipartFile saImgFile
         ){
             Calendar c = Calendar.getInstance();

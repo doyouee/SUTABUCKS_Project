@@ -2,7 +2,6 @@ package com.parkmawani.starbucksproject.entity;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
 
