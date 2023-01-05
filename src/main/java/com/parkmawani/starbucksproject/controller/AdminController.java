@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.parkmawani.starbucksproject.entity.EventDetailEntity;
 import com.parkmawani.starbucksproject.entity.EventEntity;
 import com.parkmawani.starbucksproject.entity.MemberEntity;
-import com.parkmawani.starbucksproject.entity.MenuImageEntity;
 import com.parkmawani.starbucksproject.repository.AnnouncementRepository;
 import com.parkmawani.starbucksproject.repository.EventDetailRepository;
 import com.parkmawani.starbucksproject.repository.EventRepository;
@@ -51,7 +51,6 @@ public class AdminController {
     @Autowired StoreService sService;
     @Autowired StoreRepository sRepo;
     @Autowired MenuImageService meiService;
-    @Autowired MenuImageRepository meiRepo; 
 
     @GetMapping("/list") // 접근경로
     public Map<String, Object> getMain(Model model) {
