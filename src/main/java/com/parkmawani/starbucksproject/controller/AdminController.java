@@ -28,6 +28,7 @@ import com.parkmawani.starbucksproject.repository.MenuImageRepository;
 import com.parkmawani.starbucksproject.repository.MenuRepository;
 import com.parkmawani.starbucksproject.repository.StoreRepository;
 import com.parkmawani.starbucksproject.service.AnnouncementService;
+import com.parkmawani.starbucksproject.service.CouponService;
 import com.parkmawani.starbucksproject.service.EventService;
 import com.parkmawani.starbucksproject.service.MenuImageService;
 import com.parkmawani.starbucksproject.service.MenuService;
@@ -51,6 +52,7 @@ public class AdminController {
     @Autowired StoreService sService;
     @Autowired StoreRepository sRepo;
     @Autowired MenuImageService meiService;
+    @Autowired CouponService cService;
 
     @GetMapping("/list") // 접근경로
     public Map<String, Object> getMain(Model model) {
@@ -167,12 +169,24 @@ public class AdminController {
         return map;
     }
 
+
     @PostMapping("/coupon")
     public Map<String, Object> addCoupon (
-
+        @RequestParam Long ciDiscount,
+        @RequestParam LocalDate ciRegDt,
+        @RequestParam LocalDate ciExDt,
+        @RequestParam String ciName,
+        @RequestParam String ciExplain,
+        @RequestParam Long ciStock,
+        @RequestParam String ciCode
     ){
+        Map<String, Object> map = new LinkedHashMap<>();
+        cService.addCoupon(ciDiscount, ciRegDt, ciExDt, ciName, ciExplain, ciStock, ciCode);
+        map.put("status", true);
+        map.put("message", "쿠폰이 등록되었습니다.");
         return map;
     }
-    
 }
+    
+
 
