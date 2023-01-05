@@ -14,11 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.parkmawani.starbucksproject.entity.MenuImageEntity;
 import com.parkmawani.starbucksproject.repository.MenuImageRepository;
 
-
 @Service
+
 public class MenuImageService {
     @Autowired MenuImageRepository miRepo;
-    @Value("${file.image.menu}") String menu_img_path;
+    @Value("${file.image.menuimage}") String menu_img_path;
         public void addEvent(
             MultipartFile miiImgFile,
             Long miiNumber

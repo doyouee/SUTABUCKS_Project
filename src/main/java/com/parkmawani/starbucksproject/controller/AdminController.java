@@ -132,7 +132,7 @@ public class AdminController {
         return map;
     }
 
-    @PostMapping("menuimage")
+    @PostMapping("menuimg")
     public Map<String, Object> addMenuImage(
         @RequestParam Long miiNumber,
         @RequestPart MultipartFile miiImgFile
