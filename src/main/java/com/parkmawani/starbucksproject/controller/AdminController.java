@@ -166,6 +166,13 @@ public class AdminController {
         map.put("message", "지점이 등록되었습니다.");
         return map;
     }
+
+    @PostMapping("/coupon")
+    public Map<String, Object> addCoupon (
+
+    ){
+        return map;
+    }
     
 }
 
