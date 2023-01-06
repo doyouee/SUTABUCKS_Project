@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,6 @@ import com.parkmawani.starbucksproject.repository.AnnouncementRepository;
 import com.parkmawani.starbucksproject.repository.EventDetailRepository;
 import com.parkmawani.starbucksproject.repository.EventRepository;
 import com.parkmawani.starbucksproject.repository.MemberRepository;
-import com.parkmawani.starbucksproject.repository.MenuImageRepository;
 import com.parkmawani.starbucksproject.repository.MenuRepository;
 import com.parkmawani.starbucksproject.repository.StoreRepository;
 import com.parkmawani.starbucksproject.service.AnnouncementService;
@@ -125,10 +123,12 @@ public class AdminController {
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
         @RequestParam String mbiExplain,
-        @RequestParam Long mbiPcSeq
+        @RequestParam Long mbiPcSeq,
+        @RequestParam Long miiNumber,
+        @RequestPart MultipartFile miiImgFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
-        meService.addMenu(mbiName, mbiCost, mbiExplain,mbiPcSeq);
+        meService.addMenu(mbiName, miiNumber, mbiCost, mbiExplain, mbiPcSeq, miiImgFile);
         map.put("status", true);
         map.put("message", "메뉴가 등록되었습니다.");
         return map;
