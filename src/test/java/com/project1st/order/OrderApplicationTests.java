@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.starbucks.order.menu.repository.MenuBasicInfoRepository;
-import com.starbucks.order.store.repository.StoreBasicInfoRepository;
-import com.starbucks.order.store.service.StoreService;
+import com.starbucks.final_project01.api.menu.repository.MenuBasicInfoRepository;
+import com.starbucks.final_project01.store.repository.StoreBasicInfoRepository;
+import com.starbucks.final_project01.store.service.StoreService;
 
 @SpringBootTest
 class OrderApplicationTests {
