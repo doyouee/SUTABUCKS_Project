@@ -1,5 +1,6 @@
 package com.parkmawani.starbucksproject.controller;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -128,9 +129,13 @@ public class AdminController {
     }
     @PatchMapping("/menuupdate")
     @Transactional
-    public Map<String, Object> updateMenu(@RequestParam Long mbiSeq, @RequestParam String mbiName, 
-    @RequestParam Integer mbiCost, @RequestParam Integer mbiStatus, @RequestParam String mbiExplain) {
+    public Map<String, Object> updateMenu(@RequestParam Long mbiSeq, @RequestParam @Nullable String mbiName, 
+    @RequestParam @Nullable Integer mbiCost, @RequestParam @Nullable Integer mbiStatus, @RequestParam @Nullable String mbiExplain) {
         MenuEntity entity = meRepo.findByMbiSeq(mbiSeq);
+        List<MenuEntity> list = meRepo.listByMbiSeq(mbiSeq);
+        if (mbiName == null) {
+            // mbiName = list.mbiName;
+        }
         entity.setMbiName(mbiName);
         entity.setMbiCost(mbiCost);
         entity.setMbiExplain(mbiExplain);
@@ -158,7 +163,7 @@ public class AdminController {
         map.put("message", "메뉴가 등록되었습니다.");
         map.put("code", HttpStatus.CREATED);
         return map;
-    }
+    } 
 
     @PostMapping("menuimg")
     public Map<String, Object> addMenuImage(
