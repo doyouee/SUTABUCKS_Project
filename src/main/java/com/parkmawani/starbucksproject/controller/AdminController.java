@@ -26,6 +26,7 @@ import com.parkmawani.starbucksproject.repository.AnnouncementRepository;
 import com.parkmawani.starbucksproject.repository.EventDetailRepository;
 import com.parkmawani.starbucksproject.repository.EventRepository;
 import com.parkmawani.starbucksproject.repository.MemberRepository;
+import com.parkmawani.starbucksproject.repository.MenuImageRepository;
 import com.parkmawani.starbucksproject.repository.MenuRepository;
 import com.parkmawani.starbucksproject.repository.StoreRepository;
 import com.parkmawani.starbucksproject.service.AnnouncementService;
@@ -54,9 +55,11 @@ public class AdminController {
     @Autowired StoreRepository sRepo;
     @Autowired MenuImageService meiService;
     @Autowired CouponService cService;
+    @Autowired MenuImageRepository meiRepo;
 
     @GetMapping("/list") // 접근경로
-    public Map<String, Object> getMain(Model model) {
+    public Map<String, Object> getMain(
+    ) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         List<MemberEntity> list = mRepo.findAll();
         resultMap.put("member", list);  
@@ -126,10 +129,10 @@ public class AdminController {
     @PatchMapping("/menuupdate")
     @Transactional
     public Map<String, Object> updateMenu(@RequestParam Long mbiSeq, @RequestParam String mbiName, 
-    @RequestParam Long mbiCost, @RequestParam Integer mbiStatus, @RequestParam String mbiExplain) {
+    @RequestParam Integer mbiCost, @RequestParam Integer mbiStatus, @RequestParam String mbiExplain) {
         MenuEntity entity = meRepo.findByMbiSeq(mbiSeq);
         entity.setMbiName(mbiName);
-        entity.setMbiCost(mbiStatus);
+        entity.setMbiCost(mbiCost);
         entity.setMbiExplain(mbiExplain);
         entity.setMbiStatus(mbiStatus);
         meRepo.save(entity);

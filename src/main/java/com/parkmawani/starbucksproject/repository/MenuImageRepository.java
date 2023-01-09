@@ -7,5 +7,5 @@ import com.parkmawani.starbucksproject.entity.MenuImageEntity;
 
 @Repository
 public interface MenuImageRepository extends JpaRepository<MenuImageEntity, Long>{
-    
+    MenuImageEntity findByMiiSeq(Long miiSeq);
 }
