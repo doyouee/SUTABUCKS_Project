@@ -66,26 +66,26 @@ class FinalProject01ApplicationTests {
         }
 	}
 
-	@Test
-	void showMyinfo(){
-		// 로그인한 회원 정보 조회
-    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    MemberInfoEntity memberInfo = null;
-     memberInfo = mRepo.findByMiId(loginUser.getMiId());
-    if(memberInfo != null){
-            resultMap.put("status", true);
-            resultMap.put("message", "현재 로그인한 사용자 정보");
-            resultMap.put("code", HttpStatus.ACCEPTED);
-            resultMap.put("memberInfo", memberInfo);
-            return resultMap;
-        }
-    else{
-        resultMap.put("status", false);
-        resultMap.put("message", "오류발생");
-        resultMap.put("code", HttpStatus.BAD_REQUEST);
-        return resultMap;
-        }
-    }
+	// @Test
+	// void showMyinfo(){
+	// 	// 로그인한 회원 정보 조회
+    // Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    // MemberInfoEntity memberInfo = null;
+    //  memberInfo = mRepo.findByMiId(loginUser.getMiId());
+    // if(memberInfo != null){
+    //         resultMap.put("status", true);
+    //         resultMap.put("message", "현재 로그인한 사용자 정보");
+    //         resultMap.put("code", HttpStatus.ACCEPTED);
+    //         resultMap.put("memberInfo", memberInfo);
+    //         return resultMap;
+    //     }
+    // else{
+    //     resultMap.put("status", false);
+    //     resultMap.put("message", "오류발생");
+    //     resultMap.put("code", HttpStatus.BAD_REQUEST);
+    //     return resultMap;
+    //     }
+    // }
 	}
 
 	// 로그인 기능
@@ -111,4 +111,3 @@ class FinalProject01ApplicationTests {
 	// 	}
 	// }
 
-}

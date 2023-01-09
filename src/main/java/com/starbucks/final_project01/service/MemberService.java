@@ -147,14 +147,6 @@ public Map<String, Object> showLoginMemberInfo(HttpSession session){
         }
     }
 
-// 회원정보 수정
-public Map<String, Object> editMemberInfo(HttpSession session){
-    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    MemberInfoEntity memberInfo = (MemberInfoEntity)session.getAttribute("loginUser");
-    if(memberInfo != null){
-        memberInfo = mRepo.
-    }
-}  
 }
     
     
