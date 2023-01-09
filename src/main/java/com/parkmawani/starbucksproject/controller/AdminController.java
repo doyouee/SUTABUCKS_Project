@@ -7,8 +7,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.parkmawani.starbucksproject.entity.EventDetailEntity;
 import com.parkmawani.starbucksproject.entity.EventEntity;
 import com.parkmawani.starbucksproject.entity.MemberEntity;
+import com.parkmawani.starbucksproject.entity.MenuEntity;
 import com.parkmawani.starbucksproject.repository.AnnouncementRepository;
 import com.parkmawani.starbucksproject.repository.EventDetailRepository;
 import com.parkmawani.starbucksproject.repository.EventRepository;
@@ -31,8 +34,8 @@ import com.parkmawani.starbucksproject.service.EventService;
 import com.parkmawani.starbucksproject.service.MenuImageService;
 import com.parkmawani.starbucksproject.service.MenuService;
 import com.parkmawani.starbucksproject.service.StoreService;
-
 import io.micrometer.common.lang.Nullable;
+import jakarta.transaction.Transactional;
 
 
 
@@ -91,6 +94,7 @@ public class AdminController {
         eService.addEvent(evStartDate, evEndDate, ediStartDate, ediEndDate, evContent, ediContents, evFile, edFile);
         map.put("status", true);
         map.put("message", "이벤트가 등록되었습니다.");
+        map.put("code", HttpStatus.CREATED);
         return map;
     }
 
@@ -104,6 +108,7 @@ public class AdminController {
         aService.addEvent(saTitle, saContent, saImgFile);
         map.put("status", true);
         map.put("message", "공지사항이 등록되었습니다.");
+        map.put("code", HttpStatus.CREATED);
         return map;
     }
 
@@ -115,6 +120,23 @@ public class AdminController {
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("status", true);
         map.put("message", "유저의 상태를 변경하였습니다.");
+        map.put("code", HttpStatus.ACCEPTED);
+        return map;
+    }
+    @PatchMapping("/menuupdate")
+    @Transactional
+    public Map<String, Object> updateMenu(@RequestParam Long mbiSeq, @RequestParam String mbiName, 
+    @RequestParam Long mbiCost, @RequestParam Integer mbiStatus, @RequestParam String mbiExplain) {
+        MenuEntity entity = meRepo.findByMbiSeq(mbiSeq);
+        entity.setMbiName(mbiName);
+        entity.setMbiCost(mbiStatus);
+        entity.setMbiExplain(mbiExplain);
+        entity.setMbiStatus(mbiStatus);
+        meRepo.save(entity);
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("status", true);
+        map.put("message", "메뉴정보를 변경하였습니다.");
+        map.put("code", HttpStatus.ACCEPTED);
         return map;
     }
 
@@ -131,6 +153,7 @@ public class AdminController {
         meService.addMenu(mbiName, miiNumber, mbiCost, mbiExplain, mbiPcSeq, miiImgFile);
         map.put("status", true);
         map.put("message", "메뉴가 등록되었습니다.");
+        map.put("code", HttpStatus.CREATED);
         return map;
     }
 
@@ -143,6 +166,7 @@ public class AdminController {
         meiService.addEvent(miiImgFile, miiNumber);
         map.put("status", true);
         map.put("message", "메뉴 이미지가 등록되었습니다.");
+        map.put("code", HttpStatus.CREATED);
         return map;
     }
 
@@ -166,6 +190,7 @@ public class AdminController {
         sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMiSeq);
         map.put("status", true);
         map.put("message", "지점이 등록되었습니다.");
+        map.put("code", HttpStatus.CREATED);
         return map;
     }
 
@@ -184,6 +209,7 @@ public class AdminController {
         cService.addCoupon(ciDiscount, ciRegDt, ciExDt, ciName, ciExplain, ciStock, ciCode);
         map.put("status", true);
         map.put("message", "쿠폰이 등록되었습니다.");
+        map.put("code", HttpStatus.CREATED);
         return map;
     }
 }
