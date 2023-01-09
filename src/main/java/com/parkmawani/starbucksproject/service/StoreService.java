@@ -38,8 +38,7 @@ public class StoreService {
                 .sbiBusinessAddress(sbiBusinessAddress)
                 .sbiPhone(sbiPhone)
                 .sbiMinDeliveryTime(sbiMinDeliveryTime)
-                .sbiMaxDeliveryTime(sbiMaxDeliveryTime)
-                .sbiMiSeq(sbiMiSeq).build();
+                .sbiMaxDeliveryTime(sbiMaxDeliveryTime).build();
                 store = sRepo.save(store);
         }
 }

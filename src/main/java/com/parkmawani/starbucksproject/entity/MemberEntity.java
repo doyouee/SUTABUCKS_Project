@@ -41,5 +41,6 @@ public class MemberEntity {
     @Column(name = "mi_reg_date") @ColumnDefault("0")
     private LocalDate miRegDate;
     @Column(name = "mi_phonenum")           private String miPhonenum;
+    @Column(name = "mi_sbi_seq") private Long miSbiSeq;
 
 }

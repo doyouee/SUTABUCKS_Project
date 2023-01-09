@@ -36,5 +36,4 @@ public class StoreEntity {
     @Column(name = "sbi_min_delivery_time")        @ColumnDefault("15")        private String sbiMinDeliveryTime;
     @Column(name = "sbi_max_delivery_time")        @ColumnDefault("100")         private String sbiMaxDeliveryTime;
     @Column(name = "sbi_min_order")                 @ColumnDefault("5000")                 private Long sbiMinOrder;
-    @Column(name = "sbi_mi_seq")                    private Long sbiMiSeq;
 }
