@@ -132,10 +132,6 @@ public class AdminController {
     public Map<String, Object> updateMenu(@RequestParam Long mbiSeq, @RequestParam @Nullable String mbiName, 
     @RequestParam @Nullable Integer mbiCost, @RequestParam @Nullable Integer mbiStatus, @RequestParam @Nullable String mbiExplain) {
         MenuEntity entity = meRepo.findByMbiSeq(mbiSeq);
-        List<MenuEntity> list = meRepo.listByMbiSeq(mbiSeq);
-        if (mbiName == null) {
-            // mbiName = list.mbiName;
-        }
         entity.setMbiName(mbiName);
         entity.setMbiCost(mbiCost);
         entity.setMbiExplain(mbiExplain);
