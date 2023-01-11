@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductCategoryVO {
     public String pcName;
-    public List<ProductCategoryChildVO> child;
+    public List<ProductCategoryChildVO> productCategoryChild;
 
     public ProductCategoryVO(List<ProductCategoryChildVO> list, ProductCategoryEntity productCategory){
         this.pcName = productCategory.getPcName();
-        this.child=list;
+        this.productCategoryChild=list;
     }
 }

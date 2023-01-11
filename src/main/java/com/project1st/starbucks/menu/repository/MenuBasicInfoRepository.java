@@ -12,4 +12,5 @@ import com.project1st.starbucks.menu.entity.MenuBasicInfoEntity;
 @Repository
 public interface MenuBasicInfoRepository extends JpaRepository<MenuBasicInfoEntity, Long> {
     Page<MenuBasicInfoEntity> findAll(Pageable pageable);
+    MenuBasicInfoEntity findByMbiPcSeq(Long pcSeq);
 }

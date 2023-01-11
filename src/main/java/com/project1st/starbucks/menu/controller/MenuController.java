@@ -28,16 +28,5 @@ public class MenuController {
         return mService.munuDetailList(mbiSeq);
     }
 
-    //-------------------------------------------------------------------------------------------
-
-    @GetMapping("/cate") // <전체 카테고리 조회>
-    public ResponseEntity<Object> getCategoryList() {
-        return mService.categoryList();
-    }
-
-    // @GetMapping("/cate") // <부모 카테고리 조회>
-    // public ResponseEntity<Object> getCategoryParentList(@RequestParam Integer parentSeq) {
-    //     return mService.categoryParentList(parentSeq);
-    // }
 
 }
