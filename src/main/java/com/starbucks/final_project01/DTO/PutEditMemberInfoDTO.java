@@ -1,6 +1,6 @@
 package com.starbucks.final_project01.DTO;
 
-import com.starbucks.final_project01.entity.MemberInfoEntity;
+import com.starbucks.final_project01.entity.MemberEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class PutEditMemberInfoDTO {
     private String adress;
     private String detailAdress;
 
-    public static PutEditMemberInfoDTO fromEntity(MemberInfoEntity memberInfoEntity){
+    public static PutEditMemberInfoDTO fromEntity(MemberEntity memberInfoEntity){
         return PutEditMemberInfoDTO.builder()
         .pwd(memberInfoEntity.getMiPwd())
         .checkPwd(memberInfoEntity.getMiPwd())
