@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.project1st.starbucks.service.StoreService;
+import com.project1st.starbucks.admin.service.StoreService;
 import com.project1st.starbucks.store.vo.StoreMenuAddVO;
 
 

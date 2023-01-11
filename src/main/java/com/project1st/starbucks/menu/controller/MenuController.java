@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project1st.starbucks.service.MenuService;
+import com.project1st.starbucks.admin.service.MenuService;
 
 
 
