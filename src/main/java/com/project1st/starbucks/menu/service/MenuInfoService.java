@@ -59,6 +59,37 @@ public class MenuInfoService {
     }
         
 
+    // <전체 카테고리 조회하기 - product_category> -> 안됨
+    // public ResponseEntity<Object> categoryList() {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    //     // List<ProductCategoryEntity> list = new ArrayList<ProductCategoryEntity>();
+    //     resultMap.put("list", pcRepo.findByPcParentSeq());
+    //     // for(ProductCategoryEntity p : list) {
+    //     //     if(pcRepo.findByPcParentSeq() == null) {
+    //     //         list.add(p);
+    //     //         resultMap.put("list", list);
+    //     //     }
+    //     // }
+    //     return new ResponseEntity<>(resultMap, HttpStatus.OK);
+        
+    // }
+        
+
+
+    // 리포지토리에서 parentSeq 없는거 조회해서 걔네 조건 만족하면 pcParent 넣는걸로 해보기 -> 그리고 parentSeq 동일한거 리스트에 넣어서 부르기 
+    // public ResponseEntity<Object> categoryList() {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    //     List<ProductCategoryEntity> list = pcRepo.findAll();
+    //     ProductCategoryVO pcParent = null;
+    //     List<ProductCategoryChildVO> pcChild = new ArrayList<ProductCategoryChildVO>();
+    //     for(ProductCategoryEntity s : list) {
+    //         pcParent = new ProductCategoryVO(s.getPcName(), pcChild);
+    //         pcChild.add(new ProductCategoryChildVO(s.getPcName()));
+    //     }
+    //     // resultMap.put("total", list.size());
+    //     resultMap.put("list", new ProductCategoryVO(pcParent.getPcName(), pcChild));
+    //     return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    // }
     public ResponseEntity<Object> categoryList() {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         List<ProductCategoryEntity> list = pcRepo.findAll();
@@ -76,4 +107,41 @@ public class MenuInfoService {
         resultMap.put("list", new ProductCategoryVO(pcParent.getPcName(), pcChild));
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
+
+
+
+
+    
+    // Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    // resultMap.put("list", pcRepo.findAll());
+    // return new ResponseEntity<>(resultMap, HttpStatus.OK);
+
+    
+    // resultMap.put("list", new StoreMenuVO(store, menuList));
+
+
+
+
+
+        
+
+
+    // <특정 부모카테고리 조회시 상세 카테고리 조회하기 - product_category> -> 안됨
+    // public ResponseEntity<Object> categoryParentList(Integer parentSeq) {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    //     resultMap.put("detail", pcRepo.findByPcParentSeq(parentSeq));
+    //     return new ResponseEntity<>(resultMap, HttpStatus.CREATED);
+    // }
+    /* List<ProductCategoryEntity> list = pcRepo.
+    // StoreInfoVO store = null;
+    // List<MenuInfoVO> menuList = new ArrayList<MenuInfoVO>();
+    // for(StoreMenuConnectEntity s : list) {
+    //     store = new StoreInfoVO(s.getStore());
+    //     menuList.add(new MenuInfoVO(s.getMenu()));
+    // }
+    // resultMap.put("list", new StoreMenuVO(store, menuList));
+        */
+
+    
+    // <특정 상세카테고리 조회시 메뉴 나오게하기 - product_category>
 }
