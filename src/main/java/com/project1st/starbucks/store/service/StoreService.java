@@ -73,7 +73,7 @@ public class StoreService {
         //페이징 처리
         Page<StoreMenuConnectEntity> page = smRepo.findAll(pageable);
         resultMap.put("totalPage", page.getTotalPages());
-        resultMap.put("MenuTotalCount", page.getTotalElements()-1);
+        resultMap.put("MenuTotalCount", (page.getTotalElements()) -2);
         resultMap.put("currentPage", page.getNumber());
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
