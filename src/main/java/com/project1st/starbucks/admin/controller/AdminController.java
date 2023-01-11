@@ -23,6 +23,7 @@ import com.project1st.starbucks.admin.entity.EventDetailEntity;
 import com.project1st.starbucks.admin.entity.EventEntity;
 import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.admin.entity.MenuEntity;
+import com.project1st.starbucks.admin.entity.StoreEntity;
 import com.project1st.starbucks.admin.repository.AnnouncementRepository;
 import com.project1st.starbucks.admin.repository.EventDetailRepository;
 import com.project1st.starbucks.admin.repository.EventRepository;
@@ -214,5 +215,14 @@ public class AdminController {
         map.put("message", "쿠폰이 등록되었습니다.");
         map.put("code", HttpStatus.CREATED);
         return map;
+    }
+
+    @GetMapping("/store")
+    public Map<String, Object> getStore(Model model) {
+        Map<String, Object> storeMap = new LinkedHashMap<String, Object>();
+        List<StoreEntity> store = sRepo.findAll();
+
+        storeMap.put("store", store);
+        return storeMap;
     }
 }
