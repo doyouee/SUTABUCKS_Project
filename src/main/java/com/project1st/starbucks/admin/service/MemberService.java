@@ -66,33 +66,32 @@ public class MemberService {
     public Map<String, Object> joinOwnerMember(MemberEntity data){
         MemberEntity  miEntity = new MemberEntity(); 
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-     // 휴대폰 번호 판별해서 중복가입 방지 
-     if(mRepo.countBymiPhoneNum(data.getMiPhoneNum()) == 1){
-         resultMap.put("status",false);
-         resultMap.put("message", "이미 등록된 사용자 입니다.");
-         resultMap.put("code", HttpStatus.BAD_REQUEST);
-     }
-     // 중복되는 휴대폰 번호가 없다면
-     else{
-     // 비밀번호 암호화
-         try{
-             String encPwd = AESAlgorithm.Encrypt(data.getMiPwd());
-             data.setMiPwd(encPwd);
-            } 
-         catch(Exception e) {e.printStackTrace();}
-         // mi_group 2로 입력 (1.일반회원 2.점주회원)
-        //  miEntity.setMiGroup(data.getMiGroup());
-        data.setMiGroup(2);
-         // 입력받은 데이터 DB에 저장(MemberInfo)
-         mRepo.save(data);                        
-         resultMap.put("status", true);
-         resultMap.put("message", "회원이 등록되었습니다.");
-         resultMap.put("code", HttpStatus.CREATED);
+         // 휴대폰 번호 판별해서 중복가입 방지 
+        if(mRepo.countBymiPhoneNum(data.getMiPhoneNum()) == 1){
+            resultMap.put("status",false);
+            resultMap.put("message", "이미 등록된 사용자 입니다.");
+            resultMap.put("code", HttpStatus.BAD_REQUEST);
         }
-        return resultMap;
- }
+         // 중복되는 휴대폰 번호가 없다면
+        else{
+         // 비밀번호 암호화
+            try{
+                String encPwd = AESAlgorithm.Encrypt(data.getMiPwd());
+                data.setMiPwd(encPwd);
+                } 
+            catch(Exception e) {e.printStackTrace();}
+                // mi_group 2로 입력 (1.일반회원 2.점주회원)
+                //  miEntity.setMiGroup(data.getMiGroup());
+                data.setMiGroup(2);
+                // 입력받은 데이터 DB에 저장(MemberInfo)
+                mRepo.save(data);                        
+                resultMap.put("status", true);
+                resultMap.put("message", "회원이 등록되었습니다.");
+                resultMap.put("code", HttpStatus.CREATED);
+            }
+            return resultMap;
+    }
 
-   
 
 
 
