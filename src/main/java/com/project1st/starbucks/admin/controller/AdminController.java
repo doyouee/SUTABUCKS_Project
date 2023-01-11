@@ -156,10 +156,17 @@ public class AdminController {
         @RequestPart MultipartFile miiImgFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
-        meService.addMenu(mbiName, miiNumber, mbiCost, mbiExplain, mbiPcSeq, miiImgFile);
-        map.put("status", true);
-        map.put("message", "메뉴가 등록되었습니다.");
-        map.put("code", HttpStatus.CREATED);
+        if(meRepo.countByMbiName(mbiName) != 0) {
+            map.put("status", false);
+            map.put("message", "이미 사용중인 메뉴 이름 입니다.");
+            map.put("code", HttpStatus.CONFLICT);
+        }
+        else {
+            meService.addMenu(mbiName, miiNumber, mbiCost, mbiExplain, mbiPcSeq, miiImgFile);
+            map.put("status", true);
+            map.put("message", "메뉴가 등록되었습니다.");
+            map.put("code", HttpStatus.CREATED);
+        }
         return map;
     } 
 
@@ -227,5 +234,7 @@ public class AdminController {
         storeMap.put("store", store);
         return storeMap;
     }
+
+
 
 }
