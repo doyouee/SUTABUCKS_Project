@@ -191,10 +191,17 @@ public class AdminController {
         @RequestParam Long sbiMiSeq
     ){
         Map<String, Object> map = new LinkedHashMap<>();
-        sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMiSeq);
-        map.put("status", true);
-        map.put("message", "지점이 등록되었습니다.");
-        map.put("code", HttpStatus.CREATED);
+        if (sRepo.countByBranchName(sbiBranchName) != 0) {
+            map.put("status", false);
+            map.put("message", "이미 사용중인 지점명 입니다.");
+            map.put("code", HttpStatus.CONFLICT);
+        }
+        else {
+            sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMiSeq);
+            map.put("status", true);
+            map.put("message", "지점이 등록되었습니다.");
+            map.put("code", HttpStatus.CREATED);
+        }
         return map;
     }
 
