@@ -35,7 +35,7 @@ public class StoreService {
 
     
 
-    // <가게에 등록된 메뉴 보여주기> // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록 해야한다.
+    // <가게에 등록된 메뉴 보여주기> // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity<Object> storeMenuList(Pageable pageable, Long storeSeq) {
         /* OLD CODE
         // Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
@@ -81,7 +81,7 @@ public class StoreService {
     
 
 
-    // <특정 가게에 특정 메뉴 상세보기> // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록 해야한다.
+    // <특정 가게에 특정 메뉴 상세보기> // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity<Object> storeMenuDetail(Long storeSeq, Long menuSeq) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
 
@@ -113,7 +113,7 @@ public class StoreService {
     
 
 
-     // <가게에 메뉴 등록하기> // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록 해야한다.
+     // <가게에 메뉴 등록하기> // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity<Object> insertStoreMenuList(StoreMenuAddVO data) {
         /* OLD CODE
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
@@ -191,7 +191,7 @@ public class StoreService {
 
 
 
-    // <가게에 등록된 메뉴 삭제하기> -> 점주 로그인 된 상태에서 본인의 가게에만 설정할 수 있도록 해야한다.
+    // <가게에 등록된 메뉴 삭제하기> -> 점주 로그인 된 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity< Map<String, Object> > deleteStoreMenuList(@RequestParam Long storeSeq, @RequestParam Long menuSeq) {
         /* OLD CODE
         // Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
