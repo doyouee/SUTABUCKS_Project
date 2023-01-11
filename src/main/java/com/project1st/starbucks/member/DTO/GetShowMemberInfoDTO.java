@@ -1,9 +1,10 @@
 package com.project1st.starbucks.member.DTO;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 
-import com.project1st.starbucks.admin.entity.MemberInfoEntity;
+import com.project1st.starbucks.admin.entity.MemberEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class GetShowMemberInfoDTO {
     private String id;
     private String name;
     private String nickName;
-    private Date Birth;
+    private LocalDate Birth;
     private Integer gen;
     private String PhoneNum;
     private Integer Group;
@@ -30,7 +31,7 @@ public class GetShowMemberInfoDTO {
 
 
     
-    public static GetShowMemberInfoDTO getShowMemberInfoDTO (MemberInfoEntity memberInfo){
+    public static GetShowMemberInfoDTO getShowMemberInfoDTO (MemberEntity memberInfo){
         return GetShowMemberInfoDTO.builder()
         .id(memberInfo.getMiId())
         .name(memberInfo.getMiName())

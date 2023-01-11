@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project1st.starbucks.admin.entity.MemberInfoEntity;
+import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.admin.service.MemberService;
 import com.project1st.starbucks.member.DTO.PostLoginDTO;
 import com.project1st.starbucks.member.DTO.PutEditMemberInfoDTO;
@@ -28,13 +28,13 @@ public class MemberController {
     @Autowired MemberService mService;
     // 일반회원가입 api
     @PostMapping("/member/join")
-    public ResponseEntity<Object> nomalMemberJoin(@RequestBody MemberInfoEntity data){
+    public ResponseEntity<Object> nomalMemberJoin(@RequestBody MemberEntity data){
         Map<String, Object> resultMap = mService.joinNomalMember(data);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
     // 점주 회원 가입 api
     @PostMapping("owner/join")
-    public ResponseEntity<Object> ownerMemberJoin(@RequestBody MemberInfoEntity data){
+    public ResponseEntity<Object> ownerMemberJoin(@RequestBody MemberEntity data){
         Map<String, Object> resultMap = mService.joinOwnerMember(data);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }   

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project1st.starbucks.admin.service.MenuService;
+import com.project1st.starbucks.menu.service.MenuInfoService;
 
 
 
@@ -17,7 +17,7 @@ import com.project1st.starbucks.admin.service.MenuService;
 @RestController
 @RequestMapping("/menu")
 public class MenuController {
-    @Autowired MenuService mService;
+    @Autowired MenuInfoService mService;
     
     @GetMapping("/list") // <전체 메뉴 조회> -> 완료 ♥
     public ResponseEntity<Object> getMenuList(Pageable pageable) {

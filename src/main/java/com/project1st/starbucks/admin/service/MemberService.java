@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.project1st.starbucks.admin.entity.MemberInfoEntity;
+import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
 import com.project1st.starbucks.member.DTO.PostLoginDTO;
 import com.project1st.starbucks.member.DTO.PutEditMemberInfoDTO;
@@ -21,8 +21,8 @@ public class MemberService {
     // MemberInfoEntity loginUser = new MemberInfoEntity();
     @Autowired MemberInfoRepository mRepo;
     // 일반회원가입 메소드
-    public Map<String, Object> joinNomalMember(MemberInfoEntity data){
-           Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    public Map<String, Object> joinNomalMember(MemberEntity data){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 휴대폰 번호 판별해서 중복가입 방지 
         if(mRepo.countBymiPhoneNum(data.getMiPhoneNum()) == 1){
             resultMap.put("status",false);
@@ -63,8 +63,8 @@ public class MemberService {
     }
 
     // 점주회원가입 메소드
-    public Map<String, Object> joinOwnerMember(MemberInfoEntity data){
-        MemberInfoEntity  miEntity = new MemberInfoEntity(); 
+    public Map<String, Object> joinOwnerMember(MemberEntity data){
+        MemberEntity  miEntity = new MemberEntity(); 
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
      // 휴대폰 번호 판별해서 중복가입 방지 
      if(mRepo.countBymiPhoneNum(data.getMiPhoneNum()) == 1){
@@ -99,7 +99,7 @@ public class MemberService {
     // 로그인 메소드  회원 상태값(1. 기본 2. 정지 3.탈퇴)
 public Map<String, Object> loginMember(PostLoginDTO data){
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        MemberInfoEntity loginUser = null;
+        MemberEntity loginUser = null;
         try {
             loginUser = mRepo.findByMiIdAndMiPwd(data.getId(), AESAlgorithm.Encrypt(data.getPwd()));
         } catch(Exception e) {e.printStackTrace();}
@@ -128,7 +128,7 @@ public Map<String, Object> loginMember(PostLoginDTO data){
 // 로그인한 회원 정보 조회
 public Map<String, Object> showLoginMemberInfo(HttpSession session){
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    MemberInfoEntity memberInfo = (MemberInfoEntity)session.getAttribute("loginUser");
+    MemberEntity memberInfo = (MemberEntity)session.getAttribute("loginUser");
     if(memberInfo != null){
             memberInfo = mRepo.findByMiId(memberInfo.getMiId());
             resultMap.put("status", true);
@@ -152,7 +152,7 @@ public Map<String, Object> showLoginMemberInfo(HttpSession session){
 public Map<String, Object> editMemberInfo(HttpSession session, PutEditMemberInfoDTO editMemberInfo){
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
     // session의 로그인 정보를 memberInfo에 담아둠
-    MemberInfoEntity memberInfo = (MemberInfoEntity)session.getAttribute("loginUser");
+    MemberEntity memberInfo = (MemberEntity)session.getAttribute("loginUser");
     // session의 miSeq로 로그인한 회원정보 끌어와서 
     // editMemberInfo로 받은 입력값만 수정
     // memberInfo = mRepo.findByMiSeq(memberInfo.getMiSeq()); // memberInfo 객체에 로그인한 회원정보 넣어주기

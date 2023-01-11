@@ -1,6 +1,6 @@
 package com.project1st.starbucks.member.DTO;
 
-import com.project1st.starbucks.admin.entity.MemberInfoEntity;
+import com.project1st.starbucks.admin.entity.MemberEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ public class PostLoginDTO {
     private String id;
     private String pwd;
 
-    public static PostLoginDTO fromEntity(MemberInfoEntity memberInfoEntity){
+    public static PostLoginDTO fromEntity(MemberEntity memberInfoEntity){
         return PostLoginDTO.builder()
         // .seq(memberInfoEntity.getMiSeq())
         .id(memberInfoEntity.getMiId())
