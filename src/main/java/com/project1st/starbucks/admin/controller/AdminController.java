@@ -35,7 +35,7 @@ import com.project1st.starbucks.admin.service.CouponService;
 import com.project1st.starbucks.admin.service.EventService;
 import com.project1st.starbucks.admin.service.MenuImageService;
 import com.project1st.starbucks.admin.service.MenuService;
-import com.project1st.starbucks.admin.service.StoreService;
+import com.project1st.starbucks.admin.service.StoreAdminService;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
@@ -51,7 +51,7 @@ public class AdminController {
     @Autowired AnnouncementRepository aRepo;
     @Autowired MenuRepository meRepo;
     @Autowired MenuService meService;
-    @Autowired StoreService sService;
+    @Autowired StoreAdminService sService;
     @Autowired StoreRepository sRepo;
     @Autowired MenuImageService meiService;
     @Autowired CouponService cService;

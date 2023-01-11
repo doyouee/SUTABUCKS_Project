@@ -1,14 +1,25 @@
 package com.project1st.starbucks.menu.vo;
 
-import com.project1st.starbucks.admin.entity.MenuEntity;
 
+import com.project1st.starbucks.menu.entity.MenuBasicInfoEntity;
+
+import lombok.Data;
+
+@Data
 public class MenuInfoVO {
+    private Long menuNo;
     private String name;
-    private Integer price;
+    private Integer cost;
+    private Integer status;
     private String explain;
-    public MenuInfoVO(MenuEntity menu) {
-        this.name = menu.getMbiName();
-        this.price = menu.getMbiCost();
-        this.explain = menu.getMbiExplain();
+    private Integer categoryNo;
+
+    public MenuInfoVO(MenuBasicInfoEntity entity) {
+        this.menuNo = entity.getMbiSeq();
+        this.name = entity.getMbiName();
+        this.cost = entity.getMbiCost();
+        this.status = entity.getMbiStatus();
+        this.explain = entity.getMbiExplain();
+        this.categoryNo = entity.getMbiPcSeq();
     }
 }
