@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductCategoryChildVO {
-    public String pcName;
+    private String productCategoryChildName;
 
     public ProductCategoryChildVO(ProductCategoryEntity productCategoryChild){
-        this.pcName=productCategoryChild.getPcName();
+        this.productCategoryChildName=productCategoryChild.getPcName();
     }
 }
