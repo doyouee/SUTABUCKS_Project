@@ -11,7 +11,6 @@ import com.project1st.starbucks.admin.entity.MenuEntity;
 import com.project1st.starbucks.admin.entity.MenuImageEntity;
 import com.project1st.starbucks.admin.repository.MenuImageRepository;
 import com.project1st.starbucks.admin.repository.MenuRepository;
-import com.project1st.starbucks.menu.repository.MenuBasicInfoRepository;
 import com.project1st.starbucks.menu.repository.ProductCategoryRepository;
 
 import java.nio.file.Files;
@@ -22,7 +21,7 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class MenuService {
-    @Autowired MenuBasicInfoRepository mbiRepo;
+    @Autowired MenuRepository mbiRepo;
     @Autowired ProductCategoryRepository pcRepo;
     @Autowired MenuRepository mRepo;
     @Autowired MenuImageRepository miRepo;
