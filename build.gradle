@@ -5,7 +5,19 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< HEAD
 group = 'com.starbucks'
+=======
+group = 'com.project1st'
+>>>>>>> c6f6d9773ca3a1badee6ce829d307dbe371ce71d
+=======
+group = 'com.starbucks'
+>>>>>>> Stashed changes
+=======
+group = 'com.starbucks'
+>>>>>>> Stashed changes
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -30,7 +42,18 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< HEAD
 	
+=======
+>>>>>>> c6f6d9773ca3a1badee6ce829d307dbe371ce71d
+=======
+	
+>>>>>>> Stashed changes
+=======
+	
+>>>>>>> Stashed changes
 }
 
 tasks.named('test') {
