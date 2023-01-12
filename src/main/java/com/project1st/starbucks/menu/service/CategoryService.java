@@ -37,6 +37,8 @@ public class CategoryService {
             data.setChildCategoryName(childNameList); // VO에 childList 설정
             cateList.add(data); // 리스트에 만들어진 VO 데이터 추가
         }
+        resultMap.put("status", true);
+        resultMap.put("message","전체 카테고리를 모두 조회합니다.");
         resultMap.put("list", cateList);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
@@ -48,11 +50,13 @@ public class CategoryService {
 
         // product_category 테이블에 존재하지 않는 seq 걸러내기
         if(pcRepo.findByPcParentSeq(pcSeq).isEmpty()) {
-            resultMap.put("message", "존재하지 않는 상위카테고리 번호입니다.");
+            resultMap.put("status", false);
+            resultMap.put("message", "존재하지 않는 상위 카테고리 번호입니다.");
             return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
         }
         
         // 상위카테고리 조회시 하위카테고리 보여주기
+        resultMap.put("status", true);
         resultMap.put("message", "상위 카테고리 번호 " + pcSeq + "번의 하위 카테고리를 소개합니다.");
         resultMap.put("list", pcRepo.findByPcParentSeq(pcSeq));
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
@@ -66,16 +70,19 @@ public class CategoryService {
 
         // 하위카테고리 번호가 아닌거 걸러내기 (부모 카테고리)
         if(!pcRepo.findByPcParentSeq(pcSeq).isEmpty()) {
+            resultMap.put("status", false);
             resultMap.put("message", "상위카테고리 번호입니다. 하위카테고리 번호를 입력하세요.");
             return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
         }
         // 하위카테고리 번호가 아닌거 걸러내기 (존재하지 않는 카테고리)
         if(pcRepo.findById(pcSeq).isEmpty()) {
+            resultMap.put("status", false);
             resultMap.put("message", "존재하지 않는 하위 카테고리 번호입니다.");
             return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
         }
-
+        
         // 상위카테고리 조회시 하위카테고리 보여주기
+        resultMap.put("status", true);
         resultMap.put("message", "하위 카테고리 번호 " + pcSeq + "번의 메뉴들을 소개합니다.");
         resultMap.put("list", mRepo.findByMbiPcSeq(pcSeq));
         return new ResponseEntity<>(resultMap, HttpStatus.OK);

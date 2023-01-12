@@ -28,5 +28,9 @@ public class MenuController {
         return mService.munuDetailList(mbiSeq);
     }
 
+    @GetMapping("/search") // <메뉴 검색> -> 완료 ♥
+    public ResponseEntity<Object> getMenuSearch(@RequestParam String menuName) {
+        return mService.searchMenuName(menuName);
+    }
 
 }
