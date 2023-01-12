@@ -231,14 +231,26 @@ public class MemberService {
         return resultMap;
     }
 
+<<<<<<< Updated upstream
     // 중복체크 기능(id, phoneNum, nickName, businessNum)
+=======
+    // 유효성 검사(id, phoneNum, nickName, businessNum)
+>>>>>>> Stashed changes
     // content = 입력받을 내용 , type = 중복검사할 타입(id, phoneNum, nickName, businessNum)
     public Map<String, Object> checkDuplicated(String type, String content) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         Integer i = 0;
+<<<<<<< Updated upstream
         
         if (type.equals("id")) {
             i = mRepo.countBymiId(content);
+=======
+        String pattern = "^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$"; //특수문자, 공백 제외하고 허용
+        
+        if (type.equals("id")) {
+            i = mRepo.countBymiId(content);
+            if()
+>>>>>>> Stashed changes
             if (i != 0) {
                 resultMap.put("status", false);
                 resultMap.put("message", "같은 아이디가 있어요.");
