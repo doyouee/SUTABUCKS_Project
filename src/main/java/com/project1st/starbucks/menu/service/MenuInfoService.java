@@ -23,7 +23,7 @@ public class MenuInfoService {
     @Autowired ProductCategoryRepository pcRepo;
     @Autowired MenuBasicInfoRepository mRepo;
     
-
+    
     // <전체 메뉴 조회하기> -> 완료 ♥
     public ResponseEntity<Object> menuList(Pageable pageable) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
