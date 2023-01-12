@@ -24,7 +24,7 @@ public class CategoryController {
         return cService.categoryDetailList(parentSeq);
     }
 
-    @GetMapping("/searchMenu") // <하위 카테고리 선택시 해당 메뉴들 조회> -> 완료 ♥
+    @GetMapping("/searchmenu") // <하위 카테고리 선택시 해당 메뉴들 조회> -> 완료 ♥
     public ResponseEntity<Object> getCategoryToMenuList(@RequestParam Long childSeq) {
         return cService.categoryToMenuList(childSeq);
     }

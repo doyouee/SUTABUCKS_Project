@@ -40,11 +40,11 @@ public class MemberController {
     }   
 
     // 중복검사 API
-    @GetMapping("/idcheck")
-    public ResponseEntity<Object> memberCheck(@RequestParam String id){
-        Map<String, Object> resultMap = mService.checkIdDuplicat(id);
-        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    }
+    // @GetMapping("/idcheck")
+    // public ResponseEntity<Object> memberCheck(@RequestParam String id){
+    //     Map<String, Object> resultMap = mService.checkIdDuplicat(id);
+    //     return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    // }
 
     // 로그인 API(회원 상태값(1. 기본 2. 정지 3.탈퇴))
     @PostMapping("/login")
@@ -68,6 +68,30 @@ public class MemberController {
     public ResponseEntity<Object> editMemberInfo(@RequestBody PutEditMemberInfoDTO data, HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         resultMap = mService.editMemberInfo(session, data);
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    }
+
+    // 회원 탈퇴
+    @PatchMapping("/member/leave")
+    public ResponseEntity<Object> deleteMemberInfo(HttpSession session){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap = mService.deleteMemberifo(session);
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    }
+
+    // 로그아웃
+    @PostMapping("/member/logout")
+    public ResponseEntity<Object> memberLogout(HttpSession session){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap = mService.logOut(session);
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    }
+
+    // 유효성체크(id, phoneNum, nickName, businessNum)
+    @GetMapping("/member/{type}/{content}")
+    public ResponseEntity<Object> checkDuplicated(@PathVariable String type, @PathVariable String content){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap = mService.checkDuplicated(type, content);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 }
