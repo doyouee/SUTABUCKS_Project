@@ -40,11 +40,11 @@ public class MemberController {
     }   
 
     // 중복검사 API
-    @GetMapping("/idcheck")
-    public ResponseEntity<Object> memberCheck(@RequestParam String id){
-        Map<String, Object> resultMap = mService.checkIdDuplicat(id);
-        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    }
+    // @GetMapping("/idcheck")
+    // public ResponseEntity<Object> memberCheck(@RequestParam String id){
+    //     Map<String, Object> resultMap = mService.checkIdDuplicat(id);
+    //     return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    // }
 
     // 로그인 API(회원 상태값(1. 기본 2. 정지 3.탈퇴))
     @PostMapping("/login")
@@ -87,7 +87,7 @@ public class MemberController {
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-    // 중복체크(id, phoneNum, nickName, businessNum)
+    // 유효성체크(id, phoneNum, nickName, businessNum)
     @GetMapping("/member/{type}/{content}")
     public ResponseEntity<Object> checkDuplicated(@PathVariable String type, @PathVariable String content){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
