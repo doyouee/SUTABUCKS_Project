@@ -191,7 +191,7 @@ public class StoreService {
 
 
 
-    // <가게에 등록된 메뉴 삭제하기> -> 점주 로그인 된 상태에서 본인의 가게에만 설정할 수 있도록
+    // <가게에 등록된 메뉴 삭제하기> -> 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity< Map<String, Object> > deleteStoreMenuList(@RequestParam Long storeSeq, @RequestParam Long menuSeq) {
         /* OLD CODE
         // Map<String, Object> resultMap = new LinkedHashMap<String, Object>();

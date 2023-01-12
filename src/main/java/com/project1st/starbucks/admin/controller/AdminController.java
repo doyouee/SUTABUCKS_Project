@@ -198,7 +198,7 @@ public class AdminController {
         @RequestParam Long sbiMiSeq
     ){
         Map<String, Object> map = new LinkedHashMap<>();
-        if (sRepo.countByBranchName(sbiBranchName) != 0) {
+        if (sRepo.countBySbiBranchName(sbiBranchName) != 0) {
             map.put("status", false);
             map.put("message", "이미 사용중인 지점명 입니다.");
             map.put("code", HttpStatus.CONFLICT);
@@ -231,6 +231,7 @@ public class AdminController {
         return map;
     }
 
+    
     @GetMapping("/store")
     public Map<String, Object> getStore(Model model) {
         Map<String, Object> storeMap = new LinkedHashMap<String, Object>();

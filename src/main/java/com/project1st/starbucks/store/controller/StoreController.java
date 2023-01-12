@@ -21,22 +21,25 @@ import com.project1st.starbucks.store.vo.StoreMenuAddVO;
 public class StoreController {
     @Autowired StoreService stService;
 
-    @GetMapping("/list") // <가게에 등록된 메뉴 보여주기>
+    @GetMapping("/list") // <가게에 등록된 메뉴 보여주기>  // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity<Object> getStoreMenuList(@RequestParam Long storeSeq, Pageable pageable) {
         return stService.storeMenuList(pageable, storeSeq);
     }
 
-    @GetMapping("/list/detail") // <가게에 등록된 메뉴 상세보기>
+
+    @GetMapping("/list/detail") // <가게에 등록된 메뉴 상세보기>  // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity<Object> getStoreMenuDetail(@RequestParam Long storeSeq, @RequestParam Long menuSeq) {
         return stService.storeMenuDetail(storeSeq, menuSeq);
     }
 
-    @PutMapping("/add") // <가게에 메뉴 등록하기>
+
+    @PutMapping("/add") // <가게에 메뉴 등록하기>  // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity<Object> putStoreMenuList(@RequestBody StoreMenuAddVO data) {
         return stService.insertStoreMenuList(data);
     }
 
-    @DeleteMapping("/delete") // <가게에 메뉴 삭제하기>
+    
+    @DeleteMapping("/delete") // <가게에 메뉴 삭제하기>  // 점주 로그인 상태에서 본인의 가게에만 설정할 수 있도록
     public ResponseEntity< Map<String, Object> > deleteStoreMenuList(@RequestParam Long store, @RequestParam Long menu) {
         return stService.deleteStoreMenuList(store, menu);
     }

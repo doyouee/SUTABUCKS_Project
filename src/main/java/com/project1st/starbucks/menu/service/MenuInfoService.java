@@ -56,4 +56,9 @@ public class MenuInfoService {
     }
         
 
+    // <메뉴 검색하기> -> 안됨
+    public ResponseEntity<Object> menuSearch(String mbiName) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        return new ResponseEntity<>(resultMap, HttpStatus.CREATED);
+    }
 }
