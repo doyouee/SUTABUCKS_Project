@@ -248,11 +248,18 @@ public class AdminController {
 
     @DeleteMapping("/store")
     public Map<String, Object> deleteStore(@RequestParam Long sbiSeq) {
-        sRepo.deleteById(sbiSeq);
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("status", true);
-        map.put("message", "지점이 삭제되었습니다.");
-        map.put("code", HttpStatus.ACCEPTED);
+        if(sRepo.countBySbiSeq(sbiSeq) != 0) {
+            sRepo.deleteById(sbiSeq);
+            map.put("status", true);
+            map.put("message", "지점이 삭제되었습니다.");
+            map.put("code", HttpStatus.ACCEPTED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "지점이 존재하지 않습니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
         return map;
     }
 
