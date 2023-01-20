@@ -245,14 +245,3 @@ public class AdminController {
         storeMap.put("store", store);
         return storeMap;
     }
-
-    @GetMapping("/store")
-    public Map<String, Object> deleteStore(@RequestParam Long sbiSeq) {
-        sRepo.deleteById(sbiSeq);
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("status", true);
-        map.put("message", "지점이 삭제되었습니다.");
-        map.put("code", HttpStatus.ACCEPTED);
-        return map;
-    }
-}
