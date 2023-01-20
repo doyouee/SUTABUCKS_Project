@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,8 @@ import com.project1st.starbucks.menu.service.MenuInfoService;
 public class MenuController {
     @Autowired MenuInfoService mService;
     
-    @GetMapping("/list") // <전체 메뉴 조회> -> 완료 ♥
+    // @GetMapping("/list") // <전체 메뉴 조회> -> 완료 ♥
+    @RequestMapping(path="/list", method = RequestMethod.GET, produces = "application/hal+json;charset=utf8")
     public ResponseEntity<Object> getMenuList(Pageable pageable) {
         return mService.menuList(pageable);
     }
