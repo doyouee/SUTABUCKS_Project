@@ -1,11 +1,12 @@
 package com.project1st.starbucks.admin.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.project1st.starbucks.admin.entity.CouponEntity;
 
 
 
 public interface CouponRepository extends JpaRepository<CouponEntity, Long>{
-    
+    public Integer countByCiName(String ciName);
 }
