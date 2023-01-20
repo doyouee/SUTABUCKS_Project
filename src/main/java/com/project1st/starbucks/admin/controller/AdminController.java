@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -243,5 +244,15 @@ public class AdminController {
 
         storeMap.put("store", store);
         return storeMap;
+    }
+
+    @GetMapping("/store")
+    public Map<String, Object> deleteStore(@RequestParam Long sbiSeq) {
+        sRepo.deleteById(sbiSeq);
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("status", true);
+        map.put("message", "지점이 삭제되었습니다.");
+        map.put("code", HttpStatus.ACCEPTED);
+        return map;
     }
 }
