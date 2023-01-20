@@ -34,12 +34,13 @@ public class MemberService {
     @Autowired SendMessage sendMessage;
     @Autowired GetAuthNum getAuthNum;
     @Autowired GetTempPwd getTempPwd;
+//    " ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$"
 
     // 일반회원가입 메소드
     public Map<String, Object> joinNomalMember(MemberEntity data) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        String pwdPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$"; // 비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다
-        String emailPattern = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"; // 비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다
+        String pwdPattern =  "^[a-zA-Z\\d`~!@#$%^&*()-_=+]{8,20}$"; // 영어 및 숫자를 허용하며, 숫자키와 관련된 특수문자만 허용한다
+        String emailPattern = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"; // 이메일 정규식 패턴
         // 유효성 검사(필수정보 공백x, 중복가입 방지)
         
         if(data.getMiId()==null){
@@ -64,7 +65,7 @@ public class MemberService {
         }
         else if(!Pattern.matches(pwdPattern, data.getMiPwd())){
             resultMap.put("status", false);
-            resultMap.put("message", "비밀번호는 영문과 특수문자, 숫자를 포함하여 8~20자여야 합니다.");
+            resultMap.put("message", "비밀번호는 영문과 숫자를 포함하여 8~20자여야 합니다.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
             }
         else if(data.getMiName() ==null ){
@@ -138,7 +139,7 @@ public class MemberService {
     // 점주회원가입 메소드
     public Map<String, Object> joinOwnerMember(MemberEntity data) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        String pwdPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$"; // 비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다
+        String pwdPattern =  "^[a-zA-Z\\d`~!@#$%^&*()-_=+]{8,20}$"; // 비밀번호는 영문과 숫자를 포함하여 8자 이상이어야 합니다.
         // 휴대폰 번호 판별해서 중복가입 방지
         if(data.getMiId()==null){
             resultMap.put("status", false);
@@ -157,7 +158,7 @@ public class MemberService {
         }
         else if(!Pattern.matches(pwdPattern, data.getMiPwd())){
             resultMap.put("status", false);
-            resultMap.put("message", "비밀번호는 영문과 특수문자, 숫자를 포함하여 8~20자여야 합니다.");
+            resultMap.put("message", "비밀번호는 영문과 숫자를 포함하여 8~20자여야 합니다.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
             }
         else if(data.getMiName() ==null ){
@@ -211,7 +212,7 @@ public class MemberService {
         else {
             if (!Pattern.matches(pwdPattern, data.getMiPwd())) {
                 resultMap.put("status", false);
-                resultMap.put("message", "비밀번호는 영문과 특수문자, 숫자를 포함하여 8~20자여야 합니다.");
+                resultMap.put("message", "비밀번호는 영문과 숫자를 포함하여 8~20자여야 합니다.");
                 resultMap.put("code", HttpStatus.BAD_REQUEST);
             } else {
                 // 비밀번호 암호화
@@ -378,8 +379,8 @@ public class MemberService {
     // content = 입력받을 내용 , type = 중복검사할 타입(id, phoneNum, nickName, businessNum)
     public Map<String, Object> checkDuplicated(String type, String content) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        String pwdPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$"; // 비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다
-        String emailPattern = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"; // 비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다
+        String pwdPattern =  "^[a-zA-Z\\d`~!@#$%^&*()-_=+]{8,20}$"; // 비밀번호는 영문과 숫자를 포함하여 8자 이상이어야 합니다.
+        String emailPattern = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"; // 비밀번호는 영문과 숫자를 포함하여 8자 이상이어야 합니다.
         // else if(!Pattern.matches(emailPattern, data.getMiId())){
             // resultMap.put("status", false);
             // resultMap.put("message", "이메일 형식에 맞는 아이디를 입력해주세요");
@@ -439,7 +440,7 @@ public class MemberService {
         else if(type.equals("pwd")){
                 if(!Pattern.matches(pwdPattern, content)){
                 resultMap.put("status", false);
-                resultMap.put("message", "비밀번호는 영문과 특수문자, 숫자를 포함하여 8~20자여야 합니다.");
+                resultMap.put("message", "비밀번호는 영문과 숫자를 포함하여 8~20자여야 합니다.");
                 resultMap.put("code", HttpStatus.BAD_REQUEST);
                 }
                 else{
