@@ -30,6 +30,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+<<<<<<< HEAD
+
+	// https://mvnrepository.com/artifact/com.google.zxing/core
+	implementation group: 'com.google.zxing', name: 'core', version: '3.1.0'
+
+	// https://mvnrepository.com/artifact/com.google.zxing/javase
+	implementation group: 'com.google.zxing', name: 'javase', version: '3.1.0'
+=======
 	// https://mvnrepository.com/artifact/net.nurigo/javaSDK	
 	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 	// https://mvnrepository.com/artifact/javax.mail/javax.mail-api
@@ -38,6 +46,7 @@ dependencies {
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 
 
+>>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
 
 
 }

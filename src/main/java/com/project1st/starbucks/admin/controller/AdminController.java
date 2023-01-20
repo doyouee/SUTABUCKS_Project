@@ -230,8 +230,7 @@ public class AdminController {
         @RequestParam String sbiBusinessAddress,
         @RequestParam String sbiPhone,
         @RequestParam String sbiMinDeliveryTime,
-        @RequestParam String sbiMaxDeliveryTime,
-        @RequestParam Long sbiMiSeq
+        @RequestParam String sbiMaxDeliveryTime
     ){
         Map<String, Object> map = new LinkedHashMap<>();
         if (sRepo.countBySbiBranchName(sbiBranchName) != 0) {
@@ -240,7 +239,7 @@ public class AdminController {
             map.put("code", HttpStatus.CONFLICT);
         }
         else {
-            sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMiSeq);
+            sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMinOrder);;
             map.put("status", true);
             map.put("message", "지점이 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
@@ -301,5 +300,4 @@ public class AdminController {
         }
         return map;
     }
-
 }

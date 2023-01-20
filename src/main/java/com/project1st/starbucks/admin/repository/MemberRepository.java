@@ -11,7 +11,7 @@ import com.project1st.starbucks.admin.entity.MemberEntity;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long>{
     // List<MemberEntity> findByMiId(String miId);
     // Long countByMiId(String miId);
-    MemberEntity findByMiSeq(Long miSeq);
-    public Integer countByMiSeq(Long miSeq);
-    
+     MemberEntity findByMiSeq(Long miSeq);
+     public Integer countByMiSeq(Long miSeq);
+
 }
