@@ -31,7 +31,8 @@ public class StoreAdminService {
             String sbiBusinessAddress,
             String sbiPhone,
             @Nullable String sbiMinDeliveryTime,
-            @Nullable String sbiMaxDeliveryTime
+            @Nullable String sbiMaxDeliveryTime,
+            Long sbiMiSeq
         ) {
             StoreEntity store = StoreEntity.builder()
                 .sbiBranchName(sbiBranchName)

@@ -1,10 +1,6 @@
 package com.project1st.starbucks.admin.repository;
 
-<<<<<<< HEAD
-import java.util.List;
-=======
 import java.util.Optional;
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -22,14 +18,7 @@ public interface MemberInfoRepository extends JpaRepository <MemberEntity, Long>
     // 사업자번호 중복검사
     Integer countBymiBusinessNum(String miBusinessNum);
     // Integer countByMiBusinessNum
-<<<<<<< HEAD
-    
-
-
-
-=======
    
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
     MemberEntity findByMiIdAndMiPwd(String miId, String miPwd);
     // MemberEntity findByUserIdAndUserPwd(String id, String pwd);
 
@@ -39,9 +28,6 @@ public interface MemberInfoRepository extends JpaRepository <MemberEntity, Long>
     // 로그인한 회원 miSeq에 해당하는 정보 출력 
     MemberEntity findByMiSeq(Long miSeq);
 
-<<<<<<< HEAD
-
-=======
      // 이름과 전화번호 (아이디 찾기 본인인증 메소드에 사용)
    MemberEntity findByMiNameAndMiPhoneNum(String miName, String miPhoneNum );
 
@@ -53,5 +39,4 @@ public interface MemberInfoRepository extends JpaRepository <MemberEntity, Long>
 
     // 이름으로 회원정보 찾기
     MemberEntity findByMiName(String MiNAme);
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
 }

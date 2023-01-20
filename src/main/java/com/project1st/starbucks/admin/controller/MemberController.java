@@ -44,16 +44,6 @@ public class MemberController {
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }   
 
-<<<<<<< HEAD
-    // 중복검사 API
-    // @GetMapping("/idcheck")
-    // public ResponseEntity<Object> memberCheck(@RequestParam String id){
-    //     Map<String, Object> resultMap = mService.checkIdDuplicat(id);
-    //     return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    // }
-
-=======
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
     // 로그인 API(회원 상태값(1. 기본 2. 정지 3.탈퇴))
     @PostMapping("/login")
     public ResponseEntity<Object> postLogin(@RequestBody PostLoginDTO data, HttpSession session){
@@ -79,11 +69,7 @@ public class MemberController {
     }
 
     // 회원 탈퇴
-<<<<<<< HEAD
-    @PatchMapping("/member/leave")
-=======
     @PatchMapping("/leave")
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
     public ResponseEntity<Object> deleteMemberInfo(HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         resultMap = mService.deleteMemberifo(session);
@@ -91,31 +77,20 @@ public class MemberController {
     }
 
     // 로그아웃
-<<<<<<< HEAD
-    @PostMapping("/member/logout")
-=======
     @PostMapping("/logout")
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
     public ResponseEntity<Object> memberLogout(HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         resultMap = mService.logOut(session);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-<<<<<<< HEAD
-    // 유효성체크(id, phoneNum, nickName, businessNum)
-    @GetMapping("/member/{type}/{content}")
-=======
     // 유효성 체크(id, phoneNum, nickName, businessNum, pwd)
     @GetMapping("/{type}/{content}")
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
     public ResponseEntity<Object> checkDuplicated(@PathVariable String type, @PathVariable String content){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         resultMap = mService.checkDuplicated(type, content);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
-<<<<<<< HEAD
-=======
 
     // ===============================================  < 아이디 찾기 > ===========================================================
 
@@ -176,5 +151,4 @@ public class MemberController {
         resultMap = mService.getTempPwd(session, authNum);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
->>>>>>> df9e6a221230dfb8c48406fbacf799d06273c88e
 }
