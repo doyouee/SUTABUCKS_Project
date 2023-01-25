@@ -14,5 +14,4 @@ public interface StoreMenuConnectRepository extends JpaRepository<StoreMenuConne
     Page<StoreMenuConnectEntity> findByStore(StoreBasicInfoEntity store, Pageable pageable);
     StoreMenuConnectEntity findByStoreAndMenu(StoreBasicInfoEntity store, MenuBasicInfoEntity menu);  
     StoreMenuConnectEntity countByStore(StoreBasicInfoEntity store);
-
 }
