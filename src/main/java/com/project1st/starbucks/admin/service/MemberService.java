@@ -106,14 +106,14 @@ public class MemberService {
         }
         else if ((data.getMiAddress()) == null) {
             resultMap.put("status", false);
-            resultMap.put("message", "주소를 입력해 주세요(00구-00동).");
+            resultMap.put("message", "주소를 입력해 주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
         }
-        else if ((data.getMiDetailAddress()) == null) {
-            resultMap.put("status", false);
-            resultMap.put("message", "상세주소를 입력해 주세요.");
-            resultMap.put("code", HttpStatus.BAD_REQUEST);
-        }
+        // else if ((data.getMiDetailAddress()) == null) {
+        //     resultMap.put("status", false);
+        //     resultMap.put("message", "상세주소를 입력해 주세요.");
+        //     resultMap.put("code", HttpStatus.BAD_REQUEST);
+        // }
         // 유효성 검사를 다 통과했다면
         else {
             // 비밀번호 암호화
@@ -199,14 +199,14 @@ public class MemberService {
         }
         else if ((data.getMiAddress()) == null) {
             resultMap.put("status", false);
-            resultMap.put("message", "주소를 입력해 주세요(00구-00동).");
+            resultMap.put("message", "주소를 입력해 주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
         }
-        else if ((data.getMiDetailAddress()) == null) {
-            resultMap.put("status", false);
-            resultMap.put("message", "상세주소를 입력해 주세요.");
-            resultMap.put("code", HttpStatus.BAD_REQUEST);
-        }
+        // else if ((data.getMiDetailAddress()) == null) {
+        //     resultMap.put("status", false);
+        //     resultMap.put("message", "상세주소를 입력해 주세요.");
+        //     resultMap.put("code", HttpStatus.BAD_REQUEST);
+        // }
         
         // 중복되는 휴대폰 번호가 없다면
         else {
