@@ -38,6 +38,7 @@ public class MembershipCardController {
     }
     
 
+    //카드인식 이미지 저장
     @GetMapping("/image/{uri}")
     public ResponseEntity<Resource> getCardQRImage(@PathVariable String uri, HttpServletRequest request) throws Exception {
         return cardService.getCardQRImage(uri, request);
@@ -47,7 +48,7 @@ public class MembershipCardController {
     //카드조회 -> 완료 ♥
     @GetMapping("/detail")
     public ResponseEntity<Object> getMembershipCard(HttpSession session) {
-        return cardService.showMembershipCard(session);
+        return cardService.detailMembershipCard(session);
     }
     
 

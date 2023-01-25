@@ -7,5 +7,5 @@ import com.project1st.starbucks.menu.entity.MenuQrEntity;
 
 @Repository
 public interface MenuQrRepository extends JpaRepository<MenuQrEntity, Long> {
-    
+    MenuQrEntity findByMqiMbiSeq(Long mqiMbiSeq);
 }

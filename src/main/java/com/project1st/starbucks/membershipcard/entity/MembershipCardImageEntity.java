@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,12 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "membership_card_qr_image")
-@Builder
-public class MembershipCardQREntity {
+@Table(name = "membership_card_image")
+public class MembershipCardImageEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cardqr_seq")            private Long cardqrSeq;
-    @Column(name = "cardqr_file")           private String cardqrFile;
-    @Column(name = "cardqr_uri")            private String cardqrUri;
-    @Column(name = "cardqr_mi_seq")         private Long cardqrMiSeq;
+    @Column(name = "cardimage_seq")         private Long cardimageSeq;
+    @Column(name = "cardimage_name")        private String cardimageName;
+    @Column(name = "cardimage_file")        private String cardimageFile;
+    @Column(name = "cardimage_uri")         private String cardimageUri;
 }

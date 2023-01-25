@@ -34,9 +34,12 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.membershipcard.entity.MembershipCardEntity;
+import com.project1st.starbucks.membershipcard.entity.MembershipCardImageEntity;
 import com.project1st.starbucks.membershipcard.entity.MembershipCardQREntity;
+import com.project1st.starbucks.membershipcard.repository.MembershipCardImageRepository;
 import com.project1st.starbucks.membershipcard.repository.MembershipCardRepository;
 import com.project1st.starbucks.membershipcard.repository.MembershipcardQRRepository;
+import com.project1st.starbucks.membershipcard.vo.MembershipCardDetailVO;
 import com.project1st.starbucks.membershipcard.vo.MembershipCardVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,6 +48,7 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class MembershipCardService {
     @Autowired MembershipCardRepository cardRepo;
+    @Autowired MembershipCardImageRepository cardImageRepo;
     @Autowired MembershipcardQRRepository cardQRRepo;
     @Value("${file.image.cardqr}") String qr_card_img_path;
 
@@ -79,56 +83,12 @@ public class MembershipCardService {
         hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
         createQR(source, path, charset, hashMap, 200, 200);
 
-        
-        // 생성된 멤버십 충전 QR코드 이미지를 DB에 저장
-        // Path folderLocation = Paths.get(qr_card_img_path);
-        // String originFileName = data.getCardName() + data.getCardMiSeq() + ".jpg";
-        // String[] split = originFileName.split("\\.");
-        // String ext = split[split.length - 1];
-        // String filename = "";
-        // for(int i=0; i<split.length-1; i++) {
-        //     filename += split[i];
-        // }
-        // String saveFilename = "cardqr"+"_";
-        // Calendar c = Calendar.getInstance();
-        // saveFilename += c.getTimeInMillis() + "." + ext;
-        // Path targerFile = folderLocation.resolve(file.getOriginalFilename());
-        // try {
-        //     Files.copy(file.getInputStream(), targerFile, StandardCopyOption.REPLACE_EXISTING);
-        // }
-        // catch(Exception e) {
-        //     e.printStackTrace();
-        // }
         MembershipCardQREntity qrdata = MembershipCardQREntity.builder()
             .cardqrFile(data.getCardName() + data.getCardMiSeq() + ".jpg")
             .cardqrUri(data.getCardName() + data.getCardMiSeq())
             .cardqrMiSeq(memberInfo.getMiSeq()).build();
         qrdata = cardQRRepo.save(qrdata);
-        /*
-        // Path folderLocation = Paths.get(qr_card_img_path);
-        // String originFileName = file.getOriginalFilename();
-        // String[] split = originFileName.split("\\.");
-        // String ext = split[split.length - 1];
-        // String filename = "";
-        // for(int i=0; i<split.length-1; i++) {
-        //     filename += split[i];
-        // }
-        // String saveFilename = "menuqr"+"_";
-        // Calendar c = Calendar.getInstance();
-        // saveFilename += c.getTimeInMillis() + "." + ext;
-        // Path targerFile = folderLocation.resolve(file.getOriginalFilename());
-        // try {
-        //     Files.copy(file.getInputStream(), targerFile, StandardCopyOption.REPLACE_EXISTING);
-        // }
-        // catch(Exception e) {
-        //     e.printStackTrace();
-        // }
-        // MembershipCardQREntity qrdata = MembershipCardQREntity.builder()
-        //     .cardqrFile(saveFilename)
-        //     .cardqrUri(saveFilename)
-        //     .cardqrMiSeq(memberInfo.getMiSeq()).build();
-        // qrdata = cardQRRepo.save(qrdata);
-        */
+        
 
         resultMap.put("status", true);
         resultMap.put("message", "카드 등록이 완료되었습니다.");
@@ -160,7 +120,6 @@ public class MembershipCardService {
         String ext = split[split.length - 1];
         String exportName = uri + "." + ext; // 내보내줄 파일이름은 다르다. (내보낼 파일의 이름을 만든다.)                                                                                                                                                                                                                                                                  
 
-        //Path folderLocation = Paths.get(todo_img_path); //path라는 걸로 todo_img_path라는걸 만들어 주고 (todo_img_path 문자열로부터 실제 폴더 경로를 가져온다)
         Path targetFile = folderLocation.resolve(filename); //폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로를 만든다.
         Resource r = null; //파일을 가져와서 resource라는 형태로 바꿔서 내보내줘야한다. ( 다운로드 가능한 형태로 변환하기 위한 Resurce 객체 생성 )
         try {
@@ -179,6 +138,7 @@ public class MembershipCardService {
         .body(r);
     }
 
+    // 파일명 가져오기
     public String getFilenameByUri(String uri) {
         // List<MembershipCardQREntity> data = cardQRRepo.findTopByCardqrUriOrderByCardqrSeqDesc(uri);
         return (cardQRRepo.findTopByCardqrUriOrderByCardqrSeqDesc(uri)).getCardqrFile();
@@ -215,7 +175,7 @@ public class MembershipCardService {
     
     
     //카드조회 -> 완료 ♥
-    public ResponseEntity<Object> showMembershipCard(HttpSession session){
+    public ResponseEntity<Object> detailMembershipCard(HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
         MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
@@ -231,9 +191,16 @@ public class MembershipCardService {
             return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
         }
         // 로그인했다면 멤버십카드 조회하기
-        MembershipCardVO cardVO = new MembershipCardVO(cardRepo.findByCardMiSeq(memberInfo.getMiSeq()));
+        // MembershipCardVO cardVO = new MembershipCardVO(cardRepo.findByCardMiSeq(memberInfo.getMiSeq()));
+        MembershipCardEntity card = cardRepo.findByCardMiSeq(memberInfo.getMiSeq());
+        MembershipCardImageEntity cardImage = cardImageRepo.findById(card.getCardImage()).get();
+        MembershipCardQREntity cardQr = cardQRRepo.findByCardqrMiSeq(memberInfo.getMiSeq());
+        MembershipCardDetailVO result = new MembershipCardDetailVO(card, cardImage, cardQr);
+        System.out.println(card);
+        System.out.println(cardImage);
+        System.out.println(cardQr);
+        resultMap.put("detail", result);
         resultMap.put("status", true);
-        resultMap.put("detail", cardVO);
         resultMap.put("message", memberInfo.getMiName() + " [닉네임:"+ memberInfo.getMiNickname() +"] 님의 멤버십 카드 상세조회 입니다.");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }

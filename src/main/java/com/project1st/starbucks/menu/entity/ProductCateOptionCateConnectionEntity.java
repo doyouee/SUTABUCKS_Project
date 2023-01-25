@@ -14,11 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "menu_option_info")
-public class MenuOptionInfoEntity {
+@Table(name = "productcate_optioncate_connection")
+public class ProductCateOptionCateConnectionEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "moi_seq")           private Long moiSeq;
-    @Column(name = "moi_name")          private String moiName;
-    @Column(name = "moi_cost")          private Integer moiCost;
-    @Column(name = "moi_moc_seq")       private Long moiMocSeq;
+    @Column(name = "poc_seq")               private Long pocSeq;
+    @Column(name = "poc_pc_seq")            private Long pocPcSeq;
+    @Column(name = "poc_moc_seq")           private Long pocMocSeq;
 }
