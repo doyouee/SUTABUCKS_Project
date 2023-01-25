@@ -34,12 +34,14 @@ import com.project1st.starbucks.admin.repository.EventDetailRepository;
 import com.project1st.starbucks.admin.repository.EventRepository;
 import com.project1st.starbucks.admin.repository.MemberRepository;
 import com.project1st.starbucks.admin.repository.MenuImageRepository;
+import com.project1st.starbucks.admin.repository.MenuNutritionRepository;
 import com.project1st.starbucks.admin.repository.MenuRepository;
 import com.project1st.starbucks.admin.repository.StoreRepository;
 import com.project1st.starbucks.admin.service.AnnouncementService;
 import com.project1st.starbucks.admin.service.CouponService;
 import com.project1st.starbucks.admin.service.EventService;
 import com.project1st.starbucks.admin.service.MenuImageService;
+import com.project1st.starbucks.admin.service.MenuNutritionService;
 import com.project1st.starbucks.admin.service.MenuService;
 import com.project1st.starbucks.admin.service.StoreAdminService;
 
@@ -63,6 +65,8 @@ public class AdminController {
     @Autowired CouponService cService;
     @Autowired MenuImageRepository meiRepo;
     @Autowired CouponRepository cRepo;
+    @Autowired MenuNutritionRepository mnRepo;
+    @Autowired MenuNutritionService mnService;
 
     @GetMapping("/list") // 접근경로
     public Map<String, Object> getMain(
@@ -180,7 +184,7 @@ public class AdminController {
         return map;
     }
 
-    @PostMapping("menu")
+    @PostMapping("/menu")
     public Map<String, Object> addMenu(
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
@@ -217,7 +221,7 @@ public class AdminController {
     //     return map;
     // }
 
-    @PostMapping("store")
+    @PostMapping("/store")
     public Map<String, Object> addStore (
         @RequestParam String sbiBranchName,
         @RequestParam String sbiAddressBasic,
@@ -300,4 +304,25 @@ public class AdminController {
         }
         return map;
     }
+
+    @PostMapping("/nutri")
+    public Map<String, Object> addNutrition(
+        @RequestParam MultipartFile mnImgFile,
+        @RequestParam Long mnMbiSeq
+    ) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(mnRepo.countByMnMbiSeq(mnMbiSeq) != 0) {
+            map.put("status", false);
+            map.put("message", "이미 등록되어있는 영양정보 입니다.");
+            map.put("code", HttpStatus.CONFLICT);
+        }
+        else {
+            mnService.addEvent(mnImgFile, mnMbiSeq);
+            map.put("status", true);
+            map.put("message", "영양정보가 등록되었습니다.");
+            map.put("code", HttpStatus.CREATED);
+        }
+        return map;
+    } 
+   
 }
