@@ -98,7 +98,7 @@ public void sendMail(String userId, String newPwd) {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 
             // Subject
-            message.setSubject("PLAYDDIT verification code");
+            message.setSubject("[手타벅스] 임시비밀번호가 발급되었습니다.");
 
             // Text
             message.setText("임시비밀번호는[" + newPwd + "]입니다.");

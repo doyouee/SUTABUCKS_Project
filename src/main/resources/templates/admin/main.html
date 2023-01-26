@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<body>
+    <table id = "memberList" border="1">
+        <thead>
+            <th>번호</th>
+            <th>아이디</th>
+            <th>이름</th>
+            <th>닉네임</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</body>
+
+<script>
+  axios({
+  url: 'http://haeji.mawani.kro.kr:9999/admin/list', // 회원리스트
+  method: 'get', // 통신할 방식
+  datatype : "JSON"
+})
+.then(function(response) {
+    console.log(response.data)
+    let dataStr = "";
+    for(let i=0; i<response.data.member.length; i++) {
+        dataStr += "<tr><td>"+response.data.member[i].miSeq+"</td>"+
+            "<td>"+response.data.member[i].miId+"</td>"+
+            "<td>"+response.data.member[i].miName+"</td>"+
+            "<td>"+response.data.member[i].miNickname+"</td>"+
+            "<td>"+response.data.member[i].miNickname+"</td>"+ // 
+            "</tr>";
+    }
+    document.querySelector("#memberList > tbody").innerHTML = dataStr
+});
+// response.data 에 json 데이터가 담김
+
+const memberList = document.getElementById("memberList");
+console.log(memberList.innerHTML);
+
+</script>
+
+</html>
