@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.project1st.starbucks.admin.entity.AnnouncementEntity;
 import com.project1st.starbucks.admin.entity.EventDetailEntity;
 import com.project1st.starbucks.admin.entity.EventEntity;
 import com.project1st.starbucks.admin.entity.MemberEntity;
@@ -87,16 +88,12 @@ public class AdminController {
     
     @GetMapping("/event")
     public Map<String, Object> getEvent(Model model) {
-        Map<String, Object> eventMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
         List<EventEntity> event = eRepo.findAll();
-
-        Map<String, Object> detailMap = new LinkedHashMap<String, Object>();
         List<EventDetailEntity> detail = dRepo.findAll();
-
-        eventMap.put("event", event);
-        detailMap.put("detail", detail);
-        return eventMap;
-        
+        map.put("event", event);
+        map.put("detail", detail);
+        return map;
     }
 
     @PostMapping("/event")
@@ -121,7 +118,7 @@ public class AdminController {
     @PostMapping("/notice")
     public Map<String, Object> addAnnouncement(
         @RequestParam String saTitle,
-        @RequestParam String saContent,
+        @Nullable @RequestParam String saContent,
         @RequestPart MultipartFile saImgFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
@@ -361,4 +358,13 @@ public class AdminController {
         return map;
     }  
 
+    @GetMapping("/notice")
+    public Map<String, Object> getNotice(
+    ) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        List<AnnouncementEntity> list = aRepo.findAll();
+        resultMap.put("notice", list);  
+        // templates/index.html
+        return resultMap;
+    }
 }
