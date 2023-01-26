@@ -1,14 +1,17 @@
 package com.project1st.starbucks.basket.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.project1st.starbucks.basket.entity.ShoppingBasketEntity;
+import com.project1st.starbucks.store.entity.StoreMenuConnectEntity;
 
 
-@Repository
 public interface ShoppingBasketRepository extends JpaRepository<ShoppingBasketEntity, Long> {
-    public List<ShoppingBasketEntity> findBySbMiSeqAndSbStatus(Long sbMiSeq, Long sbStatus);    
+    public List<ShoppingBasketEntity> findBySbMiSeqAndSbStatus(Long sbMiSeq, Long sbStatus);
+    Optional<ShoppingBasketEntity> findBySbMiSeq(Long sbMiSeq);
+    ShoppingBasketEntity findBySbMiSeqAndStoreMenuConnect(Long sbMiseq, StoreMenuConnectEntity storemenuconnect);
+    ShoppingBasketEntity findBySbMiSeqAndStoreMenuConnectAndSbStatus(Long sbMiseq, StoreMenuConnectEntity storemenuconnect, Long sbStatus);
 }

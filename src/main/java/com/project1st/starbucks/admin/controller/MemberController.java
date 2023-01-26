@@ -51,8 +51,8 @@ public class MemberController {
     public ResponseEntity<Object> postLogin(@RequestBody PostLoginDTO data, HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         resultMap = mService.loginMember(data);
-        session.setAttribute("loginUser", resultMap.get("loginUser"));
-        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+        session.setAttribute("loginUser", resultMap.get("loginUser"));        
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));       
     }
 
     // 로그인 회원정보 조회

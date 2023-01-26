@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project1st.starbucks.store.entity.StoreMenuConnectEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 // @Data
 @Getter
@@ -48,7 +48,7 @@ public class ShoppingBasketEntity {
     // @Column(name = "sb_smc_seq") private Long sbSmcSeq;
     @Column(name = "sb_mi_seq") private Long sbMiSeq;
 
-    @OneToMany(mappedBy = "shoppingBasket")
+    @OneToMany(mappedBy = "shoppingBasket", cascade = CascadeType.ALL)
     private List<ShoppingBasketOptionEntity> shoppingBasketOption;
 }
 

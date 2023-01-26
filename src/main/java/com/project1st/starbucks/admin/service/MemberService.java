@@ -157,7 +157,7 @@ public Map<String, Object> editMemberInfo(HttpSession session, PutEditMemberInfo
     if(memberInfo != null){
         try{String encPwd = AESAlgorithm.Encrypt(editMemberInfo.getPwd());
             String checkEncPwd = AESAlgorithm.Encrypt(editMemberInfo.getCheckPwd());
-            memberInfo.setMiPwd(encPwd);
+            memberInfo.setMiPwd(encPwd);   
         }
         catch(Exception e){
             e.printStackTrace();

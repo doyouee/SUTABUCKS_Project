@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project1st.starbucks.basket.repository.ShoppingBasketOptionRepository;
 import com.project1st.starbucks.basket.repository.ShoppingBasketRepository;
+import com.project1st.starbucks.rank.repository.RealRankingRepository;
 
 @SpringBootTest
 class StarbucksApplicationTests {
@@ -24,5 +25,11 @@ class StarbucksApplicationTests {
 	@Test
 	void testFindop() {
 		System.out.println(sbopRepo.findAll());		
+	}
+
+	@Autowired RealRankingRepository realrankRepo;
+	@Test
+	void realrnak() {
+		System.out.println(realrankRepo.findAll());
 	}
 }

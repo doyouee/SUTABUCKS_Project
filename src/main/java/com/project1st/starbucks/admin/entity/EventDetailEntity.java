@@ -31,5 +31,4 @@ public class EventDetailEntity {
     @Column(name = "edi_end_date")    @DateTimeFormat(pattern = "yyyy-MM-dd") private LocalDate ediEndDate;
     @Column(name = "edi_contents")    private String ediContents;
     @Column(name = "edi_uri")    private String ediUri;
-
 }
