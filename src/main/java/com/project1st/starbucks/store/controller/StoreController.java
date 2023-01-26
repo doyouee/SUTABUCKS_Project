@@ -72,4 +72,18 @@ public class StoreController {
     public ResponseEntity<Object> getStoreSearch(@RequestParam String branchName) {
         return stService.searchStoreBranchName(branchName);
     }
+
+
+
+    @GetMapping("/cart/menu/list") // <주문하기 창에서 선택한 지점의 메뉴 전체 보기> -> 완료 ♥
+    public ResponseEntity<Object> getCartStoreMenuList(@RequestParam Long storeSeq, Pageable pageable) {
+        return stService.cartStoreMenuList(storeSeq, pageable);
+    }
+
+
+    @GetMapping("/cart/menu/list/detail") // <주문하기 창에서 선택한 지점의 메뉴 상세 보기> -> 완료 ♥
+    public ResponseEntity<Object> getCartStoreMenuDetail(@RequestParam Long storeSeq, @RequestParam Long menuSeq) {
+        return stService.cartStoreMenuDetail(storeSeq, menuSeq);
+    }
+
 }
