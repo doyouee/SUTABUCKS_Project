@@ -11,6 +11,6 @@ import com.project1st.starbucks.menu.entity.MenuOptionInfoEntity;
 
 
 @Repository
-public interface MenuOptionInfoRepository extends JpaRepository<MenuBasicInfoEntity, Long> {
-    
+public interface MenuOptionInfoRepository extends JpaRepository<MenuOptionInfoEntity, Long> {
+    MenuOptionInfoEntity findByMoiSeq(Long moiSeq);
 }

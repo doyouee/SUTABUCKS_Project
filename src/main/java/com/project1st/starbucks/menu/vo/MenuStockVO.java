@@ -21,7 +21,6 @@ public class MenuStockVO {
         this.status = smEntity.getMenu().getMbiStatus();
         this.explain = smEntity.getMenu().getMbiExplain();
         this.categoryNo = smEntity.getMenu().getMbiPcSeq();
-        this.stock = smEntity.getStoreMenuStock();
     }
 
 

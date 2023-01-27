@@ -440,7 +440,7 @@ public class StoreService {
         List<MenuStockVO> menuList = new ArrayList<MenuStockVO>();
         for(StoreMenuConnectEntity s : list) {
             store = new StoreInfoVO(s.getStore());
-            menuList.add(new MenuStockVO(smRepo.findById(s.getStoreMenuNo()).get()));
+            menuList.add(new MenuStockVO(smRepo.findById(s.getSmcSeq()).get()));
         }
         resultMap.put("status", true);
         resultMap.put("message", store.getBranch() + "의 전체 메뉴 입니다.");
