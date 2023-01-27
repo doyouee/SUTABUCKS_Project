@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.project1st.starbucks.admin.entity.MenuImageEntity;
+import com.project1st.starbucks.admin.entity.MenuNutritionEntity;
 import com.project1st.starbucks.admin.repository.MenuImageRepository;
+import com.project1st.starbucks.admin.repository.MenuNutritionRepository;
 import com.project1st.starbucks.menu.entity.MenuBasicInfoEntity;
 import com.project1st.starbucks.menu.entity.MenuQrEntity;
 import com.project1st.starbucks.menu.repository.MenuBasicInfoRepository;
@@ -22,6 +24,7 @@ import com.project1st.starbucks.menu.repository.MenuQrRepository;
 import com.project1st.starbucks.menu.repository.ProductCategoryRepository;
 import com.project1st.starbucks.menu.vo.MenuStockVO;
 import com.project1st.starbucks.menu.vo.MenuDetailVO;
+import com.project1st.starbucks.menu.vo.MenuImageVO;
 
 @Service
 public class MenuInfoService {
@@ -29,11 +32,20 @@ public class MenuInfoService {
     @Autowired ProductCategoryRepository pcRepo;
     @Autowired MenuQrRepository menuQrRepo;
     @Autowired MenuImageRepository miRepo;
+    @Autowired MenuNutritionRepository nutritionRepo;
     
     // <전체 메뉴 조회하기> -> 완료 ♥
     public ResponseEntity<Object> menuList(Pageable pageable) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        resultMap.put("list", mbiRepo.findAll());
+
+        List<MenuImageEntity> mEntity = miRepo.findAll();
+        List<MenuImageVO> menu = new ArrayList<MenuImageVO>();
+        for(MenuImageEntity m : mEntity) {
+            MenuImageVO menuVO = new MenuImageVO(m);
+            menu.add(menuVO);
+        }
+        resultMap.put("list", menu);
+
         //페이징 처리
         Page<MenuBasicInfoEntity> page = mbiRepo.findAll(pageable);
         resultMap.put("totalPage", page.getTotalPages());
@@ -61,7 +73,8 @@ public class MenuInfoService {
         // MenuBasicInfoEntity menu = mbiRepo.findById(menuNo).get();
         MenuImageEntity menuImage = miRepo.findByMiiNumber(mbiRepo.findById(menuNo).get());
         MenuQrEntity qr = menuQrRepo.findByMqiMbiSeq(menuNo);
-        MenuDetailVO result = new MenuDetailVO(menuImage, qr);
+        MenuNutritionEntity nutrition = nutritionRepo.findByMnMbiSeq(menuNo);
+        MenuDetailVO result = new MenuDetailVO(menuImage, qr, nutrition);
         resultMap.put("detail", result);
         resultMap.put("status", true);
         resultMap.put("message", menuNo + "번 메뉴를 조회했습니다.");
@@ -74,11 +87,12 @@ public class MenuInfoService {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
 
         List<MenuBasicInfoEntity> list = mbiRepo.findAll();
-        List<MenuBasicInfoEntity> result = new ArrayList<MenuBasicInfoEntity>();
+        List<MenuDetailVO> result = new ArrayList<MenuDetailVO>();
 
         for(MenuBasicInfoEntity m : list) {
-            if(m.getMbiName().contains(menuName)){ // param으로 받은 menuName으로 조회한 뒤
-                result.add(m);  // 포함되면 result에 넣기
+            if(m.getMbiName().contains(menuName)){
+                MenuDetailVO mVo = new MenuDetailVO(miRepo.findByMiiNumber(m), menuQrRepo.findByMqiMbiSeq(m.getMbiSeq()), nutritionRepo.findByMnMbiSeq(m.getMbiSeq()));
+                result.add(mVo);
             }
         }
 

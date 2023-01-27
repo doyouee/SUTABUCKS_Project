@@ -24,6 +24,7 @@ public class StoreInfoVO {
     private String minDeliveryTime;
     private String maxDeliveryTime;
 
+    public StoreInfoVO(){}
     public StoreInfoVO(StoreBasicInfoEntity entity) {
         this.storeNo = entity.getSbiSeq();
         this.branch = entity.getSbiBranchName();
