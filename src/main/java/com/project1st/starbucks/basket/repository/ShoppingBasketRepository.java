@@ -14,4 +14,5 @@ public interface ShoppingBasketRepository extends JpaRepository<ShoppingBasketEn
     Optional<ShoppingBasketEntity> findBySbMiSeq(Long sbMiSeq);
     ShoppingBasketEntity findBySbMiSeqAndStoreMenuConnect(Long sbMiseq, StoreMenuConnectEntity storemenuconnect);
     ShoppingBasketEntity findBySbMiSeqAndStoreMenuConnectAndSbStatus(Long sbMiseq, StoreMenuConnectEntity storemenuconnect, Long sbStatus);
+    ShoppingBasketEntity findBySbMiSeqAndStoreMenuConnectAndSbStatusAndSbOrderNumber(Long sbMiseq, StoreMenuConnectEntity storemenuconnect, Long sbStatus, Long sbOrderNumber);
 }

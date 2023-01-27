@@ -6,4 +6,5 @@ import lombok.Data;
 public class ChangeBasketVO {
     private Long sbSmcSeq;
     private Long sbNumber;
+    private Long sbOrderNumber;
 }

@@ -35,5 +35,6 @@ public class ShoppingBasketOptionEntity {
     // @Column(name = "sbo_moi_seq") private Long sboMoiSeq;
     @ManyToOne
     @JoinColumn(name = "sbo_sb_seq") private ShoppingBasketEntity shoppingBasket;
+    @Column(name = "sbo_option_order_number") private Integer sboOptionOrderNumber;
     // @Column(name = "sbo_sb_seq") private Long sboSbSeq;
 }

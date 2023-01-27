@@ -47,6 +47,9 @@ public class ShoppingBasketEntity {
     @JoinColumn(name = "sb_smc_seq") StoreMenuConnectEntity storeMenuConnect;    
     // @Column(name = "sb_smc_seq") private Long sbSmcSeq;
     @Column(name = "sb_mi_seq") private Long sbMiSeq;
+    @Column(name = "sb_order_number") private Integer sbOrderNumber;
+
+
 
     @OneToMany(mappedBy = "shoppingBasket", cascade = CascadeType.ALL)
     private List<ShoppingBasketOptionEntity> shoppingBasketOption;

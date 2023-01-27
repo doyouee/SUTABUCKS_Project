@@ -9,4 +9,5 @@ import com.project1st.starbucks.basket.entity.ShoppingBasketOptionEntity;
 
 public interface ShoppingBasketOptionRepository extends JpaRepository<ShoppingBasketOptionEntity, Long>{
     List<ShoppingBasketOptionEntity> findByShoppingBasket(ShoppingBasketEntity shoppingBasket);
+    
 }
