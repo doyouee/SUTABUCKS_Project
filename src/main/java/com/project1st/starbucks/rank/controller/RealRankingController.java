@@ -10,7 +10,7 @@ import com.project1st.starbucks.rank.service.RealRankingService;
 @RestController
 public class RealRankingController {
     @Autowired RealRankingService realRankingService;
-    @GetMapping("/rank/menu")
+    @GetMapping("/menu/rank")
     public ResponseEntity<Object> menuRanking() {
         return realRankingService.storeMenuList();
     }

@@ -19,10 +19,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "real_ranking")
+@Table(name = "menu_ranking")
 public class RealRankingEntity {
     @Id    
     @Column(name = "mbi_name") private String mbiName;
     @Column(name = "mbi_seq") private Long mbiSeq;
+    @Column(name = "img_file") private String imgFile;
     @Column(name = "cnt") private Long cnt;
 }
