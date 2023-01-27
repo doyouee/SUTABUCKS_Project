@@ -1,6 +1,7 @@
 package com.project1st.starbucks;
 
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +20,15 @@ import javax.mail.internet.MimeMessage;
 
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project1st.starbucks.admin.entity.MemberEntity;
+// import com.project1st.starbucks.jwt.MakeJwtToken;
 
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpSession;
 import net.nurigo.java_sdk.Coolsms;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -181,6 +187,16 @@ class StarbucksApplicationTests {
                 }
                 System.out.println(sb.toString());
             }
+
+        // //jwttokken생성
+        // @Autowired MakeJwtToken makeJwt;
+        // @Test
+        // public void makeJwtTest(){
+        //  String jwt = makeJwt.makeJwt();
+        //  System.out.println("JWT = "+ jwt);
+
+        // }
+
         }
         
 

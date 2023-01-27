@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping; 
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project1st.starbucks.admin.entity.AnnouncementEntity;
@@ -51,7 +53,7 @@ import com.project1st.starbucks.membershipcard.service.MembershipCardService;
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired EventService eService;
@@ -73,14 +75,14 @@ public class AdminController {
     @Autowired MembershipImageService mcService;
     @Autowired MembershipImageRepository mcRepo;
 
-
-
     @GetMapping("/list") // 접근경로
-    public String getMain(Model model) {
+    public Map<String, Object> getMain(
+    ) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         List<MemberEntity> list = mRepo.findAll();
-        model.addAttribute("memberList", list);
+        resultMap.put("member", list);  
         // templates/index.html
-        return "/admin/memberlist";
+        return resultMap;
     }
 
     

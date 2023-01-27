@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
+import com.project1st.starbucks.jwt.JWT;
 import com.project1st.starbucks.member.DTO.PostFindPwdDTO;
 import com.project1st.starbucks.member.DTO.PostAuthNumByEmailDTO;
 import com.project1st.starbucks.member.DTO.PostFindIdDTO;
@@ -34,6 +35,7 @@ public class MemberService {
     @Autowired SendMessage sendMessage;
     @Autowired GetAuthNum getAuthNum;
     @Autowired GetTempPwd getTempPwd;
+    @Autowired JWT Jwt;
 //    " ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$"
 
     // 일반회원가입 메소드
@@ -258,7 +260,9 @@ public class MemberService {
         }
         // 회원 상태값 1일때(정상로그인)
         else {
+            String jwtToken = Jwt.createJwt(data.getId());
             session.setAttribute("loginUser", loginUser);
+            resultMap.put("jwt", jwtToken);
             resultMap.put("status", true);
             resultMap.put("message", "로그인 되었습니다");
             resultMap.put("code", HttpStatus.ACCEPTED);
