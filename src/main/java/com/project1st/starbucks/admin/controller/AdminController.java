@@ -353,7 +353,7 @@ public class AdminController {
     @GetMapping("/menudetail")
     public Map < String, Object > getDetail(@RequestParam Long mbiSeq) {
         Map < String, Object > map = new LinkedHashMap < > ();
-        if (mbiSeq >= 0) {
+        if (mbiSeq > meRepo.count() || mbiSeq <= 0 || mbiSeq == null) {
             map.put("status", false);
             map.put("message", "존재하지 않는 메뉴입니다.");
             map.put("code", HttpStatus.BAD_REQUEST);
@@ -366,37 +366,28 @@ public class AdminController {
             if (meRepo.countByMbiSeq(mbiSeq) != 0) {
                 if (pcseq == 3) {
                     category = "에스프레소";
-                    map.put("이름", meRepo.findByMbiSeq(mbiSeq).getMbiName());
-                    map.put("가격", meRepo.findByMbiSeq(mbiSeq).getMbiCost());
-                    map.put("설명", meRepo.findByMbiSeq(mbiSeq).getMbiExplain());
                     map.put("카테고리", category);
                 }
     
                 if (pcseq == 4) {
                     category = "프라푸치노";
-                    map.put("이름", meRepo.findByMbiSeq(mbiSeq).getMbiName());
-                    map.put("가격", meRepo.findByMbiSeq(mbiSeq).getMbiCost());
-                    map.put("설명", meRepo.findByMbiSeq(mbiSeq).getMbiExplain());
                     map.put("카테고리", category);
                 }
     
                 if (pcseq == 5) {
                     category = "케이크";
-                    map.put("이름", meRepo.findByMbiSeq(mbiSeq).getMbiName());
-                    map.put("가격", meRepo.findByMbiSeq(mbiSeq).getMbiCost());
-                    map.put("설명", meRepo.findByMbiSeq(mbiSeq).getMbiExplain());
                     map.put("카테고리", category);
                 }
     
                 if (pcseq == 6) {
                     category = "샌드위치";
-                    map.put("이름", meRepo.findByMbiSeq(mbiSeq).getMbiName());
-                    map.put("가격", meRepo.findByMbiSeq(mbiSeq).getMbiCost());
-                    map.put("설명", meRepo.findByMbiSeq(mbiSeq).getMbiExplain());
                     map.put("카테고리", category);
                 }
             } 
-
+            map.put("이름", meRepo.findByMbiSeq(mbiSeq).getMbiName());
+            map.put("가격", meRepo.findByMbiSeq(mbiSeq).getMbiCost());
+            map.put("설명", meRepo.findByMbiSeq(mbiSeq).getMbiExplain());
+            
         return map;
     }
 }
