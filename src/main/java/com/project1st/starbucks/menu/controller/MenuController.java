@@ -25,14 +25,15 @@ public class MenuController {
         return mService.menuList(pageable);
     }
 
-    @GetMapping("/list/detail") // <특정 메뉴 조회> -> 완료 ♥
-    public ResponseEntity<Object> getMunuDetailList(@RequestParam Long mbiSeq) {
-        return mService.munuDetailList(mbiSeq);
+    @GetMapping("/list/detail") // <특정 메뉴 조회>
+    public ResponseEntity<Object> getMunuDetailList(@RequestParam Long menuNo) {
+        return mService.munuDetailList(menuNo);
     }
 
     @GetMapping("/search") // <메뉴 검색> -> 완료 ♥
     public ResponseEntity<Object> getMenuSearch(@RequestParam String menuName) {
         return mService.searchMenuName(menuName);
     }
+
 
 }

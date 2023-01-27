@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,10 +16,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "")
+@Builder
 public class QRentity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ii_seq")            private Long iiSeq;
-    @Column(name = "ii_name")           private String iiName;
+    @Column(name = "ii_file")           private String iiFile;
     @Column(name = "ii_uri")            private String iiUri;
     @Column(name = "ii_mbi_seq")        private Long iiMbiSeq;
 }

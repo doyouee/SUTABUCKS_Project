@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 public class MembershipCardController {
     @Autowired MembershipCardService cardService;
 
-    //카드생성 -> 완료 ♥
+    //카드생성 -> 완료 ♥ -> 진혁이 서버에서 돌아가는지 확인
     @PostMapping("/new")
     public ResponseEntity<Object> postNewMembershipCard(@RequestBody MembershipCardEntity data, HttpSession session) throws Exception {
         return cardService.createNewMembershipCard(data, session);
@@ -38,16 +38,17 @@ public class MembershipCardController {
     }
     
 
+    //카드 이미지 저장
     @GetMapping("/image/{uri}")
     public ResponseEntity<Resource> getCardQRImage(@PathVariable String uri, HttpServletRequest request) throws Exception {
         return cardService.getCardQRImage(uri, request);
     }
 
 
-    //카드조회 -> 완료 ♥
+    //카드조회
     @GetMapping("/detail")
     public ResponseEntity<Object> getMembershipCard(HttpSession session) {
-        return cardService.showMembershipCard(session);
+        return cardService.detailMembershipCard(session);
     }
     
 
