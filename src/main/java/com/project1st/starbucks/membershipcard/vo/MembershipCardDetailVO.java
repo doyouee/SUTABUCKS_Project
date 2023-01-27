@@ -33,14 +33,5 @@ public class MembershipCardDetailVO {
         this.cardQRFile = cardQr.getCardqrFile();
         this.cardQRUri = cardQr.getCardqrUri();
     }
-    // public MembershipCardDetailVO(MembershipCardEntity card, MembershipCardQREntity cardQr) {
-    //     this.cardSeq = card.getCardSeq();
-    //     this.cardName = card.getCardName();
-    //     this.cardMoney = card.getCardMoney();
-    //     this.cardMemberSeq = card.getCardMiSeq();
-    //     this.cardImage = card.getCardImage();
-    //     this.cardQRFile = cardQr.getCardqrFile();
-    //     this.cardQRUri = cardQr.getCardqrUri();
-    // }
 
 }

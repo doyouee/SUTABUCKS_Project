@@ -1,6 +1,7 @@
 package com.project1st.starbucks.menu.vo;
 
 import com.project1st.starbucks.admin.entity.MenuImageEntity;
+import com.project1st.starbucks.menu.entity.MenuBasicInfoEntity;
 import com.project1st.starbucks.menu.entity.MenuQrEntity;
 
 import lombok.Data;
@@ -30,5 +31,4 @@ public class MenuDetailVO {
         this.menuQrFile = qr.getMqiImageFile();
         this.menuQrUri = qr.getMqiUri();
     }
-
 }

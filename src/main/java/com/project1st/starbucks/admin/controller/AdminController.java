@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.project1st.starbucks.admin.entity.AnnouncementEntity;
 import com.project1st.starbucks.admin.entity.EventDetailEntity;
 import com.project1st.starbucks.admin.entity.EventEntity;
 import com.project1st.starbucks.admin.entity.MemberEntity;
@@ -33,6 +34,7 @@ import com.project1st.starbucks.admin.repository.CouponRepository;
 import com.project1st.starbucks.admin.repository.EventDetailRepository;
 import com.project1st.starbucks.admin.repository.EventRepository;
 import com.project1st.starbucks.admin.repository.MemberRepository;
+import com.project1st.starbucks.admin.repository.MembershipImageRepository;
 import com.project1st.starbucks.admin.repository.MenuImageRepository;
 import com.project1st.starbucks.admin.repository.MenuNutritionRepository;
 import com.project1st.starbucks.admin.repository.MenuRepository;
@@ -40,10 +42,13 @@ import com.project1st.starbucks.admin.repository.StoreRepository;
 import com.project1st.starbucks.admin.service.AnnouncementService;
 import com.project1st.starbucks.admin.service.CouponService;
 import com.project1st.starbucks.admin.service.EventService;
+import com.project1st.starbucks.admin.service.MembershipImageService;
 import com.project1st.starbucks.admin.service.MenuImageService;
 import com.project1st.starbucks.admin.service.MenuNutritionService;
 import com.project1st.starbucks.admin.service.MenuService;
 import com.project1st.starbucks.admin.service.StoreAdminService;
+import com.project1st.starbucks.membershipcard.repository.MembershipCardRepository;
+import com.project1st.starbucks.membershipcard.service.MembershipCardService;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
@@ -67,6 +72,8 @@ public class AdminController {
     @Autowired CouponRepository cRepo;
     @Autowired MenuNutritionRepository mnRepo;
     @Autowired MenuNutritionService mnService;
+    @Autowired MembershipImageService mcService;
+    @Autowired MembershipImageRepository mcRepo;
 
     @GetMapping("/list") // 접근경로
     public Map<String, Object> getMain(
@@ -81,16 +88,12 @@ public class AdminController {
     
     @GetMapping("/event")
     public Map<String, Object> getEvent(Model model) {
-        Map<String, Object> eventMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
         List<EventEntity> event = eRepo.findAll();
-
-        Map<String, Object> detailMap = new LinkedHashMap<String, Object>();
         List<EventDetailEntity> detail = dRepo.findAll();
-
-        eventMap.put("event", event);
-        detailMap.put("detail", detail);
-        return eventMap;
-        
+        map.put("event", event);
+        map.put("detail", detail);
+        return map;
     }
 
     @PostMapping("/event")
@@ -115,7 +118,7 @@ public class AdminController {
     @PostMapping("/notice")
     public Map<String, Object> addAnnouncement(
         @RequestParam String saTitle,
-        @RequestParam String saContent,
+        @Nullable @RequestParam String saContent,
         @RequestPart MultipartFile saImgFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
@@ -325,4 +328,43 @@ public class AdminController {
         return map;
     } 
 
+    @GetMapping("/menu") // 접근경로
+    public Map<String, Object> getMenu(
+    ) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        List<MenuEntity> list = meRepo.findAll();
+        resultMap.put("menu", list);  
+        // templates/index.html
+        return resultMap;
+    }
+
+    @PostMapping("/membership")
+    public Map<String, Object> addMembershipcard(
+        @RequestParam MultipartFile ciImgFile,
+        @RequestParam String ciName
+    ) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(mcRepo.countByCiName(ciName) != 0) {
+            map.put("status", false);
+            map.put("message", "이미 등록되어있는 멤버십이미지 입니다.");
+            map.put("code", HttpStatus.CONFLICT);
+        }
+        else {
+            mcService.addEvent(ciImgFile, ciName);
+            map.put("status", true);
+            map.put("message", "멤버십이미지가 등록되었습니다.");
+            map.put("code", HttpStatus.CREATED);
+        }
+        return map;
+    }  
+
+    @GetMapping("/notice")
+    public Map<String, Object> getNotice(
+    ) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        List<AnnouncementEntity> list = aRepo.findAll();
+        resultMap.put("notice", list);  
+        // templates/index.html
+        return resultMap;
+    }
 }
