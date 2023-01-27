@@ -1,8 +1,6 @@
 package com.project1st.starbucks.admin.controller;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,13 +8,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -47,8 +43,6 @@ import com.project1st.starbucks.admin.service.MenuImageService;
 import com.project1st.starbucks.admin.service.MenuNutritionService;
 import com.project1st.starbucks.admin.service.MenuService;
 import com.project1st.starbucks.admin.service.StoreAdminService;
-import com.project1st.starbucks.membershipcard.repository.MembershipCardRepository;
-import com.project1st.starbucks.membershipcard.service.MembershipCardService;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
@@ -86,10 +80,16 @@ public class AdminController {
 
 
     @GetMapping("/event")
-    public Map < String, Object > getEvent(Model model) {
+    public Map < String, Object > getEvent() {
         Map < String, Object > map = new LinkedHashMap < String, Object > ();
         List < EventEntity > event = eRepo.findAll();
+        for(EventEntity entity : event) {
+            entity.setEvUri("http://haeji.mawani.kro.kr:9999/image/event/"+entity.getEvUri());
+        }
         List < EventDetailEntity > detail = dRepo.findAll();
+        for(EventDetailEntity entity : detail) {
+            entity.setEdiUri("http://haeji.mawani.kro.kr:9999/image/detail/"+entity.getEdiUri());
+        }
         map.put("event", event);
         map.put("detail", detail);
         return map;
