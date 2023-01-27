@@ -97,10 +97,18 @@ public class AdminController {
 
     @PostMapping("/event")
     public Map < String, Object > addEvent(
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate evStartDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate evEndDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ediStartDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ediEndDate, @RequestParam @Nullable String evContent, @RequestParam @Nullable String ediContents, @RequestPart MultipartFile evFile, @RequestPart MultipartFile edFile
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate evStartDate, 
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate evEndDate, 
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ediStartDate, 
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ediEndDate, 
+        @RequestParam @Nullable String evContent, 
+        @RequestParam @Nullable String ediContents, 
+        @RequestPart MultipartFile evFile, 
+        @RequestPart MultipartFile edFile,
+        @RequestParam String evTitle
     ) {
         Map < String, Object > map = new LinkedHashMap < > ();
-        eService.addEvent(evStartDate, evEndDate, ediStartDate, ediEndDate, evContent, ediContents, evFile, edFile);
+        eService.addEvent(evStartDate, evEndDate, ediStartDate, ediEndDate, ediContents, evContent, ediContents, evFile, edFile);;
         map.put("status", true);
         map.put("message", "이벤트가 등록되었습니다.");
         map.put("code", HttpStatus.CREATED);

@@ -35,6 +35,7 @@ public class EventService {
             LocalDate evEndDate,
             LocalDate ediStartDate,
             LocalDate ediEndDate,
+            String evTitle,
             @Nullable String evContent,
             @Nullable String ediContent,
             MultipartFile evFile,
@@ -63,6 +64,7 @@ public class EventService {
                 .evStartDate(evStartDate)
                 .evEndDate(evEndDate)
                 .evContent(evContent)
+                .evTitle(evTitle)
                 .evUri(iFileName)
                 .evFile(saveEventFileName).build();
 
