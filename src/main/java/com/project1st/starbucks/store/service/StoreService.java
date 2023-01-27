@@ -19,9 +19,7 @@ import com.project1st.starbucks.admin.entity.MenuNutritionEntity;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
 import com.project1st.starbucks.admin.repository.MenuImageRepository;
 import com.project1st.starbucks.admin.repository.MenuNutritionRepository;
-import com.project1st.starbucks.admin.repository.MenuRepository;
 import com.project1st.starbucks.menu.entity.MenuBasicInfoEntity;
-import com.project1st.starbucks.menu.entity.MenuOptionCategoryEntity;
 import com.project1st.starbucks.menu.entity.MenuOptionInfoEntity;
 import com.project1st.starbucks.menu.entity.MenuQrEntity;
 import com.project1st.starbucks.menu.entity.ProductCateOptionCateConnectionEntity;
@@ -498,7 +496,7 @@ public class StoreService {
         List<MenuStockVO> menuList = new ArrayList<MenuStockVO>();
         for(StoreMenuConnectEntity s : list) {
             store = new StoreInfoVO(s.getStore());
-            menuList.add(new MenuStockVO(smRepo.findById(s.getStoreMenuNo()).get()));
+            menuList.add(new MenuStockVO(smRepo.findById(s.getSmcSeq()).get()));
         }
         resultMap.put("status", true);
         resultMap.put("message", store.getBranch() + "의 전체 메뉴 입니다.");

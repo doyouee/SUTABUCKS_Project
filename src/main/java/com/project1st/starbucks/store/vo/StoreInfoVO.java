@@ -14,8 +14,8 @@ public class StoreInfoVO {
     private String branch;
     private String addressBasic;
     private String addressDetail;
-    private LocalTime openTime;
-    private LocalTime closeTime;
+    private String openTime;
+    private String closeTime;
     private String closeDays;
     private Integer minOrderPrice;
     private String agent;
