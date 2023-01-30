@@ -11,4 +11,5 @@ public interface AnnouncementRepository extends JpaRepository<AnnouncementEntity
     // AnnouncementEntity findBysaUri(String uri);
     public Integer countBySaSeq(Long saSeq);
     AnnouncementEntity findBySaSeq(Long saSeq);
+    public Integer countBySaTitle(String saTitle);
 }

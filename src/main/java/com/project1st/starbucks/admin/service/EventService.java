@@ -19,6 +19,8 @@ import com.project1st.starbucks.admin.repository.EventDetailRepository;
 import com.project1st.starbucks.admin.repository.EventRepository;
 import com.project1st.starbucks.admin.repository.MemberRepository;
 
+import jakarta.transaction.Transactional;
+
 
 
 @Service
@@ -95,6 +97,11 @@ public class EventService {
                 .edFile(saveDetailFileName).build();
                 detail = detailRepo.save(detail);
     }
+
+    @Transactional
+    public void deleteStore(Long evSeq){
+        eventRepo.deleteById(evSeq);
+    }    
 }
     
 

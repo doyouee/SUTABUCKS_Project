@@ -130,7 +130,7 @@ public class AdminController {
     ,@RequestPart MultipartFile edFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
-        eService.addEvent(evStartDate, evEndDate, ediStartDate, ediEndDate, ediContents, evContent, ediContents, evFile, edFile);;
+        eService.addEvent(evStartDate, evEndDate, ediStartDate, ediEndDate, ediContents, evContent, ediContents, evFile, edFile);
         map.put("status", true);
         map.put("message", "이벤트가 등록되었습니다.");
         map.put("code", HttpStatus.CREATED);
@@ -144,23 +144,21 @@ public class AdminController {
         @RequestPart MultipartFile saImgFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
-
-        aService.addEvent(saTitle, saContent, saImgFile);
-        map.put("status", true);
-        map.put("message", "공지사항이 등록되었습니다.");
-        map.put("code", HttpStatus.CREATED);
-        // if (aRepo.CountBySaTitle(saTitle) != 0) {
-        //     map.put("status", false);
-        //     map.put("message", "이미 존재하는 공지사항 제목 입니다.");
-        //     map.put("code", HttpStatus.CONFLICT);
-        // }
-
-        // else {
-        //     aService.addEvent(saTitle, saContent, saImgFile);
-        //     map.put("status", true);
-        //     map.put("message", "공지사항이 등록되었습니다.");
-        //     map.put("code", HttpStatus.CREATED);
-        // }
+        // aService.addEvent(saTitle, saContent, saImgFile);
+        // map.put("status", true);
+        // map.put("message", "공지사항이 등록되었습니다.");
+        // map.put("code", HttpStatus.CREATED);
+        if (aRepo.countBySaTitle(saTitle) != 0) {
+            aService.addEvent(saTitle, saContent, saImgFile);
+            map.put("status", true);
+            map.put("message", "공지사항이 등록되었습니다.");
+            map.put("code", HttpStatus.CREATED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "이미 존재하는 공지사항 제목 입니다.");
+            map.put("code", HttpStatus.CONFLICT);
+        }
 
         return map;
     }
@@ -233,19 +231,6 @@ public class AdminController {
         return map;
     } 
 
-    // @PostMapping("menuimg")
-    // public Map<String, Object> addMenuImage(
-    //     @RequestParam Long miiNumber,
-    //     @RequestPart MultipartFile miiImgFile
-    // ){
-    //     Map<String, Object> map = new LinkedHashMap<>();
-    //     meiService.addEvent(miiImgFile, miiNumber);
-    //     map.put("status", true);
-    //     map.put("message", "메뉴 이미지가 등록되었습니다.");
-    //     map.put("code", HttpStatus.CREATED);
-    //     return map;
-    // }
-
     @PostMapping("/store")
     public @ResponseBody Map<String, Object> addStore (
         @RequestParam String sbiBranchName,
@@ -268,7 +253,7 @@ public class AdminController {
             map.put("code", HttpStatus.CONFLICT);
         }
         else {
-            sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMinOrder);;
+            sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMinOrder);
             map.put("status", true);
             map.put("message", "지점이 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
@@ -350,27 +335,62 @@ public class AdminController {
         return map;
     }
 
-    
+    @GetMapping("deleteevent")
+    public @ResponseBody Map<String, Object> getEventDelete(@RequestParam Long evSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(eRepo.countByEvSeq(evSeq) != 0) {
+            eService.deleteStore(evSeq);
+            map.put("status", true);
+            map.put("message", "이벤트가 삭제되었습니다.");
+            map.put("code", HttpStatus.ACCEPTED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "이벤트가 존재하지 않습니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
 
-    // @PostMapping("menuimg")
-    // public Map<String, Object> addMenuImage(
-    //     @RequestParam Long miiNumber,
-    //     @RequestPart MultipartFile miiImgFile
-    // ){
-    //     Map<String, Object> map = new LinkedHashMap<>();
-    //     meiService.addEvent(miiImgFile, miiNumber);
-    //     map.put("status", true);
-    //     map.put("message", "메뉴 이미지가 등록되었습니다.");
-    //     map.put("code", HttpStatus.CREATED);
-    //     return map;
-    // }
+    @GetMapping("deletenotice")
+    public @ResponseBody Map<String, Object> getNoticeDelete(@RequestParam Long saSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(aRepo.countBySaSeq(saSeq) != 0) {
+            aService.deleteNotice(saSeq);
+            map.put("status", true);
+            map.put("message", "공지사항이 삭제되었습니다.");
+            map.put("code", HttpStatus.ACCEPTED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "공지사항이 존재하지 않습니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+    @GetMapping("deletecoupon")
+    public @ResponseBody Map<String, Object> getCouponDelete(@RequestParam Long ciSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(cRepo.countByCiSeq(ciSeq) != 0) {
+            cService.deleteCoupon(ciSeq);
+            map.put("status", true);
+            map.put("message", "쿠폰이 삭제되었습니다.");
+            map.put("code", HttpStatus.ACCEPTED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "쿠폰이 존재하지 않습니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
 
     @GetMapping("/menu") // 접근경로
     public @ResponseBody Map < String, Object > getMenu() {
         Map < String, Object > resultMap = new LinkedHashMap < String, Object > ();
         List < MenuEntity > list = meRepo.findAll();
         resultMap.put("menu", list);
-        // templates/index.html
         return resultMap;
     }
 
