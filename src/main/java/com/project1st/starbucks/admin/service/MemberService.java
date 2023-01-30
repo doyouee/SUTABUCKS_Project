@@ -658,10 +658,10 @@ public class MemberService {
     public Map<String, Object> PwdAuthNumByEmail(PostFindPwdDTO data, HttpSession session){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         MemberEntity user = null;
-        String id = data.getId();
-        String name= data.getName();
+        String id = data.getMiId();
+        String name= data.getMiName();
         try {
-            user = mRepo.findByMiNameAndMiId(data.getName(), data.getId());
+            user = mRepo.findByMiNameAndMiId(data.getMiName(), data.getMiId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -682,7 +682,7 @@ public class MemberService {
              // 인증번호 생성
              Integer certificationNum = GetAuthNum.getAuthNum();
              // 인증번호 이메일로 발송
-             sendMail.sendMail(data.getId(), certificationNum);
+             sendMail.sendMail(data.getMiId(), certificationNum);
  
              // 입력받은 이름, 전화번호와 일치하는 사용자 정보 seesion에 저장
              // 생성한 인증번호 session 에 저장
