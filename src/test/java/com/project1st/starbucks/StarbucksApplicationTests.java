@@ -25,6 +25,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project1st.starbucks.admin.entity.MemberEntity;
 // import com.project1st.starbucks.jwt.MakeJwtToken;
+import com.project1st.starbucks.admin.repository.MemberInfoRepository;
+import com.project1st.starbucks.menu.repository.MenuBasicInfoRepository;
+import com.project1st.starbucks.menu.repository.MenuOptionCategoryRepository;
+import com.project1st.starbucks.menu.repository.MenuOptionInfoRepository;
+import com.project1st.starbucks.store.repository.StoreBasicInfoRepository;
+import com.project1st.starbucks.store.repository.StoreMenuConnectRepository;
 
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

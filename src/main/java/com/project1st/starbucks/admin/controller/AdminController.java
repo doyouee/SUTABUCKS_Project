@@ -10,15 +10,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project1st.starbucks.admin.entity.AnnouncementEntity;
@@ -45,9 +42,6 @@ import com.project1st.starbucks.admin.service.MenuImageService;
 import com.project1st.starbucks.admin.service.MenuNutritionService;
 import com.project1st.starbucks.admin.service.MenuService;
 import com.project1st.starbucks.admin.service.StoreAdminService;
-import com.project1st.starbucks.membershipcard.repository.MembershipCardRepository;
-import com.project1st.starbucks.membershipcard.service.MembershipCardService;
-
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
 
@@ -83,9 +77,35 @@ public class AdminController {
         return resultMap;
     }
 
-    
     @GetMapping("/event")
-    public @ResponseBody Map<String, Object> getEvent(Model model) {
+    public @ResponseBody Map<String, Object> getEvent(@RequestParam Long evSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (eRepo.countByEvSeq(evSeq) != 0) {
+            map.put("event", eRepo.findByEvSeq(evSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 메뉴입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+    @GetMapping("/notice")
+    public @ResponseBody Map<String, Object> getNotice(@RequestParam Long saSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (aRepo.countBySaSeq(saSeq) != 0) {
+            map.put("event", aRepo.findBySaSeq(saSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 공지사항입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+
+    @GetMapping("/eventlist")
+    public @ResponseBody Map<String, Object> getEventList(Model model) {
         Map<String, Object> eventMap = new LinkedHashMap<String, Object>();
         List<EventEntity> event = eRepo.findAll();
 
@@ -373,8 +393,8 @@ public class AdminController {
         return map;
     }
 
-    @GetMapping("/notice")
-    public @ResponseBody Map < String, Object > getNotice() {
+    @GetMapping("/noticelist")
+    public @ResponseBody Map < String, Object > getNoticeList() {
         Map < String, Object > resultMap = new LinkedHashMap < String, Object > ();
         List < AnnouncementEntity > list = aRepo.findAll();
         resultMap.put("notice", list);
