@@ -5,11 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel = "stylesheet" href="admin\admin.css">
+    <link rel = "stylesheet" href="css/member.css">
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <body>
     <table id = "memberList"  border="1">
+        <nav id = "topMenu">
+            <ul>
+                <li><a class = "menuLink" href="main.html">메인</a></li>
+                <li><a class = "menuLink" href="member.html">회원관리</a>
+                    <!-- <ul class = "sub" >
+                        <li><a href = "#">test1</a></li>
+                    </ul> -->
+                </li>
+                <li><a class = "menuLink" href="store.html">지점관리</a></li>
+                <li><a class = "menuLink" href="notice.html">공지사항등록</a></li>
+                <li><a class = "menuLink" href="event.html">이벤트등록</a></li>
+                <li><a class = "menuLink" href="menu.html">메뉴등록</a></li>
+            </ul>
+        </nav>
+    <script>
+        $(".menuLink").mouseover(function(){
+            if($(".sub").is(":visible")){
+                    $(".sub").slideUp();
+                }
+                else{
+                    $(".sub").slideDown();
+            }
+        })
+    </script>
+
         <h1>회원목록</h1>
         <thead>
             <th>번호</th>
@@ -21,7 +47,7 @@
         </thead>
         <!-- 회원검색창 -->
         <form action="#" id="search_form">
-            <input type = 'text' id="name">
+            <input type = 'text' id="name" placeholder="회원이름을 입력하세요">
             <button onclick="searchMember();" id="btn">검색</button>
         </form>
         <button onclick="mList();">회원목록 조회</button>
