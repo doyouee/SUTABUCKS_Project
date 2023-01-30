@@ -1,6 +1,7 @@
 package com.project1st.starbucks;
 
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
 import com.project1st.starbucks.admin.entity.MemberEntity;
+// import com.project1st.starbucks.jwt.MakeJwtToken;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
 import com.project1st.starbucks.menu.repository.MenuBasicInfoRepository;
 import com.project1st.starbucks.menu.repository.MenuOptionCategoryRepository;
@@ -27,6 +29,12 @@ import com.project1st.starbucks.menu.repository.MenuOptionInfoRepository;
 import com.project1st.starbucks.store.repository.StoreBasicInfoRepository;
 import com.project1st.starbucks.store.repository.StoreMenuConnectRepository;
 
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpSession;
+import net.nurigo.java_sdk.Coolsms;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @SpringBootTest
 class StarbucksApplicationTests {
@@ -186,6 +194,16 @@ class StarbucksApplicationTests {
             if(menuRepo.findAll().get(i).getMbiName().contains(searchKeyword)){
                 System.out.println(menuRepo.findById((long)i));
             }
+
+        // //jwttokken생성
+        // @Autowired MakeJwtToken makeJwt;
+        // @Test
+        // public void makeJwtTest(){
+        //  String jwt = makeJwt.makeJwt();
+        //  System.out.println("JWT = "+ jwt);
+
+        // }
+
         }
     }
 

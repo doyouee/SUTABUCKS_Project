@@ -9,9 +9,11 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
+import com.project1st.starbucks.jwt.JWT;
 import com.project1st.starbucks.member.DTO.PostFindPwdDTO;
 import com.project1st.starbucks.member.DTO.PostAuthNumByEmailDTO;
 import com.project1st.starbucks.member.DTO.PostFindIdDTO;
@@ -34,6 +36,7 @@ public class MemberService {
     @Autowired SendMessage sendMessage;
     @Autowired GetAuthNum getAuthNum;
     @Autowired GetTempPwd getTempPwd;
+    @Autowired JWT Jwt;
 //    " ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$"
 
     // 일반회원가입 메소드
@@ -240,7 +243,7 @@ public class MemberService {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         MemberEntity loginUser = null;
         try {
-            loginUser = mRepo.findByMiIdAndMiPwd(data.getId(), AESAlgorithm.Encrypt(data.getPwd()));
+            loginUser = mRepo.findByMiIdAndMiPwd(data.getMiId(), AESAlgorithm.Encrypt(data.getMiPwd()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -258,7 +261,9 @@ public class MemberService {
         }
         // 회원 상태값 1일때(정상로그인)
         else {
+            String jwtToken = Jwt.createJwt(data.getMiId());
             session.setAttribute("loginUser", loginUser);
+            resultMap.put("jwt", jwtToken);
             resultMap.put("status", true);
             resultMap.put("message", "로그인 되었습니다");
             resultMap.put("code", HttpStatus.ACCEPTED);
@@ -267,9 +272,9 @@ public class MemberService {
     }
     
     // 로그인한 회원 정보 조회
-    public Map<String, Object> showLoginMemberInfo(HttpSession session) {
+    public Map<String, Object> showLoginMemberInfo(@RequestParam String miId) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
+        MemberEntity memberInfo = mRepo.findByMiId(miId);
         if (memberInfo != null) {
             memberInfo = mRepo.findByMiId(memberInfo.getMiId());
             resultMap.put("status", true);
@@ -301,27 +306,27 @@ public class MemberService {
         if (memberInfo != null) {
             if (memberInfo.getMiPwd() != null) {
                 try {
-                    String encPwd = AESAlgorithm.Encrypt(editMemberInfo.getPwd());
+                    String encPwd = AESAlgorithm.Encrypt(editMemberInfo.getMiPwd());
                     // String checkEncPwd = AESAlgorithm.Encrypt(editMemberInfo.getCheckPwd());
                     memberInfo.setMiPwd(encPwd);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if (editMemberInfo.getName() != null) {
-                memberInfo.setMiName(editMemberInfo.getName());
+            if (editMemberInfo.getMiName() != null) {
+                memberInfo.setMiName(editMemberInfo.getMiName());
             }
-            if (editMemberInfo.getNickName() != null) {
-                memberInfo.setMiNickname(editMemberInfo.getNickName());
+            if (editMemberInfo.getMiNickName() != null) {
+                memberInfo.setMiNickname(editMemberInfo.getMiNickName());
             }
-            if (editMemberInfo.getPhoneNum() != null) {
-                memberInfo.setMiName(editMemberInfo.getPhoneNum());
+            if (editMemberInfo.getMiPhoneNum() != null) {
+                memberInfo.setMiName(editMemberInfo.getMiPhoneNum());
             }
-            if (editMemberInfo.getAdress() != null) {
-                memberInfo.setMiName(editMemberInfo.getAdress());
+            if (editMemberInfo.getMiAdress() != null) {
+                memberInfo.setMiName(editMemberInfo.getMiAdress());
             }
-            if (editMemberInfo.getDetailAdress() != null) {
-                memberInfo.setMiName(editMemberInfo.getDetailAdress());
+            if (editMemberInfo.getMiDetailAdress() != null) {
+                memberInfo.setMiName(editMemberInfo.getMiDetailAdress());
             }
             mRepo.save(memberInfo);
             session.removeAttribute("loginUser");
@@ -340,7 +345,7 @@ public class MemberService {
     
     // 회원탈퇴(상태값 변경)
     // 회원 상태값(1. 기본 2. 정지 3.탈퇴)
-    public Map<String, Object> deleteMemberifo(HttpSession session) {
+    public Map<String, Object> deleteMemberinfo(HttpSession session) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
         if (memberInfo != null) {
@@ -387,7 +392,7 @@ public class MemberService {
             // resultMap.put("code", HttpStatus.BAD_REQUEST);
         // }
         Integer i = 0;
-        if (type.equals("id")) {
+        if (type.equals("miId")) {
             i = mRepo.countBymiId(content);
             if (i != 0) {
                 resultMap.put("status", false);
@@ -403,7 +408,7 @@ public class MemberService {
                 resultMap.put("message", "사용할 수 있는 아이디 입니다.");
                 resultMap.put("code", HttpStatus.OK);
             }
-        } else if (type.equals("phoneNum")) {
+        } else if (type.equals("miPhoneNum")) {
             i = mRepo.countBymiPhoneNum(content);
             if (i != 0) {
                 resultMap.put("status", false);
@@ -414,7 +419,7 @@ public class MemberService {
                 resultMap.put("message", "가입할 수 있어요(중복되는 전화번호가 없어요).");
                 resultMap.put("code", HttpStatus.OK);
             }
-        } else if (type.equals("nickName")) {
+        } else if (type.equals("miNickName")) {
             i = mRepo.countBymiNickname(content);
             if (i != 0) {
                 resultMap.put("status", false);
@@ -425,7 +430,7 @@ public class MemberService {
                 resultMap.put("message", "사용할 수 있는 닉네임 입니다.");
                 resultMap.put("code", HttpStatus.OK);
             }
-        } else if (type.equals("businessNum")) {
+        } else if (type.equals("miBusinessNum")) {
             i = mRepo.countBymiBusinessNum(content);
             if (i != 0) {
                 resultMap.put("status", false);
@@ -437,11 +442,10 @@ public class MemberService {
                 resultMap.put("code", HttpStatus.OK);
             }
         } 
-        else if(type.equals("pwd")){
+        else if(type.equals("miPwd")){
                 if(!Pattern.matches(pwdPattern, content)){
                 resultMap.put("status", false);
                 resultMap.put("message", "비밀번호는 영문과 숫자를 포함하여 8~20자여야 합니다.");
-                resultMap.put("code", HttpStatus.BAD_REQUEST);
                 }
                 else{
                 resultMap.put("status", false);
@@ -450,7 +454,7 @@ public class MemberService {
                 }
             }
         else{
-            resultMap.put("status", false);
+            resultMap.put("miStatus", false);
             resultMap.put("message", "유효성 검사할 타입(id, phoneNum, nickName, businessNum, pwd) 을 확인해주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
         }
@@ -464,10 +468,10 @@ public class MemberService {
     public Map<String, Object> IdAuthNumByPhone(PostFindIdDTO data, HttpSession session) {
         MemberEntity user = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        String name = data.getName();
-        String phoneNum = data.getPhoneNum();
+        String name = data.getMiName();
+        String phoneNum = data.getMiPhoneNum();
         try {
-            user = mRepo.findByMiNameAndMiPhoneNum(data.getName(), data.getPhoneNum());
+            user = mRepo.findByMiNameAndMiPhoneNum(data.getMiName(), data.getMiPhoneNum());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -491,7 +495,7 @@ public class MemberService {
             // 인증번호 생성
             Integer certificationNum = GetAuthNum.getAuthNum();
             // 인증번호 메시지로 발송
-            sendMessage.sendAuthNumbyPhone(data.getPhoneNum(), certificationNum);
+            sendMessage.sendAuthNumbyPhone(data.getMiPhoneNum(), certificationNum);
 
             // 입력받은 이름, 전화번호와 일치하는 사용자 정보 seesion에 저장
             // 생성한 인증번호 session 에 저장
@@ -513,7 +517,7 @@ public class MemberService {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         MemberEntity user = null;
         try {
-            user = mRepo.findByMiName(data.getName());
+            user = mRepo.findByMiName(data.getMiName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -522,12 +526,12 @@ public class MemberService {
             resultMap.put("message", "등록되지 않은 이름입니다.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
         }
-        else if(data.getName() == null){
+        else if(data.getMiName() == null){
             resultMap.put("status", false);
             resultMap.put("message", "이름을 입력해주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
         }
-        else if(data.getEmail() == null){
+        else if(data.getMiEmail() == null){
             resultMap.put("status", false);
             resultMap.put("message", "인증번호를 받을 이메일을 입력해주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
@@ -536,7 +540,7 @@ public class MemberService {
              // 인증번호 생성
              Integer certificationNum = GetAuthNum.getAuthNum();
              // 인증번호 이메일로 발송
-             sendMail.sendMail(data.getEmail(), certificationNum);
+             sendMail.sendMail(data.getMiEmail(), certificationNum);
  
              // 입력받은 이름, 전화번호와 일치하는 사용자 정보 seesion에 저장
              // 생성한 인증번호 session 에 저장
@@ -612,7 +616,7 @@ public class MemberService {
         MemberEntity user = null;
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
-            user = mRepo.findByMiNameAndMiPhoneNum(data.getName(), data.getPhoneNum());
+            user = mRepo.findByMiNameAndMiPhoneNum(data.getMiName(), data.getMiPhoneNum());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -621,11 +625,11 @@ public class MemberService {
             resultMap.put("status", false);
             resultMap.put("message", "등록된 회원정보와 일치하지 않습니다");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
-        } else if (data.getName() == null) {
+        } else if (data.getMiName() == null) {
             resultMap.put("status", false);
             resultMap.put("message", "이름을 입력해주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
-        } else if (data.getPhoneNum() == null) {
+        } else if (data.getMiPhoneNum() == null) {
             resultMap.put("status", false);
             resultMap.put("message", "전화번호를 입력해 주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
@@ -633,7 +637,7 @@ public class MemberService {
             // 인증번호 생성
             Integer certificationNum = GetAuthNum.getAuthNum();
             // 인증번호 메시지로 발송
-            sendMessage.sendAuthNumbyPhone(data.getPhoneNum(), certificationNum);
+            sendMessage.sendAuthNumbyPhone(data.getMiPhoneNum(), certificationNum);
 
             // 입력받은 이름, 전화번호와 일치하는 사용자 정보 seesion에 저장
             // 생성한 인증번호 session 에 저장
@@ -654,10 +658,10 @@ public class MemberService {
     public Map<String, Object> PwdAuthNumByEmail(PostFindPwdDTO data, HttpSession session){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         MemberEntity user = null;
-        String id = data.getId();
-        String name= data.getName();
+        String id = data.getMiId();
+        String name= data.getMiName();
         try {
-            user = mRepo.findByMiNameAndMiId(data.getName(), data.getId());
+            user = mRepo.findByMiNameAndMiId(data.getMiName(), data.getMiId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -678,7 +682,7 @@ public class MemberService {
              // 인증번호 생성
              Integer certificationNum = GetAuthNum.getAuthNum();
              // 인증번호 이메일로 발송
-             sendMail.sendMail(data.getId(), certificationNum);
+             sendMail.sendMail(data.getMiId(), certificationNum);
  
              // 입력받은 이름, 전화번호와 일치하는 사용자 정보 seesion에 저장
              // 생성한 인증번호 session 에 저장
