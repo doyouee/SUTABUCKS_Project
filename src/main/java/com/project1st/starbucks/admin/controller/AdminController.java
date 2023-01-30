@@ -90,6 +90,19 @@ public class AdminController {
         return map;
     }
 
+    @GetMapping("/eventdetail")
+    public @ResponseBody Map<String, Object> getEventDetail(@RequestParam Long ediSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (dRepo.countByEdiSeq(ediSeq) != 0) {
+            map.put("event", dRepo.findByEdiSeq(ediSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 이벤트입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
     @GetMapping("/notice")
     public @ResponseBody Map<String, Object> getNotice(@RequestParam Long saSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
