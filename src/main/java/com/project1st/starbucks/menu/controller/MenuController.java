@@ -41,17 +41,18 @@ public class MenuController {
         return mService.searchMenuName(menuName);
     }
 
-    // QR코드 생성
+    // <QR코드 생성>
     @PostMapping("/qr/new")
     public ResponseEntity<Object> postQR(@RequestParam String menuName) throws Exception{
         return mService.makeQR(menuName);
     }
 
 
-    // 만든 QR코드 이미지 다운로드
+    // <만든 QR코드 이미지 다운로드>
     @GetMapping("/qr/image/{uri}")
     public ResponseEntity<Resource> getMenuQRImage(@PathVariable String uri, HttpServletRequest request) throws Exception {
         return mService.getMenuQRImage(uri, request);
     }
+
 
 }

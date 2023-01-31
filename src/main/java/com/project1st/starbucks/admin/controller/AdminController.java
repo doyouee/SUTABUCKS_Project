@@ -8,16 +8,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project1st.starbucks.admin.entity.AnnouncementEntity;
@@ -44,9 +44,6 @@ import com.project1st.starbucks.admin.service.MenuImageService;
 import com.project1st.starbucks.admin.service.MenuNutritionService;
 import com.project1st.starbucks.admin.service.MenuService;
 import com.project1st.starbucks.admin.service.StoreAdminService;
-import com.project1st.starbucks.membershipcard.repository.MembershipCardRepository;
-import com.project1st.starbucks.membershipcard.service.MembershipCardService;
-
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
 
@@ -82,7 +79,6 @@ public class AdminController {
         return resultMap;
     }
 
-    
     @GetMapping("/event")
     public  Map<String, Object> getEvent(Model model) {
         Map<String, Object> eventMap = new LinkedHashMap<String, Object>();
@@ -109,7 +105,7 @@ public class AdminController {
     ,@RequestPart MultipartFile edFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
-        eService.addEvent(evStartDate, evEndDate, ediStartDate, ediEndDate, ediContents, evContent, ediContents, evFile, edFile);;
+        eService.addEvent(evStartDate, evEndDate, ediStartDate, ediEndDate, ediContents, evContent, ediContents, evFile, edFile);
         map.put("status", true);
         map.put("message", "이벤트가 등록되었습니다.");
         map.put("code", HttpStatus.CREATED);
@@ -123,23 +119,21 @@ public class AdminController {
         @RequestPart MultipartFile saImgFile
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
-
-        aService.addEvent(saTitle, saContent, saImgFile);
-        map.put("status", true);
-        map.put("message", "공지사항이 등록되었습니다.");
-        map.put("code", HttpStatus.CREATED);
-        // if (aRepo.CountBySaTitle(saTitle) != 0) {
-        //     map.put("status", false);
-        //     map.put("message", "이미 존재하는 공지사항 제목 입니다.");
-        //     map.put("code", HttpStatus.CONFLICT);
-        // }
-
-        // else {
-        //     aService.addEvent(saTitle, saContent, saImgFile);
-        //     map.put("status", true);
-        //     map.put("message", "공지사항이 등록되었습니다.");
-        //     map.put("code", HttpStatus.CREATED);
-        // }
+        // aService.addEvent(saTitle, saContent, saImgFile);
+        // map.put("status", true);
+        // map.put("message", "공지사항이 등록되었습니다.");
+        // map.put("code", HttpStatus.CREATED);
+        if (aRepo.countBySaTitle(saTitle) != 0) {
+            aService.addEvent(saTitle, saContent, saImgFile);
+            map.put("status", true);
+            map.put("message", "공지사항이 등록되었습니다.");
+            map.put("code", HttpStatus.CREATED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "이미 존재하는 공지사항 제목 입니다.");
+            map.put("code", HttpStatus.CONFLICT);
+        }
 
         return map;
     }
@@ -184,18 +178,16 @@ public class AdminController {
             map.put("message", "존재하지 않는 메뉴 입니다.");
             map.put("code", HttpStatus.BAD_REQUEST);
         }
-       
+        
         return map;
     }
 
     @PostMapping("/menu")
-    public  Map<String, Object> addMenu(
+    public @ResponseBody ResponseEntity<Object> addMenu(
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
         @RequestParam String mbiExplain,
-        @RequestParam Long mbiPcSeq,
-        @RequestParam Long miiNumber,
-        @RequestPart MultipartFile miiImgFile
+        @RequestParam Long mbiPcSeq
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
         if(meRepo.countByMbiName(mbiName) != 0) {
@@ -204,26 +196,25 @@ public class AdminController {
             map.put("code", HttpStatus.CONFLICT);
         }
         else {
-            meService.addMenu(mbiName, miiNumber, mbiCost, mbiExplain, mbiPcSeq, miiImgFile);
+            meService.addMenu(mbiName, mbiCost, mbiExplain, mbiPcSeq);
             map.put("status", true);
             map.put("message", "메뉴가 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
         }
-        return map;
+        return new ResponseEntity<Object>(map, (HttpStatus)map.get("code"));
     } 
 
-    // @PostMapping("menuimg")
-    // public Map<String, Object> addMenuImage(
-    //     @RequestParam Long miiNumber,
-    //     @RequestPart MultipartFile miiImgFile
-    // ){
-    //     Map<String, Object> map = new LinkedHashMap<>();
-    //     meiService.addEvent(miiImgFile, miiNumber);
-    //     map.put("status", true);
-    //     map.put("message", "메뉴 이미지가 등록되었습니다.");
-    //     map.put("code", HttpStatus.CREATED);
-    //     return map;
-    // }
+    @PostMapping("menuimg")
+    public @ResponseBody Map<String, Object> addMenuImage(
+        @RequestParam Long miiNumber,
+        @RequestPart MultipartFile miiImgFile
+    ){
+        Map<String, Object> map = new LinkedHashMap<>();
+        meiService.addEvent(miiImgFile, miiNumber);
+        map.put("status", true);
+        map.put("message", "메뉴 이미지가 등록되었습니다.");
+        return map;
+    }
 
     @PostMapping("/store")
     public  Map<String, Object> addStore (
@@ -247,7 +238,7 @@ public class AdminController {
             map.put("code", HttpStatus.CONFLICT);
         }
         else {
-            sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMinOrder);;
+            sService.addStore(sbiBranchName, sbiAddressBasic, sbiAddressDetail, sbiOpenTime, sbiCloseTime, sbiCloseDay, sbiMinOrder, sbiCeoName, sbiBusinessAddress, sbiPhone, sbiMinDeliveryTime, sbiMaxDeliveryTime, sbiMinOrder);
             map.put("status", true);
             map.put("message", "지점이 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
@@ -329,27 +320,62 @@ public class AdminController {
         return map;
     }
 
-    
+    @GetMapping("deleteevent")
+    public @ResponseBody Map<String, Object> getEventDelete(@RequestParam Long evSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(eRepo.countByEvSeq(evSeq) != 0) {
+            eService.deleteStore(evSeq);
+            map.put("status", true);
+            map.put("message", "이벤트가 삭제되었습니다.");
+            map.put("code", HttpStatus.ACCEPTED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "이벤트가 존재하지 않습니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
 
-    // @PostMapping("menuimg")
-    // public Map<String, Object> addMenuImage(
-    //     @RequestParam Long miiNumber,
-    //     @RequestPart MultipartFile miiImgFile
-    // ){
-    //     Map<String, Object> map = new LinkedHashMap<>();
-    //     meiService.addEvent(miiImgFile, miiNumber);
-    //     map.put("status", true);
-    //     map.put("message", "메뉴 이미지가 등록되었습니다.");
-    //     map.put("code", HttpStatus.CREATED);
-    //     return map;
-    // }
+    @GetMapping("deletenotice")
+    public @ResponseBody Map<String, Object> getNoticeDelete(@RequestParam Long saSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(aRepo.countBySaSeq(saSeq) != 0) {
+            aService.deleteNotice(saSeq);
+            map.put("status", true);
+            map.put("message", "공지사항이 삭제되었습니다.");
+            map.put("code", HttpStatus.ACCEPTED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "공지사항이 존재하지 않습니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+    @GetMapping("deletecoupon")
+    public @ResponseBody Map<String, Object> getCouponDelete(@RequestParam Long ciSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(cRepo.countByCiSeq(ciSeq) != 0) {
+            cService.deleteCoupon(ciSeq);
+            map.put("status", true);
+            map.put("message", "쿠폰이 삭제되었습니다.");
+            map.put("code", HttpStatus.ACCEPTED);
+        }
+        else {
+            map.put("status", false);
+            map.put("message", "쿠폰이 존재하지 않습니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
 
     @GetMapping("/menu") // 접근경로
     public  Map < String, Object > getMenu() {
         Map < String, Object > resultMap = new LinkedHashMap < String, Object > ();
         List < MenuEntity > list = meRepo.findAll();
         resultMap.put("menu", list);
-        // templates/index.html
         return resultMap;
     }
 
