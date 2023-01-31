@@ -2,8 +2,10 @@ package com.project1st.starbucks.menu.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,9 +143,10 @@ public class MenuInfoService {
     // <메뉴의 QR코드 생성>
     public ResponseEntity<Object> makeQR(String menuName, Long menuNo) throws Exception {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        Path menuqrLocation = Paths.get(qr_menu_img_path);
         String data = "http://haeji.mawani.kro.kr:9999/menu/list/detail?menuNo=" + menuNo;
         // String path = "D:\\home\\starbucks\\image\\menuqr\\" + menuName + ".jpg";
-        String path = qr_menu_img_path + "\\" + menuName + ".jpg";
+        String path = menuqrLocation + "/" + menuName + ".jpg";
         String charset = "UTF-8";
         Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
         hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -186,10 +189,11 @@ public class MenuInfoService {
 
 
     // <메뉴의 QR코드 생성 메서드>
-    public static void createQR(String data, String path, String charset, Map hashMap,  int height, int width) throws WriterException, IOException {
+    public void createQR(String data, String path, String charset, Map hashMap,  int height, int width) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(
             new String(data.getBytes(charset), charset), BarcodeFormat.QR_CODE, width, height);
-        MatrixToImageWriter.writeToFile(matrix,path.substring(path.lastIndexOf('.') + 1),new File(path));
+        MatrixToImageWriter.writeToFile(matrix, "jpg", new File(path));
+        // MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
     }
 
 
