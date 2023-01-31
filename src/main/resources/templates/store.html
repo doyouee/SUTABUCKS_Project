@@ -47,6 +47,7 @@
         <button onclick="deleteStore();">삭제</button>
     </form>
 
+    <a href = "addstore.html"><button>지점등록</button></a>
     <table id = "storeList" border="1">
         <thead>
             <th>번호</th>
@@ -96,8 +97,12 @@
                            "<td>"+response.data.store[i].sbiBusinessAddress+"</td>"+
                            "<td>"+response.data.store[i].sbiPhone+"</td>"+
                            "<td>"+deliverTime+"</td>"+
+                        //    "<td><button id = 'deleteBtn'>삭제</button></td>"+
                            "</tr>"
+                        //    let deletBtn = document.getElementById(deleteBtn)
+                        //    deletBtn.addEventListener("click", deleteStore())
                         //    document.getElementById(deleteBtn).addEventListener(click, deleteStore(response.data.store[i].sbiSeq))
+                    //   deleteBtn.addEventListener.('click', deleteStore)
                 }
                 document.querySelector("#storeList > tbody").innerHTML = dataStr
             }
@@ -105,12 +110,12 @@
             });
         // }
 
-        function deleteBtn(){
-            var deleteBtn = document.createElement('button');
-            var deleteBtnText = document.createTextNode('삭제');
-            deleteBtn.appendChild(deleteBtnText);
-            document.body.appendChild(deleteBtn);
-        }
+        // function deleteBtn(){
+        //     var deleteBtn = document.createElement('button');
+        //     var deleteBtnText = document.createTextNode('삭제');
+        //     deleteBtn.appendChild(deleteBtnText);
+        //     document.body.appendChild(deleteBtn);
+        // }
 
         function searchStore(){
         axios({
@@ -140,6 +145,7 @@
                            "<td>"+response.data.list[i].sbiBusinessAddress+"</td>"+
                            "<td>"+response.data.list[i].sbiPhone+"</td>"+
                            "<td>"+deliverTime+"</td>"+
+                           "<td><button>삭제<button></td>"+
                            "</tr>"
                 }
                 document.querySelector("#storeList > tbody").innerHTML = dataStr
@@ -151,8 +157,8 @@
 
         function deleteStore(){
             axios({
-                url : "http://haeji.mawani.kro.kr:9999/admin/store", //가게 삭제
-                method: "delete",
+                url : "http://haeji.mawani.kro.kr:9999/admin/deletestore", //가게 삭제
+                method: "get",
                 datatype: "JSON",
                 params :{
                     "sbiSeq" : document.getElementById("storeNum").value

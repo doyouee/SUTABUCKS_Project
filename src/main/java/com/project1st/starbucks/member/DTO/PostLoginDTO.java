@@ -22,8 +22,6 @@ public class PostLoginDTO {
         .miId(memberInfoEntity.getMiId())
         .miPwd(memberInfoEntity.getMiPwd())
         .build();
-
     }
-        
     }
 

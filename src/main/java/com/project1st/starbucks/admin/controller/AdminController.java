@@ -13,10 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,7 +47,7 @@ import com.project1st.starbucks.admin.service.StoreAdminService;
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired EventService eService;
@@ -70,7 +70,7 @@ public class AdminController {
     @Autowired MembershipImageService mcService;
 
     @GetMapping("/list") // 접근경로
-    public @ResponseBody Map<String, Object> getMain(
+    public  Map<String, Object> getMain(
     ) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         List<MemberEntity> list = mRepo.findAll();
@@ -80,7 +80,7 @@ public class AdminController {
     }
 
     @GetMapping("/event")
-    public @ResponseBody Map<String, Object> getEvent(@RequestParam Long evSeq) {
+    public Map<String, Object> getEvent(@RequestParam Long evSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
         if (eRepo.countByEvSeq(evSeq) != 0) {
             map.put("event", eRepo.findByEvSeq(evSeq));
@@ -93,7 +93,7 @@ public class AdminController {
     }
 
     @GetMapping("/eventdetail")
-    public @ResponseBody Map<String, Object> getEventDetail(@RequestParam Long ediSeq) {
+    public Map<String, Object> getEventDetail(@RequestParam Long ediSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
         if (dRepo.countByEdiSeq(ediSeq) != 0) {
             map.put("event", dRepo.findByEdiSeq(ediSeq));
@@ -106,7 +106,7 @@ public class AdminController {
     }
 
     @GetMapping("/notice")
-    public @ResponseBody Map<String, Object> getNotice(@RequestParam Long saSeq) {
+    public Map<String, Object> getNotice(@RequestParam Long saSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
         if (aRepo.countBySaSeq(saSeq) != 0) {
             map.put("event", aRepo.findBySaSeq(saSeq));
@@ -134,7 +134,7 @@ public class AdminController {
     }
 
     @PostMapping("/event")
-    public @ResponseBody Map<String, Object> addEvent(
+    public  Map<String, Object> addEvent(
     @RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate evStartDate 
     ,@RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate evEndDate 
     ,@RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ediStartDate 
@@ -153,7 +153,7 @@ public class AdminController {
     }
 
     @PostMapping("/notice")
-    public @ResponseBody Map<String, Object> addAnnouncement(
+    public  Map<String, Object> addAnnouncement(
         @RequestParam String saTitle,
         @RequestParam String saContent,
         @RequestPart MultipartFile saImgFile
@@ -179,7 +179,7 @@ public class AdminController {
     }
 
     @GetMapping("/modify")
-    public @ResponseBody Map<String, Object> getMemberStatusUpdate(@RequestParam Long seq, @RequestParam Integer status) {
+    public  Map<String, Object> getMemberStatusUpdate(@RequestParam Long seq, @RequestParam Integer status) {
         MemberEntity entity = mRepo.findByMiSeq(seq);
         Map<String, Object> map = new LinkedHashMap<>();
         if(mRepo.countByMiSeq(seq) != 0) {
@@ -199,7 +199,7 @@ public class AdminController {
 
     @PostMapping("/menuupdate")
     @Transactional
-    public @ResponseBody Map<String, Object> updateMenu(@RequestParam Long mbiSeq, @RequestParam @Nullable String mbiName, 
+    public  Map<String, Object> updateMenu(@RequestParam Long mbiSeq, @RequestParam @Nullable String mbiName, 
     @RequestParam @Nullable Integer mbiCost, @RequestParam @Nullable Integer mbiStatus, @RequestParam @Nullable String mbiExplain) {
         MenuEntity entity = meRepo.findByMbiSeq(mbiSeq);
         Map<String, Object> map = new LinkedHashMap<>();
@@ -227,9 +227,7 @@ public class AdminController {
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
         @RequestParam String mbiExplain,
-        @RequestParam Long mbiPcSeq,
-        @RequestParam Long miiNumber,
-        @RequestPart MultipartFile miiImgFile
+        @RequestParam Long mbiPcSeq
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
         if(meRepo.countByMbiName(mbiName) != 0) {
@@ -238,7 +236,7 @@ public class AdminController {
             map.put("code", HttpStatus.CONFLICT);
         }
         else {
-            meService.addMenu(mbiName, miiNumber, mbiCost, mbiExplain, mbiPcSeq, miiImgFile);
+            meService.addMenu(mbiName, mbiCost, mbiExplain, mbiPcSeq);
             map.put("status", true);
             map.put("message", "메뉴가 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
@@ -246,8 +244,20 @@ public class AdminController {
         return new ResponseEntity<Object>(map, (HttpStatus)map.get("code"));
     } 
 
+    @PostMapping("menuimg")
+    public Map<String, Object> addMenuImage(
+        @RequestParam Long miiNumber,
+        @RequestPart MultipartFile miiImgFile
+    ){
+        Map<String, Object> map = new LinkedHashMap<>();
+        meiService.addEvent(miiImgFile, miiNumber);
+        map.put("status", true);
+        map.put("message", "메뉴 이미지가 등록되었습니다.");
+        return map;
+    }
+
     @PostMapping("/store")
-    public @ResponseBody Map<String, Object> addStore (
+    public  Map<String, Object> addStore (
         @RequestParam String sbiBranchName,
         @RequestParam String sbiAddressBasic,
         @RequestParam String sbiAddressDetail,
@@ -278,7 +288,7 @@ public class AdminController {
 
 
     @PostMapping("/coupon")
-    public @ResponseBody Map<String, Object> addCoupon (
+    public  Map<String, Object> addCoupon (
         @RequestParam Long ciDiscount,
         @RequestParam LocalDate ciRegDt,
         @RequestParam LocalDate ciExDt,
@@ -305,7 +315,7 @@ public class AdminController {
 
     
     @GetMapping("/store")
-    public @ResponseBody Map<String, Object> getStore(Model model) {
+    public  Map<String, Object> getStore(Model model) {
         Map<String, Object> storeMap = new LinkedHashMap<String, Object>();
         List<StoreEntity> store = sRepo.findAll();
 
@@ -314,7 +324,7 @@ public class AdminController {
     }
 
     @PostMapping("/nutri")
-    public @ResponseBody Map<String, Object> addNutrition(
+    public  Map<String, Object> addNutrition(
         @RequestParam MultipartFile mnImgFile,
         @RequestParam Long mnMbiSeq
     ) {
@@ -333,8 +343,8 @@ public class AdminController {
         return map;
     } 
    
-    @GetMapping("deletestore")
-    public @ResponseBody Map<String, Object> getStoreDelete(@RequestParam Long sbiSeq) {
+    @GetMapping("/deletestore")
+    public  Map<String, Object> getStoreDelete(@RequestParam Long sbiSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
         if(sRepo.countBySbiSeq(sbiSeq) != 0) {
             sService.deleteStore(sbiSeq);
@@ -402,7 +412,7 @@ public class AdminController {
     }
 
     @GetMapping("/menu") // 접근경로
-    public @ResponseBody Map < String, Object > getMenu() {
+    public  Map < String, Object > getMenu() {
         Map < String, Object > resultMap = new LinkedHashMap < String, Object > ();
         List < MenuEntity > list = meRepo.findAll();
         resultMap.put("menu", list);
@@ -410,7 +420,7 @@ public class AdminController {
     }
 
     @PostMapping("/membership")
-    public @ResponseBody Map < String, Object > addMembershipcard(
+    public  Map < String, Object > addMembershipcard(
         @RequestParam MultipartFile ciImgFile,
         @RequestParam String ciName
     ) {
@@ -429,7 +439,7 @@ public class AdminController {
     }
 
     @GetMapping("/noticelist")
-    public @ResponseBody Map < String, Object > getNoticeList() {
+    public  Map < String, Object > getNotice() {
         Map < String, Object > resultMap = new LinkedHashMap < String, Object > ();
         List < AnnouncementEntity > list = aRepo.findAll();
         resultMap.put("notice", list);
@@ -438,7 +448,7 @@ public class AdminController {
     }
 
     @GetMapping("/menudetail")
-    public @ResponseBody Map < String, Object > getDetail(@RequestParam Long mbiSeq) {
+    public  Map < String, Object > getDetail(@RequestParam Long mbiSeq) {
         Map < String, Object > map = new LinkedHashMap < > ();
         if (mbiSeq > meRepo.count() || mbiSeq <= 0 || mbiSeq == null) {
             map.put("status", false);
