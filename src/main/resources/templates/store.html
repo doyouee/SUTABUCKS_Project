@@ -69,12 +69,10 @@
     </table>
     
     <script>
-        document.addEventListener("DOMContentLoaded", function(){
+         document.addEventListener("DOMContentLoaded", function(){
             storeList();
-        })
-        
-        // function storeList(){
-            function storeList(){
+        });
+        function storeList(){
             axios({
                 url: 'http:haeji.mawani.kro.kr:9999/admin/store', // 가게리스트
                 method: 'get',
@@ -115,7 +113,6 @@
             storeList()
             });
         }
-        // }
 
         // function deleteBtn(){
         //     var deleteBtn = document.createElement('button');
@@ -172,8 +169,10 @@
                 }
             })
             .then(function(response){
+                if(confirm("삭제하시겠습니까?")){
                 console.log(response.data)
-                storeList();
+                storeList()
+            }
             })
             .catch(function(err){
                 console.log(err.response.data.message)
