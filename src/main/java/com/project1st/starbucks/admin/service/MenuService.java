@@ -40,7 +40,6 @@ public class MenuService {
     ) {
         Calendar c = Calendar.getInstance();
         Path menuFolderLocation = Paths.get(menu_img_path);
-
         String menuOriginFileName = miiImgFile.getOriginalFilename();
         String[] iFile = menuOriginFileName.split(("\\."));
         String iExt = iFile[iFile.length - 1];
@@ -51,26 +50,25 @@ public class MenuService {
         String saveMenuFileName = "Menu" + "_";
         saveMenuFileName += c.getTimeInMillis() + "." + iExt;
         Path menuTargetFile = menuFolderLocation.resolve(miiImgFile.getOriginalFilename());
-
+        
         try {
             Files.copy(miiImgFile.getInputStream(), menuTargetFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         MenuImageEntity menuimg = MenuImageEntity.builder()
-            .miiNumber(menuBasicRepo.findById(miiNumber).get())
-            .miiImgFile(saveMenuFileName)
-            .miiUri(iFileName).build();
+        .miiNumber(menuBasicRepo.findById(miiNumber).get()) //이거문제 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        .miiImgFile(saveMenuFileName)
+        .miiUri(iFileName).build();
         menuimg = miRepo.save(menuimg);
-
+        
         MenuEntity menu = MenuEntity.builder()
-            .mbiName(mbiName)
-            .mbiCost(mbiCost)
-            .mbiExplain(mbiExplain)
-            .mbiPcSeq(mbiPcSeq).build();
-
+        .mbiName(mbiName)
+        .mbiCost(mbiCost)
+        .mbiExplain(mbiExplain)
+        .mbiPcSeq(mbiPcSeq).build();
+        
+        System.out.println("qqq");
         menu = mRepo.save(menu);
     }
 

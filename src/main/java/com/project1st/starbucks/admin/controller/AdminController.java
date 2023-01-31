@@ -8,10 +8,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -216,12 +218,12 @@ public class AdminController {
             map.put("message", "존재하지 않는 메뉴 입니다.");
             map.put("code", HttpStatus.BAD_REQUEST);
         }
-       
+        
         return map;
     }
 
     @PostMapping("/menu")
-    public @ResponseBody Map<String, Object> addMenu(
+    public ResponseEntity<Object> addMenu(
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
         @RequestParam String mbiExplain,
@@ -241,7 +243,7 @@ public class AdminController {
             map.put("message", "메뉴가 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
         }
-        return map;
+        return new ResponseEntity<Object>(map, (HttpStatus)map.get("code"));
     } 
 
     @PostMapping("/store")
