@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -223,13 +222,11 @@ public class AdminController {
     }
 
     @PostMapping("/menu")
-    public ResponseEntity<Object> addMenu(
+    public @ResponseBody ResponseEntity<Object> addMenu(
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
         @RequestParam String mbiExplain,
-        @RequestParam Long mbiPcSeq,
-        @RequestParam Long miiNumber,
-        @RequestPart MultipartFile miiImgFile
+        @RequestParam Long mbiPcSeq
     ) {
         Map<String, Object> map = new LinkedHashMap<>();
         if(meRepo.countByMbiName(mbiName) != 0) {
@@ -238,13 +235,25 @@ public class AdminController {
             map.put("code", HttpStatus.CONFLICT);
         }
         else {
-            meService.addMenu(mbiName, miiNumber, mbiCost, mbiExplain, mbiPcSeq, miiImgFile);
+            meService.addMenu(mbiName, mbiCost, mbiExplain, mbiPcSeq);
             map.put("status", true);
             map.put("message", "메뉴가 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
         }
         return new ResponseEntity<Object>(map, (HttpStatus)map.get("code"));
     } 
+
+    @PostMapping("menuimg")
+    public @ResponseBody Map<String, Object> addMenuImage(
+        @RequestParam Long miiNumber,
+        @RequestPart MultipartFile miiImgFile
+    ){
+        Map<String, Object> map = new LinkedHashMap<>();
+        meiService.addEvent(miiImgFile, miiNumber);
+        map.put("status", true);
+        map.put("message", "메뉴 이미지가 등록되었습니다.");
+        return map;
+    }
 
     @PostMapping("/store")
     public @ResponseBody Map<String, Object> addStore (
