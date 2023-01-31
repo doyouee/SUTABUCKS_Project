@@ -57,7 +57,7 @@ public class MenuService {
             e.printStackTrace();
         }
         MenuImageEntity menuimg = MenuImageEntity.builder()
-        .miiNumber(menuBasicRepo.findById(miiNumber).get()) //이거문제 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        .miiNumber(menuBasicRepo.findById(miiNumber).get())
         .miiImgFile(saveMenuFileName)
         .miiUri(iFileName).build();
         menuimg = miRepo.save(menuimg);
