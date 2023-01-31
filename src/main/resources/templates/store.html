@@ -69,7 +69,12 @@
     </table>
     
     <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            storeList();
+        })
+        
         // function storeList(){
+            function storeList(){
             axios({
                 url: 'http:haeji.mawani.kro.kr:9999/admin/store', // 가게리스트
                 method: 'get',
@@ -97,6 +102,7 @@
                            "<td>"+response.data.store[i].sbiBusinessAddress+"</td>"+
                            "<td>"+response.data.store[i].sbiPhone+"</td>"+
                            "<td>"+deliverTime+"</td>"+
+                        //    "<td><button onclick=""
                         //    "<td><button id = 'deleteBtn'>삭제</button></td>"+
                            "</tr>"
                         //    let deletBtn = document.getElementById(deleteBtn)
@@ -106,8 +112,9 @@
                 }
                 document.querySelector("#storeList > tbody").innerHTML = dataStr
             }
-            storeList();
+            storeList()
             });
+        }
         // }
 
         // function deleteBtn(){
@@ -166,9 +173,12 @@
             })
             .then(function(response){
                 console.log(response.data)
+                storeList();
             })
             .catch(function(err){
+                console.log(err.response.data.message)
                 alert(err.response.data.message);
+                storeList();
             });
         }
         
