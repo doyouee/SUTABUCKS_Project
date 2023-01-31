@@ -80,7 +80,47 @@ public class AdminController {
     }
 
     @GetMapping("/event")
-    public  Map<String, Object> getEvent(Model model) {
+    public Map<String, Object> getEvent(@RequestParam Long evSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (eRepo.countByEvSeq(evSeq) != 0) {
+            map.put("event", eRepo.findByEvSeq(evSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 메뉴입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+    @GetMapping("/eventdetail")
+    public Map<String, Object> getEventDetail(@RequestParam Long ediSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (dRepo.countByEdiSeq(ediSeq) != 0) {
+            map.put("event", dRepo.findByEdiSeq(ediSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 이벤트입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+    @GetMapping("/notice")
+    public Map<String, Object> getNotice(@RequestParam Long saSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (aRepo.countBySaSeq(saSeq) != 0) {
+            map.put("event", aRepo.findBySaSeq(saSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 공지사항입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+
+    @GetMapping("/eventlist")
+    public @ResponseBody Map<String, Object> getEventList(Model model) {
         Map<String, Object> eventMap = new LinkedHashMap<String, Object>();
         List<EventEntity> event = eRepo.findAll();
 
@@ -183,7 +223,7 @@ public class AdminController {
     }
 
     @PostMapping("/menu")
-    public @ResponseBody ResponseEntity<Object> addMenu(
+    public ResponseEntity<Object> addMenu(
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
         @RequestParam String mbiExplain,
@@ -205,7 +245,7 @@ public class AdminController {
     } 
 
     @PostMapping("menuimg")
-    public @ResponseBody Map<String, Object> addMenuImage(
+    public Map<String, Object> addMenuImage(
         @RequestParam Long miiNumber,
         @RequestPart MultipartFile miiImgFile
     ){
@@ -398,7 +438,7 @@ public class AdminController {
         return map;
     }
 
-    @GetMapping("/notice")
+    @GetMapping("/noticelist")
     public  Map < String, Object > getNotice() {
         Map < String, Object > resultMap = new LinkedHashMap < String, Object > ();
         List < AnnouncementEntity > list = aRepo.findAll();
