@@ -142,7 +142,8 @@ public class MenuInfoService {
     public ResponseEntity<Object> makeQR(String menuName, Long menuNo) throws Exception {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         String data = "http://haeji.mawani.kro.kr:9999/menu/list/detail?menuNo=" + menuNo;
-        String path = "D:\\home\\starbucks\\image\\menuqr\\" + menuName + ".jpg";
+        // String path = "D:\\home\\starbucks\\image\\menuqr\\" + menuName + ".jpg";
+        String path = qr_menu_img_path + "\\" + menuName + ".jpg";
         String charset = "UTF-8";
         Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
         hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
