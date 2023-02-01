@@ -2,14 +2,14 @@ package com.project1st.starbucks.store.vo;
 
 import java.util.List;
 
-import com.project1st.starbucks.menu.vo.MenuStockVO;
+import com.project1st.starbucks.menu.vo.MenuStockDetailVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class storeMenuStockVO {
+public class storeMenuDetailVO {
     private StoreInfoVO store;
-    private List<MenuStockVO> menu;
+    private List<MenuStockDetailVO> menu;
 }

@@ -3,7 +3,6 @@ package com.project1st.starbucks.menu.vo;
 import com.project1st.starbucks.admin.entity.MenuImageEntity;
 import com.project1st.starbucks.admin.entity.MenuNutritionEntity;
 import com.project1st.starbucks.menu.entity.MenuQrEntity;
-import com.project1st.starbucks.store.entity.StoreMenuConnectEntity;
 
 import lombok.Data;
 
