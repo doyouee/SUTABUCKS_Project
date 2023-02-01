@@ -29,9 +29,9 @@ public class MembershipCardDetailVO {
         this.cardMemberSeq = card.getCardMiSeq();
         this.cardImage = card.getCardImage();
         this.cardImageFile = cardImage.getCardimageFile();
-        this.cardImageUri = cardImage.getCardimageUri();
+        this.cardImageUri = "http://haeji.mawani.kro.kr:9999/image/membership/" + cardImage.getCardimageUri();
         this.cardQRFile = cardQr.getCardqrFile();
-        this.cardQRUri = cardQr.getCardqrUri();
+        this.cardQRUri = "http://haeji.mawani.kro.kr:9999/image/cardqr/" + cardQr.getCardqrUri();
     }
 
 }
