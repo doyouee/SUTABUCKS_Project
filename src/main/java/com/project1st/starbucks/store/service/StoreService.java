@@ -519,6 +519,7 @@ public class StoreService {
         MenuNutritionEntity nutrition = nutritionRepo.findByMnMbiSeq(menuSeq);
         MenuDetailVO result = new MenuDetailVO(menuImage, qr, nutrition);
         optionData.setDetail(result);
+        optionData.setStoreMenuNo(smRepo.findByStoreAndMenu(sRepo.findById(storeSeq).get(), mRepo.findById(menuSeq).get()).getSmcSeq());
 
         // 메뉴 연결외래키로 메뉴카테고리 받아오고, 카테고리-옵션카테고리에서 옵션카테고리 받아오기
         ProductCategoryEntity menuCategory = pcRepo.findById(result.getMenuCategorySeq()).get();
