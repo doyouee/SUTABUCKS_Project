@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PostFindIdDTO {
-    private String miName;
-    private String miPhoneNum;
+    private String name;
+    private String phoneNum;
 
     public PostFindIdDTO fromEntity(MemberEntity memberInfoEntity) {
         return PostFindIdDTO.builder()
-        .miName(memberInfoEntity.getMiName())
-        .miPhoneNum(memberInfoEntity.getMiPhoneNum())
+        .name(memberInfoEntity.getMiName())
+        .phoneNum(memberInfoEntity.getMiPhoneNum())
         .build();
     }
 }

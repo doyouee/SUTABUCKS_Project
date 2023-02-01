@@ -15,7 +15,6 @@ import com.project1st.starbucks.admin.entity.AnnouncementEntity;
 import com.project1st.starbucks.admin.repository.AnnouncementRepository;
 
 import io.micrometer.common.lang.Nullable;
-import jakarta.transaction.Transactional;
 
 @Service
 public class AnnouncementService {
@@ -55,10 +54,6 @@ public class AnnouncementService {
                 announ = aRepo.save(announ);
 
     }
-    @Transactional
-    public void deleteNotice(Long saSeq){
-        aRepo.deleteById(saSeq);
-    }    
 }
     
 

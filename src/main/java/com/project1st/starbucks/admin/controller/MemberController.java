@@ -27,12 +27,6 @@ import com.project1st.starbucks.member.DTO.PutEditMemberInfoDTO;
 import jakarta.persistence.metamodel.SetAttribute;
 import jakarta.servlet.http.HttpSession;
 
-// 프론트에서 세션스토리지 쓴다고함
-// 백에서는 프론트에서 보낸 회원정보 파라미터로 받아서 api 동작
-// 그러면 백에서는 세션쓸 필요가 없음
-// 세션 
-
-
 @RestController
 @RequestMapping("/member")
 public class MemberController {
@@ -50,46 +44,45 @@ public class MemberController {
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }   
 
-    // 로그인 API (회원 상태값(1. 기본 2. 정지 3.탈퇴))
+    // 로그인 API(회원 상태값(1. 기본 2. 정지 3.탈퇴))
     @PostMapping("/login")
-    public ResponseEntity<Object> postLogin(@RequestBody PostLoginDTO data){
+    public ResponseEntity<Object> postLogin(@RequestBody PostLoginDTO data, HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        resultMap = mService.loginMember(data);
+        resultMap = mService.loginMember(data, session);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
     // 로그인 회원정보 조회
     @GetMapping("/myinfo")
-    public ResponseEntity<Object> showMyinfo(@RequestParam Long miSeq){
+    public ResponseEntity<Object> showMyinfo(HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        resultMap = mService.showLoginMemberInfo(miSeq);
+        resultMap = mService.showLoginMemberInfo(session);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
     // 회원 정보 수정
     @PatchMapping("/edit")
-    public ResponseEntity<Object> editMemberInfo(@RequestBody PutEditMemberInfoDTO data, @RequestParam Long miSeq){
+    public ResponseEntity<Object> editMemberInfo(@RequestBody PutEditMemberInfoDTO data, HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        resultMap = mService.editMemberInfo(data, miSeq);
+        resultMap = mService.editMemberInfo(session, data);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
     // 회원 탈퇴
     @PatchMapping("/leave")
-    public ResponseEntity<Object> deleteMemberInfo(@RequestParam Long miSeq){
+    public ResponseEntity<Object> deleteMemberInfo(HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        resultMap = mService.deleteMemberinfo(miSeq);
+        resultMap = mService.deleteMemberifo(session);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-    // 로그아웃은 프론트에서
     // 로그아웃
-    // @PostMapping("/logout")
-    // public ResponseEntity<Object> memberLogout(@RequestParam Long miSeq){
-    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    //     resultMap = mService.logOut(miSeq);
-    //     return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    // }
+    @PostMapping("/logout")
+    public ResponseEntity<Object> memberLogout(HttpSession session){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap = mService.logOut(session);
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    }
 
     // 유효성 체크(id, phoneNum, nickName, businessNum, pwd)
     @GetMapping("/{type}/{content}")
@@ -109,13 +102,13 @@ public class MemberController {
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-    // // 이메일로 인증번호 발송
-    // @PostMapping("/findid/email")
-    // public ResponseEntity<Object> findIdByEmail(@RequestBody PostAuthNumByEmailDTO data, HttpSession session){
-    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    //     resultMap = mService.IdAuthNumByEmail(data, session);
-    //     return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    // }
+    // 이메일로 인증번호 발송
+    @PostMapping("/findid/email")
+    public ResponseEntity<Object> findIdByEmail(@RequestBody PostAuthNumByEmailDTO data, HttpSession session){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap = mService.IdAuthNumByEmail(data, session);
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    }
 
     // 인증번호 일치시 아이디 보여줌
     @GetMapping("/findid")
@@ -129,9 +122,9 @@ public class MemberController {
 
     // 비밀번호를 찾고자하는 아이디를 입력해주세요
     @GetMapping("/findpwd/checkid")
-    public ResponseEntity<Object> checkId(@RequestParam String miId){
+    public ResponseEntity<Object> checkId(@RequestParam String Id){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        resultMap = mService.checkId(miId);
+        resultMap = mService.checkId(Id);
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
@@ -143,16 +136,16 @@ public class MemberController {
         return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
     }
 
-    // // 이메일로 인증번호 발송
-    // @PostMapping("/findpwd/email")
-    // public ResponseEntity<Object> findPwdByEmail(@RequestBody PostFindPwdDTO data, HttpSession session){
-    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    //     resultMap = mService.PwdAuthNumByEmail(data, session);
-    //     return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    // }
+    // 이메일로 인증번호 발송
+    @PostMapping("/findpwd/email")
+    public ResponseEntity<Object> findPwdByEmail(@RequestBody PostFindPwdDTO data, HttpSession session){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap = mService.PwdAuthNumByEmail(data, session);
+        return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+    }
 
     // 인증번호 일치할시 임시비밀번호 발급
-    @GetMapping("/findpwd")
+    @PostMapping("/findpwd")
     public ResponseEntity<Object> getTempPwd(@RequestParam Integer authNum, HttpSession session){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         resultMap = mService.getTempPwd(session, authNum);

@@ -1,4 +1,4 @@
-package com.project1st.starbucks.config;
+package com.project1st.starbucks.member.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

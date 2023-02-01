@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class PostFindPwdDTO {
-    private String miName;
-    private String miId;
+    private String name;
+    private String Id;
 }
 

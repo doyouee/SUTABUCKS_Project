@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostAuthNumByEmailDTO {
-    String miName;
-    String miEmail;
+    String name;
+    String email;
     public Object getId() {
         return null;
     }

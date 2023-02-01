@@ -29,9 +29,8 @@ public class MenuController {
     public ResponseEntity<Object> getMenuList(Pageable pageable) {
         return mService.menuList(pageable);
     }
-    
-    // @GetMapping("/list/detail") // <특정 메뉴 조회>
-    @RequestMapping(path = "/list/detail", method = RequestMethod.GET, produces = "application/hal+json;charset=utf8")
+
+    @GetMapping("/list/detail") // <특정 메뉴 조회>
     public ResponseEntity<Object> getMunuDetailList(@RequestParam Long menuNo) {
         return mService.munuDetailList(menuNo);
     }
@@ -41,21 +40,17 @@ public class MenuController {
         return mService.searchMenuName(menuName);
     }
 
-    // <QR코드 생성>
-    @PostMapping("/qr/new")
-    public ResponseEntity<Object> postQR(@RequestParam String menuName, @RequestParam Long menuNo) throws Exception{
-        return mService.makeQR(menuName, menuNo);
+    // QR코드 생성
+    @PostMapping("qr/new")
+    public ResponseEntity<Object> postQR(@RequestParam String menuName) throws Exception{
+        return mService.makeQR(menuName);
     }
-    // public ResponseEntity<Object> postQR(@RequestParam String menuName) throws Exception{
-    //     return mService.makeQR(menuName);
-    // }
 
 
-    // <만든 QR코드 이미지 다운로드>
-    @GetMapping("/qr/image/{uri}")
+    // 만든 QR코드 이미지 다운로드
+    @GetMapping("qr/image/{uri}")
     public ResponseEntity<Resource> getMenuQRImage(@PathVariable String uri, HttpServletRequest request) throws Exception {
         return mService.getMenuQRImage(uri, request);
     }
-
 
 }
