@@ -214,23 +214,23 @@ class StarbucksApplicationTests {
         System.out.println(OptionsRepo.findAllByMoiMocSeq(optionCategorySeq));
     }
 	
-    @Test
-    void showMyStore() { // 내 지점 조회
-        Long memberSeq = 5L;
-        if(memberRepo.findById(memberSeq).get().getMiGroup() != 2) {
-            System.out.println("점주 회원이 아닙니다.");
-        }
-        else {
-            System.out.println(storeRepo.findById(memberRepo.findById(memberSeq).get().getMiSbiSeq()));
-        }
-    }
+//    @Test
+//    void showMyStore() { // 내 지점 조회
+//        Long memberSeq = 5L;
+//        if(memberRepo.findById(memberSeq).get().getMiGroup() != 2) {
+//            System.out.println("점주 회원이 아닙니다.");
+//        }
+//        else {
+//            System.out.println(storeRepo.findById(memberRepo.findById(memberSeq).get().getMiSbiSeq()));
+//        }
+//    }
 
     @Test
     void searchStoreByStoreName() { // 지점명으로 지점 찾기
         String searchStoreName = "동성로점";
         System.out.println(storeRepo.findBySbiBranchName(searchStoreName));
     }
-    
+
 
 }
         

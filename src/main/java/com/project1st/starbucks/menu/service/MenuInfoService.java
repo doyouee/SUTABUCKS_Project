@@ -43,7 +43,6 @@ import com.project1st.starbucks.menu.entity.MenuQrEntity;
 import com.project1st.starbucks.menu.repository.MenuBasicInfoRepository;
 import com.project1st.starbucks.menu.repository.MenuQrRepository;
 import com.project1st.starbucks.menu.repository.ProductCategoryRepository;
-import com.project1st.starbucks.menu.vo.MenuStockVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
