@@ -33,7 +33,7 @@ public class MenuDetailVO {
         this.menuFile = image.getMiiImgFile();
         this.menuUri = "http://haeji.mawani.kro.kr:9999/image/menu/" + image.getMiiUri();
         this.menuQrFile = qr.getMqiImageFile();
-        this.menuQrUri = "http://haeji.mawani.kro.kr:9999/QR/image/" + qr.getMqiUri();
+        this.menuQrUri = "http://haeji.mawani.kro.kr:9999/image/menuqr/" + qr.getMqiUri();
         this.menuNutritionFile = nutrition.getMnImgFile();
         this.menuNutritionUri = "http://haeji.mawani.kro.kr:9999/image/nutri/" + nutrition.getMnUri();
     }

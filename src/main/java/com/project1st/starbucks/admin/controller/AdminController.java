@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +34,7 @@ import com.project1st.starbucks.admin.repository.MembershipImageRepository;
 import com.project1st.starbucks.admin.repository.MenuImageRepository;
 import com.project1st.starbucks.admin.repository.MenuNutritionRepository;
 import com.project1st.starbucks.admin.repository.MenuRepository;
+import com.project1st.starbucks.admin.repository.StoreImageRepository;
 import com.project1st.starbucks.admin.repository.StoreRepository;
 import com.project1st.starbucks.admin.service.AnnouncementService;
 import com.project1st.starbucks.admin.service.CouponService;
@@ -44,6 +44,8 @@ import com.project1st.starbucks.admin.service.MenuImageService;
 import com.project1st.starbucks.admin.service.MenuNutritionService;
 import com.project1st.starbucks.admin.service.MenuService;
 import com.project1st.starbucks.admin.service.StoreAdminService;
+import com.project1st.starbucks.admin.service.StoreImageService;
+
 import io.micrometer.common.lang.Nullable;
 import jakarta.transaction.Transactional;
 
@@ -68,6 +70,8 @@ public class AdminController {
     @Autowired MenuNutritionService mnService;
     @Autowired MembershipImageRepository mcRepo;
     @Autowired MembershipImageService mcService;
+    @Autowired StoreImageRepository siRepo;
+    @Autowired StoreImageService siService;
 
     @GetMapping("/list") // 접근경로
     public  Map<String, Object> getMain(
@@ -80,7 +84,48 @@ public class AdminController {
     }
 
     @GetMapping("/event")
-    public  Map<String, Object> getEvent(Model model) {
+    public Map<String, Object> getEvent(@RequestParam Long evSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (eRepo.countByEvSeq(evSeq) != 0) {
+            map.put("event", eRepo.findByEvSeq(evSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 메뉴입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+    @GetMapping("/eventdetail")
+    public Map<String, Object> getEventDetail(@RequestParam Long ediSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (dRepo.countByEdiSeq(ediSeq) != 0) {
+            map.put("title", eRepo.findByEvSeq(ediSeq).getEvTitle());
+            map.put("event", dRepo.findByEdiSeq(ediSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 이벤트입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+    @GetMapping("/notice")
+    public Map<String, Object> getNotice(@RequestParam Long saSeq) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if (aRepo.countBySaSeq(saSeq) != 0) {
+            map.put("event", aRepo.findBySaSeq(saSeq));
+        } else {
+            map.put("status", false);
+            map.put("message", "존재하지 않는 공지사항입니다.");
+            map.put("code", HttpStatus.BAD_REQUEST);
+        }
+        return map;
+    }
+
+
+    @GetMapping("/eventlist")
+    public @ResponseBody Map<String, Object> getEventList(Model model) {
         Map<String, Object> eventMap = new LinkedHashMap<String, Object>();
         List<EventEntity> event = eRepo.findAll();
 
@@ -183,7 +228,7 @@ public class AdminController {
     }
 
     @PostMapping("/menu")
-    public @ResponseBody ResponseEntity<Object> addMenu(
+    public ResponseEntity<Object> addMenu(
         @RequestParam String mbiName,
         @RequestParam Integer mbiCost,
         @RequestParam String mbiExplain,
@@ -205,7 +250,7 @@ public class AdminController {
     } 
 
     @PostMapping("menuimg")
-    public @ResponseBody Map<String, Object> addMenuImage(
+    public Map<String, Object> addMenuImage(
         @RequestParam Long miiNumber,
         @RequestPart MultipartFile miiImgFile
     ){
@@ -298,6 +343,26 @@ public class AdminController {
             mnService.addEvent(mnImgFile, mnMbiSeq);
             map.put("status", true);
             map.put("message", "영양정보가 등록되었습니다.");
+            map.put("code", HttpStatus.CREATED);
+        }
+        return map;
+    } 
+
+    @PostMapping("/storeimage")
+    public  Map<String, Object> addStoreimage(
+        @RequestParam MultipartFile siImgFile,
+        @RequestParam Long siNumber
+    ) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        if(siRepo.countBySiNumber(siNumber) != 0) {
+            map.put("status", false);
+            map.put("message", "이미 등록되어있는 지점이미지 입니다.");
+            map.put("code", HttpStatus.CONFLICT);
+        }
+        else {
+            siService.addEvent(siImgFile, siNumber);
+            map.put("status", true);
+            map.put("message", "지점이미지가 등록되었습니다.");
             map.put("code", HttpStatus.CREATED);
         }
         return map;
@@ -398,7 +463,7 @@ public class AdminController {
         return map;
     }
 
-    @GetMapping("/notice")
+    @GetMapping("/noticelist")
     public  Map < String, Object > getNotice() {
         Map < String, Object > resultMap = new LinkedHashMap < String, Object > ();
         List < AnnouncementEntity > list = aRepo.findAll();
