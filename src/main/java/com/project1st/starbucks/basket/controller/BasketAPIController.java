@@ -22,7 +22,6 @@ import com.project1st.starbucks.basket.repository.ShoppingBasketRepository;
 import com.project1st.starbucks.basket.service.BasketService;
 import com.project1st.starbucks.basket.vo.ChangeBasketVO;
 import com.project1st.starbucks.basket.vo.DeleteBasketVO;
-import com.project1st.starbucks.basket.vo.DetailBasketVO;
 import com.project1st.starbucks.basket.vo.DetailPageBasketVO;
 import com.project1st.starbucks.store.entity.StoreMenuConnectEntity;
 import com.project1st.starbucks.store.repository.StoreMenuConnectRepository;
