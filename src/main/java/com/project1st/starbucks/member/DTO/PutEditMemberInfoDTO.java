@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PutEditMemberInfoDTO {
+
     private String miPwd;
     private String miCheckPwd;    
     private String miNickName;

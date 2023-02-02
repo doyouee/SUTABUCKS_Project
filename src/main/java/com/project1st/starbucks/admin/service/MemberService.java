@@ -15,7 +15,6 @@ import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.admin.entity.StoreEntity;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
 import com.project1st.starbucks.admin.repository.StoreRepository;
-import com.project1st.starbucks.jwt.JWT;
 import com.project1st.starbucks.member.DTO.PostFindPwdDTO;
 import com.project1st.starbucks.member.DTO.GetLoginUserInfoDTO;
 import com.project1st.starbucks.member.DTO.PostAuthNumByEmailDTO;
@@ -39,7 +38,6 @@ public class MemberService {
     @Autowired SendMessage sendMessage;
     @Autowired GetAuthNum getAuthNum;
     @Autowired GetTempPwd getTempPwd;
-    @Autowired JWT Jwt;
     @Autowired StoreRepository sRepo;
 //    " ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$"
 
@@ -260,6 +258,7 @@ public class MemberService {
     }
     
     // 로그인 메소드 회원 상태값(1. 기본 2. 정지 3.탈퇴)
+
     public Map<String, Object> loginMember(PostLoginDTO data) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         MemberEntity memberInfo = null;
@@ -269,6 +268,7 @@ public class MemberService {
             e.printStackTrace();
         }
         // 회원정보가 없을때(탈퇴회원도 동일)
+
         if (memberInfo == null || memberInfo.getMiStatus() == 3) {
             resultMap.put("status", false);
             resultMap.put("message", "아이디 혹은 비밀번호 오류입니다.");
@@ -321,7 +321,6 @@ public class MemberService {
             resultMap.put("memberInfo", memberInfo);
             return resultMap;
         } else {
-            
             resultMap.put("status", false);
             resultMap.put("message", "먼저 로그인을 해주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
@@ -448,6 +447,7 @@ public class MemberService {
                 resultMap.put("message", "사용할 수 있는 아이디 입니다.");
                 resultMap.put("code", HttpStatus.OK);
             }
+
         } else if (type.equals("miPhoneNum")) {
             i = mRepo.countBymiPhoneNum(content);
             if (i != 0) {
@@ -776,10 +776,10 @@ public class MemberService {
             }
         }
         catch (Exception e) {
-            // resultMap.put("status", false);
-            // resultMap.put("message", "인증번호가 만료되었습니다.(3분안에 입력해주세요)");
-            // resultMap.put("code", HttpStatus.BAD_REQUEST);
-            e.printStackTrace();
+            resultMap.put("status", false);
+            resultMap.put("message", "인증번호가 만료되었습니다.(3분안에 입력해주세요)");
+            resultMap.put("code", HttpStatus.BAD_REQUEST);
+            // e.printStackTrace();
         }
         return resultMap;
     }

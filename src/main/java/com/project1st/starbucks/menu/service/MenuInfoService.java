@@ -2,10 +2,8 @@ package com.project1st.starbucks.menu.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +41,7 @@ import com.project1st.starbucks.menu.entity.MenuQrEntity;
 import com.project1st.starbucks.menu.repository.MenuBasicInfoRepository;
 import com.project1st.starbucks.menu.repository.MenuQrRepository;
 import com.project1st.starbucks.menu.repository.ProductCategoryRepository;
+import com.project1st.starbucks.menu.vo.MenuStockVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -140,12 +139,14 @@ public class MenuInfoService {
 
 
     // <메뉴의 QR코드 생성>
-    public ResponseEntity<Object> makeQR(String menuName, Long menuNo) throws Exception {
+    public ResponseEntity<Object> makeQR(String menuName) throws Exception {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        Path menuqrLocation = Paths.get(qr_menu_img_path);
+        Long menuNo = mbiRepo.findByMbiName(menuName).getMbiSeq();
+        // String data = "http://www.naver.com";
+        // String data = "http://localhost:9999/menu/list";
+        // String data = "http://192.168.0.104:9999/menu/list";
         String data = "http://haeji.mawani.kro.kr:9999/menu/list/detail?menuNo=" + menuNo;
-        // String path = "D:\\home\\starbucks\\image\\menuqr\\" + menuName + ".jpg";
-        String path = menuqrLocation + "/" + menuName + ".jpg";
+        String path = "D:\\home\\starbucks\\image\\menuqr\\" + menuName + ".jpg";
         String charset = "UTF-8";
         Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
         hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -157,42 +158,18 @@ public class MenuInfoService {
             .mqiMbiSeq(menuNo).build();
         qrdata = menuQrRepo.save(qrdata);
 
+        
         resultMap.put("status", true);
         resultMap.put("message", "성공적으로 QR코드를 만들었습니다.");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
-    /* public ResponseEntity<Object> makeQR(String menuName) throws Exception {
-    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    //     Long menuNo = mbiRepo.findByMbiName(menuName).getMbiSeq();
-    //     // String data = "http://www.naver.com";
-    //     // String data = "http://localhost:9999/menu/list";
-    //     // String data = "http://192.168.0.104:9999/menu/list";
-    //     String data = "http://haeji.mawani.kro.kr:9999/menu/list/detail?menuNo=" + menuNo;
-    //     String path = "D:\\home\\starbucks\\image\\menuqr\\" + menuName + ".jpg";
-    //     String charset = "UTF-8";
-    //     Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
-    //     hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-    //     createQR(data, path, charset, hashMap, 200, 200);
-
-    //     MenuQrEntity qrdata = MenuQrEntity.builder()
-    //         .mqiImageFile(menuName + ".jpg")
-    //         .mqiUri(menuName)
-    //         .mqiMbiSeq(menuNo).build();
-    //     qrdata = menuQrRepo.save(qrdata);
-
-        
-    //     resultMap.put("status", true);
-    //     resultMap.put("message", "성공적으로 QR코드를 만들었습니다.");
-    //     return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }*/
 
 
     // <메뉴의 QR코드 생성 메서드>
-    public void createQR(String data, String path, String charset, Map hashMap,  int height, int width) throws WriterException, IOException {
+    public static void createQR(String data, String path, String charset, Map hashMap,  int height, int width) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(
             new String(data.getBytes(charset), charset), BarcodeFormat.QR_CODE, width, height);
-        MatrixToImageWriter.writeToFile(matrix, "jpg", new File(path));
-        // MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
+        MatrixToImageWriter.writeToFile(matrix,path.substring(path.lastIndexOf('.') + 1),new File(path));
     }
 
 
@@ -235,4 +212,6 @@ public class MenuInfoService {
     }
 
 
+    
+    
 }

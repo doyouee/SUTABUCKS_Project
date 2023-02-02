@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.project1st.starbucks.admin.entity.CouponEntity;
 import com.project1st.starbucks.admin.repository.CouponRepository;
 
-import jakarta.transaction.Transactional;
-
 
 @Service
 public class CouponService {
@@ -33,8 +31,4 @@ public class CouponService {
                 .ciCode(ciCode).build();
                 coupon = cRepo.save(coupon);
         }
-    @Transactional
-    public void deleteCoupon(Long ciSeq){
-        cRepo.deleteById(ciSeq);
-    }    
 }
