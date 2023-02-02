@@ -24,6 +24,8 @@ import com.project1st.starbucks.member.DTO.PutEditMemberInfoDTO;
 import com.project1st.starbucks.util.AESAlgorithm;
 import com.project1st.starbucks.util.SendMail;
 import com.project1st.starbucks.util.SendMessage;
+
+
 import com.project1st.starbucks.util.GetAuthNum;
 import com.project1st.starbucks.util.GetTempPwd;
 
@@ -258,7 +260,6 @@ public class MemberService {
     }
     
     // 로그인 메소드 회원 상태값(1. 기본 2. 정지 3.탈퇴)
-
     public Map<String, Object> loginMember(PostLoginDTO data) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         MemberEntity memberInfo = null;
@@ -268,7 +269,6 @@ public class MemberService {
             e.printStackTrace();
         }
         // 회원정보가 없을때(탈퇴회원도 동일)
-
         if (memberInfo == null || memberInfo.getMiStatus() == 3) {
             resultMap.put("status", false);
             resultMap.put("message", "아이디 혹은 비밀번호 오류입니다.");
@@ -321,6 +321,7 @@ public class MemberService {
             resultMap.put("memberInfo", memberInfo);
             return resultMap;
         } else {
+            
             resultMap.put("status", false);
             resultMap.put("message", "먼저 로그인을 해주세요.");
             resultMap.put("code", HttpStatus.BAD_REQUEST);
@@ -359,8 +360,8 @@ public class MemberService {
             if (editMemberInfo.getMiName() != null) {
                 memberInfo.setMiName(editMemberInfo.getMiName());
             }
-            if (editMemberInfo.getMiNickName() != null) {
-                memberInfo.setMiNickname(editMemberInfo.getMiNickName());
+            if (editMemberInfo.getMiNickname() != null) {
+                memberInfo.setMiNickname(editMemberInfo.getMiNickname());
             }
             if (editMemberInfo.getMiPhoneNum() != null) {
                 memberInfo.setMiPhoneNum(editMemberInfo.getMiPhoneNum());
@@ -447,7 +448,6 @@ public class MemberService {
                 resultMap.put("message", "사용할 수 있는 아이디 입니다.");
                 resultMap.put("code", HttpStatus.OK);
             }
-
         } else if (type.equals("miPhoneNum")) {
             i = mRepo.countBymiPhoneNum(content);
             if (i != 0) {
@@ -459,7 +459,7 @@ public class MemberService {
                 resultMap.put("message", "가입할 수 있어요(중복되는 전화번호가 없어요).");
                 resultMap.put("code", HttpStatus.OK);
             }
-        } else if (type.equals("miNickName")) {
+        } else if (type.equals("miNickname")) {
             i = mRepo.countBymiNickname(content);
             if (i != 0) {
                 resultMap.put("status", false);
@@ -776,10 +776,10 @@ public class MemberService {
             }
         }
         catch (Exception e) {
-            resultMap.put("status", false);
-            resultMap.put("message", "인증번호가 만료되었습니다.(3분안에 입력해주세요)");
-            resultMap.put("code", HttpStatus.BAD_REQUEST);
-            // e.printStackTrace();
+            // resultMap.put("status", false);
+            // resultMap.put("message", "인증번호가 만료되었습니다.(3분안에 입력해주세요)");
+            // resultMap.put("code", HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
         }
         return resultMap;
     }

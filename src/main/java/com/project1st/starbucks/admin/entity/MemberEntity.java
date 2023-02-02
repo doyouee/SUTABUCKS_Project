@@ -6,6 +6,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +29,7 @@ public class MemberEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mi_seq")                private Long miSeq;
     @Column(name = "mi_id")                 private String miId;
+    // @JsonIgnore
     @Column(name = "mi_pwd")                private String miPwd;
     @Column(name = "mi_name")               private String miName;
     @Column(name = "mi_nickname")           private String miNickname;
@@ -37,8 +40,8 @@ public class MemberEntity {
     @Column(name = "mi_reg_date")           @ColumnDefault("current_timestamp")     private LocalDate miRegDate;
     @Column(name = "mi_group")              @Nullable   @ColumnDefault("1")                     private Integer miGroup;
     @Column(name = "mi_business_num")       @Nullable   private String miBusinessNum;
-    @Column(name="mi_address")                  private String miAddress;
+    @Column(name="mi_address")              private String miAddress;
     @Column(name = "mi_detail_address")     private String miDetailAddress;
     @Column(name = "mi_last_login")         private @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate miLastLogin;
-    @Column(name = "mi_sbi_seq")            private Long miSbiSeq;
+    @Column(name = "mi_sbi_seq")            @Nullable private Long miSbiSeq;
 }

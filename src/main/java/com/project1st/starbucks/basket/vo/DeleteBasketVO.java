@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class DeleteBasketVO {
-    private Long miSeq;
     private Long sbSmcSeq;
     private Long sbOrderNumber;     
 }

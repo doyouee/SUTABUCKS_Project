@@ -1,10 +1,8 @@
 package com.project1st.starbucks;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
@@ -13,29 +11,27 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.Message.RecipientType;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import com.project1st.starbucks.admin.entity.MemberEntity;
+// import com.project1st.starbucks.jwt.MakeJwtToken;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
-import com.project1st.starbucks.conpon.repository.CouponMemberInfoRepository;
 import com.project1st.starbucks.menu.repository.MenuBasicInfoRepository;
 import com.project1st.starbucks.menu.repository.MenuOptionCategoryRepository;
 import com.project1st.starbucks.menu.repository.MenuOptionInfoRepository;
-import com.project1st.starbucks.menu.repository.ProductCategoryRepository;
-import com.project1st.starbucks.menu.vo.MenuDetailOptionListVO;
-import com.project1st.starbucks.rank.repository.MemberOrderCountRepository;
-import com.project1st.starbucks.rank.repository.RealRankingRepository;
 import com.project1st.starbucks.store.repository.StoreBasicInfoRepository;
 import com.project1st.starbucks.store.repository.StoreMenuConnectRepository;
 
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpSession;
 import net.nurigo.java_sdk.Coolsms;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -49,27 +45,6 @@ class StarbucksApplicationTests {
     @Autowired StoreBasicInfoRepository storeRepo;
     @Autowired StoreMenuConnectRepository storeMenuRepo;
     
-	/*  @Test
-	// void contextLoads() {
-	// 	String api_key = "NCSNSK6ORRAURS62";
-    //     String api_secret = "PIHNMNQAHHIQUPEV3DW4Z76O0AS7GVSP";
-    //     Message coolsms = new Message(api_key, api_secret);
-    //     HashMap<String, String> params = new HashMap<String, String>();
-
-    //     params.put("to", "010-3676-9550");
-    //     params.put("from", "010-3676-9550");
-    //     params.put("type", "SMS");
-    //     params.put("text", "test");
-    //     params.put("app_version", "test app 1.2");
-
-    //     try {
-    //         JSONObject obj = (JSONObject) coolsms.send(params);
-    //         System.out.println(obj.toString());
-    //     } catch (CoolsmsException e) {
-    //         System.out.println(e.getMessage());
-    //         System.out.println(e.getCode());
-    //     }
-    // }*/
 
     // <류승지 TEST>
 	@Test
@@ -219,6 +194,16 @@ class StarbucksApplicationTests {
             if(menuRepo.findAll().get(i).getMbiName().contains(searchKeyword)){
                 System.out.println(menuRepo.findById((long)i));
             }
+
+        // //jwttokken생성
+        // @Autowired MakeJwtToken makeJwt;
+        // @Test
+        // public void makeJwtTest(){
+        //  String jwt = makeJwt.makeJwt();
+        //  System.out.println("JWT = "+ jwt);
+
+        // }
+
         }
     }
 
@@ -229,10 +214,16 @@ class StarbucksApplicationTests {
         System.out.println(OptionsRepo.findAllByMoiMocSeq(optionCategorySeq));
     }
 	
-    @Test
-    void showStoreList() { // 지점 전체 조회
-        System.out.println(storeRepo.findAll());
-    }
+//    @Test
+//    void showMyStore() { // 내 지점 조회
+//        Long memberSeq = 5L;
+//        if(memberRepo.findById(memberSeq).get().getMiGroup() != 2) {
+//            System.out.println("점주 회원이 아닙니다.");
+//        }
+//        else {
+//            System.out.println(storeRepo.findById(memberRepo.findById(memberSeq).get().getMiSbiSeq()));
+//        }
+//    }
 
     @Test
     void searchStoreByStoreName() { // 지점명으로 지점 찾기
@@ -241,19 +232,6 @@ class StarbucksApplicationTests {
     }
 
 
-    // 주봉진 테스트
-    @Autowired MemberOrderCountRepository memOrderCountRepo;
-    @Test
-    void memberFind() {
-        Long member = 24L;
-        System.out.println(memOrderCountRepo.findBySbMiSeq(member));
-    }
-    
-    @Autowired CouponMemberInfoRepository cmiRepo;
-    @Test
-    void memberCoupon() {
-        System.out.println(cmiRepo.findAll());       
-    }
 }
         
 
