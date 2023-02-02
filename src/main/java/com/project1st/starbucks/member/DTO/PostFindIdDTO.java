@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PostFindIdDTO {
+<<<<<<< HEAD
     private String name;
     private String phoneNum;
 
@@ -19,6 +20,15 @@ public class PostFindIdDTO {
         return PostFindIdDTO.builder()
         .name(memberInfoEntity.getMiName())
         .phoneNum(memberInfoEntity.getMiPhoneNum())
+=======
+    private String miName;
+    private String miPhoneNum;
+
+    public PostFindIdDTO fromEntity(MemberEntity memberInfoEntity) {
+        return PostFindIdDTO.builder()
+        .miName(memberInfoEntity.getMiName())
+        .miPhoneNum(memberInfoEntity.getMiPhoneNum())
+>>>>>>> main
         .build();
     }
 }
