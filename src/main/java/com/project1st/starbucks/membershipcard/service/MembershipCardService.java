@@ -33,6 +33,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.project1st.starbucks.admin.entity.MemberEntity;
+import com.project1st.starbucks.admin.repository.MemberRepository;
 import com.project1st.starbucks.membershipcard.entity.MembershipCardEntity;
 import com.project1st.starbucks.membershipcard.entity.MembershipCardImageEntity;
 import com.project1st.starbucks.membershipcard.entity.MembershipCardQREntity;
@@ -47,16 +48,17 @@ import jakarta.servlet.http.HttpSession;
 
 @Service
 public class MembershipCardService {
+    @Autowired MemberRepository memberRepo;
     @Autowired MembershipCardRepository cardRepo;
     @Autowired MembershipCardImageRepository cardImageRepo;
     @Autowired MembershipcardQRRepository cardQRRepo;
     @Value("${file.image.cardqr}") String qr_card_img_path;
 
     //카드생성 -> 완료 ♥ -> 진혁이 서버에서 돌아가는지 확인
-    public ResponseEntity<Object> createNewMembershipCard(MembershipCardEntity data, HttpSession session) throws Exception {
+    public ResponseEntity<Object> createNewMembershipCard(MembershipCardEntity data, Long memberNo) throws Exception {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
-        MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
+        MemberEntity memberInfo = memberRepo.findByMiSeq(memberNo);
         if (memberInfo == null) {
             resultMap.put("status", false);
             resultMap.put("message", "멤버십 카드 생성을 위해 로그인 해주세요.");
@@ -73,22 +75,19 @@ public class MembershipCardService {
         data.setCardMiSeq(memberInfo.getMiSeq());
         cardRepo.save(data);
         
-        
         // 멤버십 카드 생성과 동시에 멤버십카드 충전 QR코드가 생성
         String source = "http://haeji.mawani.kro.kr:9999/card/charge";
-        // String path = "D:\\home\\starbucks\\image\\cardqr\\MembershipCARD_MemberNo_" + data.getCardMiSeq() + ".jpg";
-        String path = "/home/starbucks/image/cardqr/MembershipCARD_MemberNo_" + data.getCardMiSeq() + ".jpg";
+        String path = "/home/starbucks/image/cardqr/MembershipCard_MemberNo_" + data.getCardMiSeq() + ".jpg";
         String charset = "UTF-8";
         Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
         hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
         createQR(source, path, charset, hashMap, 200, 200);
 
         MembershipCardQREntity qrdata = MembershipCardQREntity.builder()
-            .cardqrFile(data.getCardName() + data.getCardMiSeq() + ".jpg")
-            .cardqrUri(data.getCardName() + data.getCardMiSeq())
+            .cardqrFile("MembershipCard_MemberNo_" + data.getCardMiSeq() + ".jpg")
+            .cardqrUri("MembershipCard_MemberNo_" + data.getCardMiSeq())
             .cardqrMiSeq(memberInfo.getMiSeq()).build();
         qrdata = cardQRRepo.save(qrdata);
-        
 
         resultMap.put("status", true);
         resultMap.put("message", "카드 등록이 완료되었습니다.");
@@ -104,7 +103,6 @@ public class MembershipCardService {
 
         MatrixToImageWriter.writeToFile(matrix,path.substring(path.lastIndexOf('.') + 1),new File(path));
     }
-
 
 
      // 카드 이미지 다운로드 하기
@@ -148,10 +146,10 @@ public class MembershipCardService {
 
 
     //카드충전 (QR코드 인식 후) -> vo써야하나?????!!!!!!
-    public ResponseEntity<Object> chargeMembershipCard(Integer money, HttpSession session){
+    public ResponseEntity<Object> chargeMembershipCard(Integer money, Long memberNo){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
-        MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
+        MemberEntity memberInfo = memberRepo.findByMiSeq(memberNo);
         if (memberInfo == null) {
             resultMap.put("status", false);
             resultMap.put("message", "멤버십 카드 충전을 위해 로그인 해주세요.");
@@ -171,14 +169,13 @@ public class MembershipCardService {
         resultMap.put("message", money + "원이 충전되었습니다. [카드 잔액 : " + cardEntity.getCardMoney() +"원]");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
-
     
     
     //카드조회 
-    public ResponseEntity<Object> detailMembershipCard(HttpSession session){
+    public ResponseEntity<Object> detailMembershipCard(Long memberNo){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
-        MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
+        MemberEntity memberInfo = memberRepo.findByMiSeq(memberNo);
         if (memberInfo == null) {
             resultMap.put("status", false);
             resultMap.put("message", "멤버십 카드 조회를 위해 로그인 해주세요.");
@@ -196,7 +193,6 @@ public class MembershipCardService {
         MembershipCardImageEntity cardImage = cardImageRepo.findById(card.getCardImage()).get();
         MembershipCardQREntity cardQr = cardQRRepo.findByCardqrMiSeq(memberInfo.getMiSeq());
         MembershipCardDetailVO result = new MembershipCardDetailVO(card, cardImage, cardQr);
-        // MembershipCardDetailVO result = new MembershipCardDetailVO(card, cardQr);
         resultMap.put("detail", result);
         resultMap.put("status", true);
         resultMap.put("message", memberInfo.getMiName() + " [닉네임:"+ memberInfo.getMiNickname() +"] 님의 멤버십 카드 상세조회 입니다.");
@@ -205,10 +201,10 @@ public class MembershipCardService {
 
 
     //카드삭제 -> 완료 ♥ -> deleteVO 쓰는 방법?????!!!!!
-    public ResponseEntity<Object> deleteMembershipCard(HttpSession session){
+    public ResponseEntity<Object> deleteMembershipCard(Long memberNo){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
-        MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
+        MemberEntity memberInfo = memberRepo.findByMiSeq(memberNo);
         if (memberInfo == null) {
             resultMap.put("status", false);
             resultMap.put("message", "멤버십 카드 삭제를 위해 로그인 해주세요.");
@@ -235,33 +231,5 @@ public class MembershipCardService {
     }
 
 
-    //카드결제 -> 장바구니 금액보다 적으면 에러 + 장바구니 금액만큼 결제하기
-    public ResponseEntity<Object> payMembershipCard(HttpSession session) {
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        // 세션으로 로그인 정보 불러오기
-        MemberEntity memberInfo = (MemberEntity) session.getAttribute("loginUser");
-        if (memberInfo == null) {
-            resultMap.put("status", false);
-            resultMap.put("message", "멤버십 카드 결제를 위해 로그인 해주세요.");
-            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
-        }
-        // 멤버십 카드가 존재하지 않는다면 에러
-        if(cardRepo.findByCardMiSeq(memberInfo.getMiSeq()) == null) {
-            resultMap.put("status", false);
-            resultMap.put("message", "멤버십 카드가 존재하지 않습니다. 멤버십 카드를 발급해주세요.");
-            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
-        }
-        // 장바구니 금액보다 멤버십카드 잔액이 적으면 에러
-        // ????코드????
-
-        // 장바구니 금액만큼 결제하기
-        // MembershipCardEntity cardEntity = cardRepo.findByCardMiSeq(memberInfo.getMiSeq());
-        // cardEntity.setCardMoney(cardEntity.getCardMoney() + money);
-        // cardRepo.save(cardEntity);
-        // resultMap.put("status", true);
-        // resultMap.put("message", money + "원이 충전되었습니다. [카드 잔액 : " + cardEntity.getCardMoney() +"원]");
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-
-    }
     
 }

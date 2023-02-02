@@ -9,8 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +25,6 @@ public class CouponMemberInfoEntity {
     @Column(name = "cmi_seq")           private Long cmiSeq;
     @Column(name = "cmi_status")        @ColumnDefault("1")     private Integer cmiStatus;
     @Column(name = "cmi_use_date")      private Date cmiUseDate;
-    @OneToOne
-    @JoinColumn(name = "cmi_ci_seq") CouponInfoEntity couponInfoEntity;
-    // @Column(name = "cmi_ci_seq")        private Long cmiCiSeq;
+    @Column(name = "cmi_ci_seq")        private Long cmiCiSeq;
     @Column(name = "cmi_mi_seq")        private Long cmiMiSeq;
 }

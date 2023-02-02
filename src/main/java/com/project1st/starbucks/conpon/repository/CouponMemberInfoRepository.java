@@ -9,4 +9,5 @@ import com.project1st.starbucks.conpon.entity.CouponMemberInfoEntity;
 
 @Repository
 public interface CouponMemberInfoRepository extends JpaRepository<CouponMemberInfoEntity, Long> {
+    
 }

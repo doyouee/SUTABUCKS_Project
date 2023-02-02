@@ -27,6 +27,4 @@ public class MenuBasicInfoEntity {
     @Column(name = "mbi_status")        @ColumnDefault("1")     private Integer mbiStatus;
     @Column(name = "mbi_explain")       private String mbiExplain;
     @Column(name = "mbi_pc_seq")        private Long mbiPcSeq;
-    // private String filename;
-    // private String uri;
 }
