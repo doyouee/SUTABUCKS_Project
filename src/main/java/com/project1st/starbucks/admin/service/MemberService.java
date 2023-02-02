@@ -25,7 +25,6 @@ import com.project1st.starbucks.util.AESAlgorithm;
 import com.project1st.starbucks.util.SendMail;
 import com.project1st.starbucks.util.SendMessage;
 
-import io.jsonwebtoken.Jwt;
 
 import com.project1st.starbucks.util.GetAuthNum;
 import com.project1st.starbucks.util.GetTempPwd;
@@ -41,7 +40,6 @@ public class MemberService {
     @Autowired SendMessage sendMessage;
     @Autowired GetAuthNum getAuthNum;
     @Autowired GetTempPwd getTempPwd;
-    @Autowired Jwt Jwt;
     @Autowired StoreRepository sRepo;
 //    " ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$"
 
