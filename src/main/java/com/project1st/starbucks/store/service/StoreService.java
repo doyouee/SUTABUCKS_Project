@@ -46,10 +46,8 @@ import com.project1st.starbucks.store.repository.StoreMenuConnectRepository;
 import com.project1st.starbucks.store.vo.StoreEditVO;
 import com.project1st.starbucks.store.vo.StoreInfoVO;
 import com.project1st.starbucks.store.vo.StoreMenuAddVO;
+import com.project1st.starbucks.store.vo.StoreMenuDetailVO;
 import com.project1st.starbucks.store.vo.StoreMenuVO;
-import com.project1st.starbucks.store.vo.storeMenuDetailVO;
-
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class StoreService {
@@ -476,7 +474,7 @@ public class StoreService {
         }
         resultMap.put("status", true);
         resultMap.put("message", store.getBranchName() + "의 전체 메뉴 입니다.");
-        resultMap.put("list", new storeMenuDetailVO(store, menuList));
+        resultMap.put("list", new StoreMenuDetailVO(store, menuList));
 
         //페이징 처리
         Page<StoreMenuConnectEntity> page = smRepo.findAll(pageable);
