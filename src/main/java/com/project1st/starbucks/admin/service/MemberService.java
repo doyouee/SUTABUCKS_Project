@@ -15,7 +15,6 @@ import com.project1st.starbucks.admin.entity.MemberEntity;
 import com.project1st.starbucks.admin.entity.StoreEntity;
 import com.project1st.starbucks.admin.repository.MemberInfoRepository;
 import com.project1st.starbucks.admin.repository.StoreRepository;
-import com.project1st.starbucks.jwt.JWT;
 import com.project1st.starbucks.member.DTO.PostFindPwdDTO;
 import com.project1st.starbucks.member.DTO.GetLoginUserInfoDTO;
 import com.project1st.starbucks.member.DTO.PostAuthNumByEmailDTO;
@@ -25,6 +24,9 @@ import com.project1st.starbucks.member.DTO.PutEditMemberInfoDTO;
 import com.project1st.starbucks.util.AESAlgorithm;
 import com.project1st.starbucks.util.SendMail;
 import com.project1st.starbucks.util.SendMessage;
+
+import io.jsonwebtoken.Jwt;
+
 import com.project1st.starbucks.util.GetAuthNum;
 import com.project1st.starbucks.util.GetTempPwd;
 
@@ -39,7 +41,7 @@ public class MemberService {
     @Autowired SendMessage sendMessage;
     @Autowired GetAuthNum getAuthNum;
     @Autowired GetTempPwd getTempPwd;
-    @Autowired JWT Jwt;
+    @Autowired Jwt Jwt;
     @Autowired StoreRepository sRepo;
 //    " ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,20}$"
 
