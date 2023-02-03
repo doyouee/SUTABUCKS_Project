@@ -17,7 +17,7 @@ import com.project1st.starbucks.admin.repository.StoreImageRepository;
 @Service
 public class StoreImageService {
     @Autowired StoreImageRepository sRepo;
-    @Value("${file.image.storeimage}") String store_img_path;
+    @Value("${file.image.store}") String store_img_path;
         public void addEvent(
             MultipartFile siImgFile,
             Long siNumber
