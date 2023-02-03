@@ -87,16 +87,16 @@ public class AdminController {
     public Map<String, Object> getEvent(@RequestParam Long evSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
         if (eRepo.countByEvSeq(evSeq) != 0) {
-            map.put("번호", eRepo.findByEvSeq(evSeq).getEvSeq());
-            map.put("이름", eRepo.findByEvSeq(evSeq).getEvTitle());
-            map.put("시작일", eRepo.findByEvSeq(evSeq).getEvStartDate());
-            map.put("종료일", eRepo.findByEvSeq(evSeq).getEvEndDate());
-            map.put("이벤트이미지", eRepo.findByEvSeq(evSeq).getEvUri());
-            map.put("디테일이미지", dRepo.findByEdiSeq(evSeq).getEdiUri());
-            map.put("내용", eRepo.findByEvSeq(evSeq).getEvContent());
+            map.put("evSeq", eRepo.findByEvSeq(evSeq).getEvSeq());
+            map.put("evTitle", eRepo.findByEvSeq(evSeq).getEvTitle());
+            map.put("evStartDate", eRepo.findByEvSeq(evSeq).getEvStartDate());
+            map.put("evEndDate", eRepo.findByEvSeq(evSeq).getEvEndDate());
+            map.put("evUri", eRepo.findByEvSeq(evSeq).getEvUri());
+            map.put("ediUri", dRepo.findByEdiSeq(evSeq).getEdiUri());
+            map.put("evContent", eRepo.findByEvSeq(evSeq).getEvContent());
         } else {
             map.put("status", false);
-            map.put("message", "존재하지 않는 메뉴입니다.");
+            map.put("message", "존재하지 않는 이벤트입니다.");
             map.put("code", HttpStatus.BAD_REQUEST);
         }
         return map;
@@ -106,12 +106,12 @@ public class AdminController {
     public Map<String, Object> getEventDetail(@RequestParam Long ediSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
         if (dRepo.countByEdiSeq(ediSeq) != 0) {
-            map.put("번호", eRepo.findByEvSeq(ediSeq).getEvSeq());
-            map.put("이름", eRepo.findByEvSeq(ediSeq).getEvTitle());
-            map.put("이미지", dRepo.findByEdiSeq(ediSeq).getEdiUri());
-            map.put("시작일", eRepo.findByEvSeq(ediSeq).getEvStartDate());
-            map.put("종료일", eRepo.findByEvSeq(ediSeq).getEvEndDate());
-            map.put("내용", dRepo.findByEdiSeq(ediSeq).getEdiContents());
+            map.put("ediSeq", eRepo.findByEvSeq(ediSeq).getEvSeq());
+            map.put("evTitle", eRepo.findByEvSeq(ediSeq).getEvTitle());
+            map.put("ediUri", dRepo.findByEdiSeq(ediSeq).getEdiUri());
+            map.put("ediStartDate", eRepo.findByEvSeq(ediSeq).getEvStartDate());
+            map.put("ediEndDate", eRepo.findByEvSeq(ediSeq).getEvEndDate());
+            map.put("ediContent", dRepo.findByEdiSeq(ediSeq).getEdiContents());
         } else {
             map.put("status", false);
             map.put("message", "존재하지 않는 이벤트입니다.");
