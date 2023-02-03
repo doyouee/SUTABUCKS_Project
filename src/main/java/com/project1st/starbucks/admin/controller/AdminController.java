@@ -87,7 +87,13 @@ public class AdminController {
     public Map<String, Object> getEvent(@RequestParam Long evSeq) {
         Map<String, Object> map = new LinkedHashMap<>();
         if (eRepo.countByEvSeq(evSeq) != 0) {
-            map.put("event", eRepo.findByEvSeq(evSeq));
+            map.put("번호", eRepo.findByEvSeq(evSeq).getEvSeq());
+            map.put("이름", eRepo.findByEvSeq(evSeq).getEvTitle());
+            map.put("시작일", eRepo.findByEvSeq(evSeq).getEvStartDate());
+            map.put("종료일", eRepo.findByEvSeq(evSeq).getEvEndDate());
+            map.put("이벤트이미지", eRepo.findByEvSeq(evSeq).getEvUri());
+            map.put("디테일이미지", dRepo.findByEdiSeq(evSeq).getEdiUri());
+            map.put("내용", eRepo.findByEvSeq(evSeq).getEvContent());
         } else {
             map.put("status", false);
             map.put("message", "존재하지 않는 메뉴입니다.");
