@@ -144,7 +144,8 @@ public class MenuInfoService {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         Path menuqrLocation = Paths.get(qr_menu_img_path);
         // String data = "http://haeji.mawani.kro.kr:9999/menu/list/detail?menuNo=" + menuNo;
-        String data = "http://192.168.0.82:3000/menudetail/" + menuNo;
+        // String data = "http://192.168.0.82:3000/menudetail/" + menuNo;
+        String data = "http://haeji.mawani.kro.kr:3389/menudetail/" + menuNo;
         // String path = "D:\\home\\starbucks\\image\\menuqr\\" + menuName + ".jpg";
         String path = menuqrLocation + "/" + menuName + ".jpg";
         String charset = "UTF-8";
