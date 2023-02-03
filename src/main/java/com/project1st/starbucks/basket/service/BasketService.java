@@ -35,7 +35,7 @@ import com.project1st.starbucks.menu.repository.MenuOptionInfoRepository;
 import com.project1st.starbucks.store.entity.StoreMenuConnectEntity;
 import com.project1st.starbucks.store.repository.StoreMenuConnectRepository;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Service
 public class BasketService {
@@ -78,6 +78,7 @@ public class BasketService {
     //     return new ResponseEntity<>(resultMap, HttpStatus.OK);
     // }
     @Autowired MenuOptionInfoRepository menuOptionInfoRepo;
+    
 
     public ResponseEntity<Object> addDetailBasket(DetailPageBasketVO data) {   
 
@@ -112,7 +113,7 @@ public class BasketService {
 
             MenuImageEntity menuImageEntity = menuImageRepository.findByMiiNumber(storeMenuConnectEntity.getMenu());
 
-
+            
 
                 if(data.getShoppingBasketOption() == null) {
                     long i = 1;        
@@ -128,14 +129,20 @@ public class BasketService {
                     resultMap.put("message", "장바구니 추가 완료");
                     // resultMap.put("entity", entity);  
                     return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
-                }
-                
+                }        
+
+                MenuOptionInfoEntity menuOptionInfoEntity = menuOptionInfoRepo.findByMoiSeq(data.getShoppingBasketOption().get(0).getSboMoiSeq());
+                int optionCost = menuOptionInfoEntity.getMoiCost();
+                Long optionCostCost = Long.valueOf(optionCost);
+
                 long i = 1;        
                 ShoppingBasketEntity entity = ShoppingBasketEntity.builder().sbMiSeq(data.getMiSeq()).sbStatus(i).sbNumber(data.getShoppingBasketVo().getSbNumber())
                                                 .sbOrderNumber(orderNo)
                                                 .menuImageName(menuImageEntity.getMiiImgFile())
                                                 .menuImageUri(menuImageEntity.getMiiUri())
                                                 .sbBasketPrice(smcRepo.findById(data.getShoppingBasketVo().getSbSmcSeq()).get().getMenu().getMbiCost() * data.getShoppingBasketVo().getSbNumber())
+                                                .optionIncludePrice(smcRepo.findById(data.getShoppingBasketVo().getSbSmcSeq()).get().getMenu().getMbiCost() * data.getShoppingBasketVo().getSbNumber()                                             
+                                                + (optionCostCost * data.getShoppingBasketOption().get(0).getSboNumber()))                                                
                                                 .storeMenuConnect(smcRepo.findById(data.getShoppingBasketVo().getSbSmcSeq()).get()).build();
                 sbRepo.save(entity);
                 resultMap.put("result", true);
@@ -143,7 +150,8 @@ public class BasketService {
                 // resultMap.put("entity", entity);  
 
                 for(ShoppingBasketOptionVO opt : data.getShoppingBasketOption()) {
-                    MenuOptionInfoEntity menuOptionEntity = menuOptionInfoRepo.findByMoiSeq(opt.getSboMoiSeq());
+                    MenuOptionInfoEntity menuOptionEntity = menuOptionInfoRepo.findByMoiSeq(opt.getSboMoiSeq()); 
+
                     ShoppingBasketOptionEntity optionEntity =ShoppingBasketOptionEntity.builder().sboNumber(opt.getSboNumber())
                                                             .sboOptionOrderNumber(entity.getSbOrderNumber())
                                                             .menuOption(menuOptionEntity).shoppingBasket(entity)
@@ -184,7 +192,7 @@ public class BasketService {
     //     resultMap.put("result", "로그인 회원의 선택 메뉴 삭제완료");
     //     return new ResponseEntity<>(resultMap, HttpStatus.OK);
     // }
-
+    @Transactional
     public ResponseEntity<Object> deleteBasket(DeleteBasketVO data) {
         // MemberEntity memberInfo = (MemberEntity)session.getAttribute("loginUser");  
 
@@ -277,10 +285,9 @@ public class BasketService {
                 basketOptionPriceSum = basketOptionPriceSum + basketOptionPrice;
                 basketOptionPrice++;
             }
-        }    
-
-
-
+        }
+        
+        
 
 
         for(ShoppingBasketEntity basket : basketEntities) {
@@ -300,13 +307,20 @@ public class BasketService {
         if(data.getCouponUse() == 0) {
             MembershipCardEntity memcardEntity;
             memcardEntity =  memCardRepo.findByCardMiSeq(data.getMiSeq());
-            int totalPrice = (int)(basketPriceSum + basketOptionPriceSum);            
+            int totalPrice = (int)(basketPriceSum + basketOptionPriceSum);
+            
+            if(memcardEntity.getCardMoney() < totalPrice) {
+                resultMap.put("result", false);
+                resultMap.put("result", "멤버쉽 카드 잔액을 확인해주세요");
+                return new ResponseEntity<>(resultMap, HttpStatus.OK);
+            }
+
             memcardEntity.setCardMoney(memcardEntity.getCardMoney() - totalPrice);        
 
             resultMap.put("paymentCost", "결제금액" + totalPrice);
             resultMap.put("cardBalance", "결제후 카드잔액" + (memcardEntity.getCardMoney() - totalPrice));
             resultMap.put("menuStock", "가게 재고 감소");
-            resultMap.put("result", "결제완료");            
+            resultMap.put("result", true);            
         } 
 
         else if(data.getCouponUse() == 1) {
@@ -317,13 +331,14 @@ public class BasketService {
 
             memcardEntity =  memCardRepo.findByCardMiSeq(data.getMiSeq());
             int totalPrice = (int)(basketPriceSum + basketOptionPriceSum - couponInfoEntity.getCiDiscount());            
-            memcardEntity.setCardMoney(memcardEntity.getCardMoney() - totalPrice);        
+            memcardEntity.setCardMoney(memcardEntity.getCardMoney() - totalPrice);              
 
             resultMap.put("paymentCost", "결제금액" + totalPrice);
             resultMap.put("couponUse", "쿠폰적용 금액" + couponInfoEntity.getCiDiscount());
             resultMap.put("cardBalance", "결제후 카드잔액" + (memcardEntity.getCardMoney() - totalPrice));
             resultMap.put("menuStock", "가게 재고 감소");
-            resultMap.put("result", "결제완료");        
+            resultMap.put("message", "결제완료");
+            resultMap.put("result", true);        
         }       
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);

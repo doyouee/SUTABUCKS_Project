@@ -75,7 +75,7 @@ public class BasketAPIController {
         resultMap.put("memberBasket", sbRepo.findBySbMiSeqAndSbStatus(miSeq, status));
 
         List<ShoppingBasketEntity> basketEntities = new ArrayList<>();
-        basketEntities = sbRepo.findBySbMiSeqAndSbStatus(miSeq, status);   
+        basketEntities = sbRepo.findBySbMiSeqAndSbStatus(miSeq, status);    
         
 
         // for(int pricei=0; pricei< basketEntities.size(); pricei++ ){ 
@@ -115,35 +115,35 @@ public class BasketAPIController {
 
 
     @Autowired StoreMenuConnectRepository smcRepo;
-    @PatchMapping("/cart/order") // 주문하는 메소드
-    public Map<String, Object> updateOrder(HttpSession session, @RequestParam Long status, @RequestParam Long change, @RequestBody ShoppingBasketEntity shopBasket) {
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();     
-        MemberEntity memberInfo = (MemberEntity)session.getAttribute("loginUser");
+    // @PatchMapping("/cart/order") // 주문하는 메소드
+    // public Map<String, Object> updateOrder(HttpSession session, @RequestParam Long status, @RequestParam Long change, @RequestBody ShoppingBasketEntity shopBasket) {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();     
+    //     MemberEntity memberInfo = (MemberEntity)session.getAttribute("loginUser");
         
-        if(memberInfo == null) {
-            resultMap.put("result", false);
-            return resultMap;
-        }       
+    //     if(memberInfo == null) {
+    //         resultMap.put("result", false);
+    //         return resultMap;
+    //     }       
         
-        List<ShoppingBasketEntity> changeBasket = sbRepo.findBySbMiSeqAndSbStatus(memberInfo.getMiSeq(), status);
+    //     List<ShoppingBasketEntity> changeBasket = sbRepo.findBySbMiSeqAndSbStatus(memberInfo.getMiSeq(), status);
         
-        for(ShoppingBasketEntity basket : changeBasket) {
-            Date now = new Date();
-            basket.setSborderDate(now);
-            basket.setSbStatus(change);  
-            basket.setSbReceive(shopBasket.getSbReceive());
-            basket.setSbRequest(shopBasket.getSbRequest());
-            basket.setSbPayment(shopBasket.getSbPayment());            
-            sbRepo.save(basket);
+    //     for(ShoppingBasketEntity basket : changeBasket) {
+    //         Date now = new Date();
+    //         basket.setSborderDate(now);
+    //         basket.setSbStatus(change);  
+    //         basket.setSbReceive(shopBasket.getSbReceive());
+    //         basket.setSbRequest(shopBasket.getSbRequest());
+    //         basket.setSbPayment(shopBasket.getSbPayment());            
+    //         sbRepo.save(basket);
             
-            StoreMenuConnectEntity storeMenu = smcRepo.findBySmcSeq(basket.getStoreMenuConnect().getSmcSeq());
-            storeMenu.setSmcMenuStock((int)(storeMenu.getSmcMenuStock() - basket.getSbNumber()));  
-            smcRepo.save(storeMenu);
-        } 
-        resultMap.put("message", "장바구니에서 주문으로 상태값 변경");
-        resultMap.put("stock", "가게 메뉴 재고 변경");
-        return resultMap;
-    }
+    //         StoreMenuConnectEntity storeMenu = smcRepo.findBySmcSeq(basket.getStoreMenuConnect().getSmcSeq());
+    //         storeMenu.setSmcMenuStock((int)(storeMenu.getSmcMenuStock() - basket.getSbNumber()));  
+    //         smcRepo.save(storeMenu);
+    //     } 
+    //     resultMap.put("message", "장바구니에서 주문으로 상태값 변경");
+    //     resultMap.put("stock", "가게 메뉴 재고 변경");
+    //     return resultMap;
+    // }
 
     @PatchMapping("/cart/payment")
     public ResponseEntity<Object> paymentBasket(@RequestBody PaymentBasketVO data){

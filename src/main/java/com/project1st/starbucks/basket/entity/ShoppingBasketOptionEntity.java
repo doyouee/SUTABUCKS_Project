@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "shopping_basket_option")
 // @JsonIdentityInfo(generator = IntSequenceGenerator.class, property = "id")
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class ShoppingBasketOptionEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sbo_seq") private Long sboSeq;
