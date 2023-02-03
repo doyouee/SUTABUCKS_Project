@@ -53,7 +53,7 @@ public class MembershipCardController {
     }
     
 
-    //카드삭제 -> 완료 ♥
+    //카드삭제
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteMembershipCard(@RequestParam Long memberNo) {
         return cardService.deleteMembershipCard(memberNo);

@@ -145,7 +145,7 @@ public class MembershipCardService {
 
 
 
-    //카드충전 (QR코드 인식 후) -> vo써야하나?????!!!!!!
+    //카드충전 (QR코드 인식 후)
     public ResponseEntity<Object> chargeMembershipCard(Integer money, Long memberNo){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
@@ -200,7 +200,7 @@ public class MembershipCardService {
     }
 
 
-    //카드삭제 -> 완료 ♥ -> deleteVO 쓰는 방법?????!!!!!
+    //카드삭제 -> 완료 ♥
     public ResponseEntity<Object> deleteMembershipCard(Long memberNo){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
@@ -218,13 +218,15 @@ public class MembershipCardService {
         }
         // 카드에 잔액이 존재한다면 에러뜨기
         MembershipCardEntity cardEntity = cardRepo.findByCardMiSeq(memberInfo.getMiSeq());
-        if(cardEntity.getCardMoney() != 0) {
-            resultMap.put("status", false);
-            resultMap.put("message", "멤버십 카드에 잔액이 존재합니다.");
-            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
-        }
+        // if(cardEntity.getCardMoney() != 0) {
+        //     resultMap.put("status", false);
+        //     resultMap.put("message", "멤버십 카드에 잔액이 존재합니다.");
+        //     return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
+        // }
+        MembershipCardQREntity cardQrEntity = cardQRRepo.findByCardqrMiSeq(memberNo);
         // 로그인했다면 멤버십카드 삭제하기
         cardRepo.delete(cardEntity);
+        cardQRRepo.delete(cardQrEntity);
         resultMap.put("status", true);
         resultMap.put("message", "멤버십 카드가 삭제되었습니다.");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
