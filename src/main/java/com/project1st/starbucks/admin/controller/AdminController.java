@@ -127,7 +127,7 @@ public class AdminController {
         return map;
     }
 
-
+//test
     @GetMapping("/eventlist")
     public @ResponseBody Map<String, Object> getEventList(Model model) {
         Map<String, Object> eventMap = new LinkedHashMap<String, Object>();
