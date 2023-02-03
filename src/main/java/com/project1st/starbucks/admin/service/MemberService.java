@@ -299,6 +299,7 @@ public class MemberService {
             .miDetailAddress(memberInfo.getMiDetailAddress())
             .miLastLogin(memberInfo.getMiLastLogin())
             .miSbiSeq(memberInfo.getMiSbiSeq())
+            .miBusinessNum(memberInfo.getMiBusinessNum())
             .build(); 
 
             resultMap.put("data", loginUserInfo);
