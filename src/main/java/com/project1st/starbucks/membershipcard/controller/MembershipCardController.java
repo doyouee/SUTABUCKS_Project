@@ -25,35 +25,35 @@ import jakarta.servlet.http.HttpSession;
 public class MembershipCardController {
     @Autowired MembershipCardService cardService;
 
-    //카드생성 -> 완료 ♥ -> 진혁이 서버에서 돌아가는지 확인
+    //카드생성 -> 완료 ♥
     @PutMapping("/new")
     public ResponseEntity<Object> postNewMembershipCard(@RequestBody MembershipCardEntity data, @RequestParam Long memberNo) throws Exception {
         return cardService.createNewMembershipCard(data, memberNo);
     }
 
 
-    //카드충전 (QR코드 인식 후) 
+    //카드충전 (QR코드 인식 후) -> 완료 ♥
     @PatchMapping("/charge")
     public ResponseEntity<Object> patchChargeMembershipCard(@RequestParam Integer money, @RequestParam Long memberNo) {
         return cardService.chargeMembershipCard(money, memberNo);
     }
     
 
-    //카드 이미지 저장
+    //카드 이미지 저장 -> 완료 ♥
     @GetMapping("/image/{uri}")
     public ResponseEntity<Resource> getCardQRImage(@PathVariable String uri, HttpServletRequest request) throws Exception {
         return cardService.getCardQRImage(uri, request);
     }
 
 
-    //카드조회
+    //카드조회 -> 완료 ♥
     @GetMapping("/detail")
     public ResponseEntity<Object> getMembershipCard(@RequestParam Long memberNo) {
         return cardService.detailMembershipCard(memberNo);
     }
     
 
-    //카드삭제
+    //카드삭제 -> 완료 ♥
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteMembershipCard(@RequestParam Long memberNo) {
         return cardService.deleteMembershipCard(memberNo);
