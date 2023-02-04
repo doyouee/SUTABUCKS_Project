@@ -54,7 +54,7 @@ public class MembershipCardService {
     @Autowired MembershipcardQRRepository cardQRRepo;
     @Value("${file.image.cardqr}") String qr_card_img_path;
 
-    //카드생성 -> 완료 ♥ -> 진혁이 서버에서 돌아가는지 확인
+    //카드 + 카드 QR이미지 생성 -> 완료 ♥
     public ResponseEntity<Object> createNewMembershipCard(MembershipCardEntity data, Long memberNo) throws Exception {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
@@ -76,8 +76,11 @@ public class MembershipCardService {
         cardRepo.save(data);
         
         // 멤버십 카드 생성과 동시에 멤버십카드 충전 QR코드가 생성
-        String source = "http://haeji.mawani.kro.kr:9999/card/charge";
-        String path = "/home/starbucks/image/cardqr/MembershipCard_MemberNo_" + data.getCardMiSeq() + ".jpg";
+        Path cardqrLocation = Paths.get(qr_card_img_path);
+        // String source = "http://192.168.0.55:3000/qrmob?miSeq" + memberNo;
+        String source = "http://http://haeji.mawani.kro.kr:3389/qrmob?miSeq" + memberNo;
+        // String path = "/home/starbucks/image/cardqr/MembershipCard_MemberNo_" + data.getCardMiSeq() + ".jpg";
+        String path = cardqrLocation + "/membershipCard_MemberNo_" + data.getCardMiSeq() + ".jpg";
         String charset = "UTF-8";
         Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
         hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -95,7 +98,7 @@ public class MembershipCardService {
     }
 
 
-    //QR코드 생성 메서드
+    //QR코드 생성 메서드 -> 완료 ♥
     public static void createQR(String source, String path, String charset, Map hashMap,  int height, int width) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(
         new String(source.getBytes(charset), charset),
@@ -105,7 +108,7 @@ public class MembershipCardService {
     }
 
 
-     // 카드 이미지 다운로드 하기
+     // 카드 이미지 다운로드 하기 -> 완료 ♥
     public ResponseEntity<Resource> getCardQRImage (@PathVariable String uri, HttpServletRequest request) throws Exception {
         String filename = null;
         Path folderLocation = null;
@@ -136,7 +139,7 @@ public class MembershipCardService {
     }
 
     
-    // 파일명 가져오기
+    // 파일명 가져오기 -> 완료 ♥
     public String getFilenameByUri(String uri) {
         // List<MembershipCardQREntity> data = cardQRRepo.findTopByCardqrUriOrderByCardqrSeqDesc(uri);
         return (cardQRRepo.findTopByCardqrUriOrderByCardqrSeqDesc(uri)).getCardqrFile();
@@ -145,7 +148,7 @@ public class MembershipCardService {
 
 
 
-    //카드충전 (QR코드 인식 후)
+    //카드충전 (QR코드 인식 후) -> 완료 ♥
     public ResponseEntity<Object> chargeMembershipCard(Integer money, Long memberNo){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
@@ -171,7 +174,7 @@ public class MembershipCardService {
     }
     
     
-    //카드조회 
+    //카드조회  -> 완료 ♥
     public ResponseEntity<Object> detailMembershipCard(Long memberNo){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         // 세션으로 로그인 정보 불러오기
