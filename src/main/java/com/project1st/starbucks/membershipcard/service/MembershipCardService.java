@@ -77,8 +77,8 @@ public class MembershipCardService {
         
         // 멤버십 카드 생성과 동시에 멤버십카드 충전 QR코드가 생성
         Path cardqrLocation = Paths.get(qr_card_img_path);
-        String source = "http://192.168.0.55:3000/qrmob?miSeq" + memberNo;
-        // String source = "http://http://haeji.mawani.kro.kr:3389/qrmob?miSeq" + memberNo;
+        // String source = "http://192.168.0.55:3000/qrmob?miSeq=" + memberNo;
+        String source = "http://haeji.mawani.kro.kr:3389/qrmob?miSeq=" + memberNo;
         // String path = "/home/starbucks/image/cardqr/MembershipCard_MemberNo_" + data.getCardMiSeq() + ".jpg";
         String path = cardqrLocation + "/MembershipCard_MemberNo_" + data.getCardMiSeq() + ".jpg";
         String charset = "UTF-8";
